@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="48%" r="70%">
+      <stop offset="0" stop-color="#3a2a18"/><stop offset="0.55" stop-color="#120d0a"/><stop offset="1" stop-color="#070707"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff1c9"/><stop offset="0.5" stop-color="#e0bd78"/><stop offset="1" stop-color="#a67835"/>
+    </linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="6"/></filter>
+  </defs>
+  <rect width="400" height="500" fill="url(#bg)"/>
+  <g fill="#f2d39a">
+    <circle cx="48" cy="70" r="1.6" opacity="0.8"/><circle cx="320" cy="50" r="1.2" opacity="0.6"/><circle cx="120" cy="150" r="1.2" opacity="0.5"/>
+    <circle cx="290" cy="170" r="1.6" opacity="0.8"/><circle cx="70" cy="360" r="1.2" opacity="0.6"/><circle cx="345" cy="370" r="1.6" opacity="0.7"/><circle cx="200" cy="460" r="1.2" opacity="0.5"/>
+  </g>
+  <text x="200" y="92" text-anchor="middle" font-family="sans-serif" font-size="9" letter-spacing="4" fill="#e0bd78">YOU ARE INVITED TO CELEBRATE</text>
+  <g transform="translate(200 205)">
+    <g filter="url(#glow)" opacity="0.6" stroke="#e0bd78" stroke-width="6" fill="none"><circle cx="-18" cy="6" r="34"/><circle cx="18" cy="6" r="34"/></g>
+    <g stroke="url(#gold)" stroke-width="6" fill="none"><circle cx="-18" cy="6" r="34"/><circle cx="18" cy="6" r="34"/></g>
+    <path d="M18 -40 l9 -12 l9 12 l-9 9 z" fill="#fff6dc"/>
+  </g>
+  <text x="200" y="330" text-anchor="middle" font-family="'Brush Script MT', cursive" font-style="italic" font-size="46" fill="#f2d39a">Romeo &amp; Juliet</text>
+  <text x="200" y="365" text-anchor="middle" font-family="'Brush Script MT', cursive" font-style="italic" font-size="22" fill="#f7eee6" opacity="0.9">A beautiful beginning</text>
+  <text x="200" y="405" text-anchor="middle" font-family="Georgia, serif" font-size="15" letter-spacing="4" fill="#f7eee6">25 · DECEMBER · 2026</text>
+  <line x1="150" y1="425" x2="250" y2="425" stroke="#e0bd78" stroke-opacity="0.6"/>
+  <text x="200" y="448" text-anchor="middle" font-family="sans-serif" font-size="9" letter-spacing="4" fill="#e0bd78">ENGAGEMENT CEREMONY</text>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500">
+  <defs>
+    <linearGradient id="sun" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FDE68A"/>
+      <stop offset="0.5" stop-color="#FBBF24"/>
+      <stop offset="1" stop-color="#F59E0B"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="500" fill="#FEF3C7"/>
+  <path transform="translate(60 40) scale(2.8)" d="M50 0 L58 35 L93 25 L68 50 L93 75 L58 65 L50 100 L42 65 L7 75 L32 50 L7 25 L42 35 Z" fill="#F59E0B" opacity="0.18"/>
+  <rect x="115" y="40" width="170" height="26" rx="13" fill="#F59E0B"/>
+  <text x="200" y="57" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="10" letter-spacing="1.5" fill="#fff">HALDI &amp; FLOWER SHOWER</text>
+  <circle cx="200" cy="185" r="92" fill="#fff" stroke="#F59E0B" stroke-width="6"/>
+  <circle cx="200" cy="185" r="82" fill="url(#sun)"/>
+  <text x="200" y="205" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" font-size="54" fill="#fff">R&amp;J</text>
+  <g font-size="28">
+    <text x="30" y="110">🌼</text><text x="340" y="220">🌻</text><text x="35" y="330">🌼</text><text x="335" y="440">🌻</text>
+  </g>
+  <text x="200" y="330" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" font-style="italic" font-size="36" fill="#B45309">Romeo</text>
+  <text x="200" y="360" text-anchor="middle" font-family="sans-serif" font-weight="800" font-size="22" fill="#D97706">&amp;</text>
+  <text x="200" y="400" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" font-style="italic" font-size="36" fill="#B45309">Juliet</text>
+  <rect x="115" y="420" width="170" height="26" rx="13" fill="#fff" stroke="#F59E0B" stroke-width="2"/>
+  <text x="200" y="437" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="10" fill="#92400E">25 December 2026</text>
+</svg>

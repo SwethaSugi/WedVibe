@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500">
+  <defs>
+    <radialGradient id="g" cx="50%" cy="25%" r="80%">
+      <stop offset="0" stop-color="#0F5B46"/><stop offset="0.55" stop-color="#0B2B23"/><stop offset="1" stop-color="#04120E"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFF6D3"/><stop offset="0.45" stop-color="#F5D77F"/><stop offset="0.8" stop-color="#D4AF37"/><stop offset="1" stop-color="#996515"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="500" fill="url(#g)"/>
+  <path d="M70 500 V200 Q70 80 200 30 Q330 80 330 200 V500" fill="none" stroke="#F5D77F" stroke-opacity="0.35" stroke-width="2"/>
+  <path d="M100 500 V210 Q100 110 200 70 Q300 110 300 210 V500" fill="none" stroke="#F5D77F" stroke-opacity="0.2"/>
+  <g stroke="#F5D77F" stroke-width="1">
+    <line x1="40" y1="0" x2="40" y2="60"/><line x1="360" y1="0" x2="360" y2="60"/>
+  </g>
+  <g fill="#F5D77F"><path d="M32 60 h16 l-4 26 h-8 z"/><path d="M352 60 h16 l-4 26 h-8 z"/></g>
+  <text x="200" y="150" text-anchor="middle" font-family="Georgia, serif" font-size="9" letter-spacing="2" fill="#D1FAE5">IN THE NAME OF ALLAH</text>
+  <rect x="135" y="200" width="130" height="22" rx="11" fill="#041D17" stroke="#F5D77F" stroke-opacity="0.5"/>
+  <text x="200" y="215" text-anchor="middle" font-family="Georgia, serif" font-size="9" letter-spacing="3" fill="#F5D77F">NIKAH CEREMONY</text>
+  <text x="200" y="285" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" font-size="44" fill="url(#gold)">Romeo</text>
+  <text x="200" y="320" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="22" fill="#F5D77F">&amp;</text>
+  <text x="200" y="368" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" font-size="44" fill="url(#gold)">Juliet</text>
+  <rect x="120" y="395" width="160" height="24" rx="12" fill="#062019" stroke="#F5D77F" stroke-opacity="0.4"/>
+  <text x="200" y="411" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#F5D77F">25 December 2026</text>
+</svg>

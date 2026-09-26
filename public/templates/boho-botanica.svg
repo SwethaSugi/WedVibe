@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500">
+  <defs>
+    <radialGradient id="g" cx="50%" cy="25%" r="80%">
+      <stop offset="0" stop-color="#3E5447"/>
+      <stop offset="0.6" stop-color="#27332D"/>
+      <stop offset="1" stop-color="#1A221E"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFF6E5"/>
+      <stop offset="0.5" stop-color="#D8B18A"/>
+      <stop offset="1" stop-color="#C49A6C"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="500" fill="url(#g)"/>
+  <g fill="#8FA89B" opacity="0.45">
+    <path d="M40 60 C70 40 100 60 110 100 C80 100 55 90 40 60Z"/>
+    <path d="M360 90 C330 70 300 85 290 125 C320 125 345 115 360 90Z"/>
+    <path d="M60 430 C90 410 120 430 130 470 C100 470 75 460 60 430Z"/>
+    <path d="M340 420 C310 400 280 415 270 455 C300 455 325 445 340 420Z"/>
+  </g>
+  <path d="M110 100 Q150 150 200 150 Q250 150 290 125" stroke="#8FA89B" stroke-width="1.5" fill="none" opacity="0.5"/>
+  <rect x="100" y="185" width="200" height="22" rx="11" fill="#34463C" stroke="#8FA89B" stroke-opacity="0.5"/>
+  <text x="200" y="200" text-anchor="middle" font-family="sans-serif" font-size="8" letter-spacing="2.5" fill="#D8B18A">TOGETHER IN THE GARDEN</text>
+  <text x="200" y="270" text-anchor="middle" font-family="Georgia, serif" font-size="42" fill="url(#gold)">Romeo</text>
+  <text x="200" y="310" text-anchor="middle" font-family="'Brush Script MT', cursive" font-style="italic" font-size="30" fill="#E8C5A5">and</text>
+  <text x="200" y="355" text-anchor="middle" font-family="Georgia, serif" font-size="42" fill="url(#gold)">Juliet</text>
+  <rect x="120" y="380" width="160" height="24" rx="12" fill="#18201C" stroke="#8FA89B" stroke-opacity="0.4"/>
+  <text x="200" y="396" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#D8B18A">25 December 2026</text>
+</svg>

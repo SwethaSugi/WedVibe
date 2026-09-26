@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="45%" r="75%">
+      <stop offset="0" stop-color="#5e1f2a"/><stop offset="0.6" stop-color="#2a1216"/><stop offset="1" stop-color="#1c1214"/>
+    </radialGradient>
+    <radialGradient id="seal" cx="35%" cy="30%" r="75%">
+      <stop offset="0" stop-color="#c2394d"/><stop offset="0.45" stop-color="#9b2335"/><stop offset="1" stop-color="#5e0f1c"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="500" fill="url(#bg)"/>
+  <g fill="#d89aa2" opacity="0.7" font-family="Georgia, serif">
+    <text x="40" y="420" font-size="16">✿</text><text x="330" y="380" font-size="14">✦</text>
+    <text x="90" y="160" font-size="10">•</text><text x="300" y="120" font-size="16">✿</text><text x="200" y="470" font-size="10">✦</text>
+  </g>
+  <text x="200" y="125" text-anchor="middle" font-family="'Brush Script MT', cursive" font-style="italic" font-size="58" fill="#fff">R&amp;J</text>
+  <text x="200" y="158" text-anchor="middle" font-family="sans-serif" font-size="10" letter-spacing="4" fill="#fff" opacity="0.9">WEDDING INVITATION</text>
+  <circle cx="200" cy="300" r="78" fill="#9b2335" opacity="0.25"/>
+  <circle cx="200" cy="300" r="58" fill="url(#seal)"/>
+  <circle cx="200" cy="300" r="49" fill="none" stroke="#5e0f1c" stroke-opacity="0.6" stroke-width="2"/>
+  <circle cx="200" cy="300" r="41" fill="none" stroke="#e8a3ad" stroke-opacity="0.3"/>
+  <text x="200" y="314" text-anchor="middle" font-family="'Brush Script MT', cursive" font-style="italic" font-size="36" fill="#4a0b16">R&amp;J</text>
+  <text x="200" y="400" text-anchor="middle" font-family="sans-serif" font-size="9" letter-spacing="3.5" fill="#fff" opacity="0.9">TAP THE SEAL TO OPEN</text>
+</svg>

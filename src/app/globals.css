@@ -1,0 +1,204 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Shared template animation primitives — used by the invitation templates
+   (src/templates/components/*) and their Reveal/decorative wrappers. */
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tpl-reveal {
+  opacity: 0;
+}
+
+.tpl-reveal.tpl-reveal-in {
+  animation: reveal-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.tpl-float {
+  animation: float-y 4s ease-in-out infinite;
+}
+
+@keyframes shimmer-line {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes grow-width {
+  from { width: 0; opacity: 0; }
+  to { opacity: 1; }
+}
+/* Combined on one element: shimmering gold gradient that grows in from zero width.
+   Both animations are declared together so neither overrides the other's `animation`. */
+.tpl-shimmer-line.tpl-grow-line {
+  background: linear-gradient(90deg, transparent, #c9a24b, transparent);
+  background-size: 200% 100%;
+  animation:
+    grow-width 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    shimmer-line 3s ease-in-out 1.1s infinite;
+}
+
+@keyframes petal-fall {
+  0% { transform: translateY(-10%) translateX(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(110vh) translateX(30px) rotate(220deg); opacity: 0; }
+}
+.tpl-petal {
+  position: absolute;
+  top: 0;
+  animation: petal-fall linear infinite;
+  pointer-events: none;
+}
+
+@keyframes sparkle-pulse {
+  0%, 100% { opacity: 0.25; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+.tpl-sparkle {
+  animation: sparkle-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes gradient-pan {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.tpl-gradient-pan {
+  background-size: 200% 200%;
+  animation: gradient-pan 8s ease infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.35; transform: scale(0.92); }
+  50% { opacity: 0.7; transform: scale(1.08); }
+}
+.tpl-glow {
+  animation: glow-pulse 4s ease-in-out infinite;
+  filter: blur(28px);
+}
+
+@keyframes orbit-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.tpl-orbit {
+  animation: orbit-spin 14s linear infinite;
+}
+.tpl-orbit-reverse {
+  animation: orbit-spin 20s linear infinite reverse;
+}
+
+@keyframes couple-rise {
+  from { opacity: 0; transform: translateY(24px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.tpl-couple-in {
+  animation: couple-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes ring-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.25); opacity: 0.15; }
+}
+.tpl-ring-pulse {
+  animation: ring-pulse 2.6s ease-in-out infinite;
+}
+
+@keyframes dropdown-in {
+  from { opacity: 0; transform: translateY(-6px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.wv-dropdown-in {
+  animation: dropdown-in 0.16s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  transform-origin: top right;
+}
+
+@keyframes logo-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.25); }
+  50% { box-shadow: 0 0 0 5px rgba(225, 29, 72, 0); }
+}
+.wv-logo-glow {
+  animation: logo-glow 2.8s ease-in-out infinite;
+}
+
+/* Homepage hero background photo: very slow zoom so the faded image feels alive. */
+@keyframes hero-drift {
+  0%, 100% { transform: scale(1.02); }
+  50% { transform: scale(1.08); }
+}
+.wv-hero-drift {
+  animation: hero-drift 30s ease-in-out infinite;
+}
+
+/* Two stacked background photos slowly crossfading (the second runs half a cycle behind). */
+@keyframes xfade {
+  0%, 40% { opacity: 1; }
+  50%, 90% { opacity: 0; }
+  100% { opacity: 1; }
+}
+.wv-xfade {
+  animation: xfade 18s ease-in-out infinite;
+}
+
+@keyframes underline-in {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tpl-reveal.tpl-reveal-in,
+  .tpl-float,
+  .tpl-shimmer-line,
+  .tpl-grow-line,
+  .tpl-petal,
+  .tpl-sparkle,
+  .tpl-gradient-pan,
+  .tpl-glow,
+  .tpl-orbit,
+  .tpl-orbit-reverse,
+  .tpl-couple-in,
+  .tpl-ring-pulse,
+  .wv-dropdown-in,
+  .wv-hero-drift,
+  .wv-xfade,
+  .wv-logo-glow {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

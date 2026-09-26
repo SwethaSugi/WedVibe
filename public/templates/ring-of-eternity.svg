@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500">
+  <defs>
+    <radialGradient id="g" cx="50%" cy="25%" r="80%">
+      <stop offset="0" stop-color="#4C1D2E"/><stop offset="0.5" stop-color="#16203A"/><stop offset="1" stop-color="#0D1424"/>
+    </radialGradient>
+    <linearGradient id="rg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFF1F2"/><stop offset="0.4" stop-color="#FDA4AF"/><stop offset="0.7" stop-color="#FB7185"/><stop offset="1" stop-color="#E11D48"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="500" fill="url(#g)"/>
+  <circle cx="200" cy="110" r="42" fill="#000" fill-opacity="0.35" stroke="#FDA4AF" stroke-opacity="0.5"/>
+  <circle cx="186" cy="118" r="18" fill="none" stroke="url(#rg)" stroke-width="4"/>
+  <circle cx="214" cy="118" r="18" fill="none" stroke="#FDE68A" stroke-width="4"/>
+  <path d="M208 92 l6 -8 l6 8 l-6 6 z" fill="#FFF1F2"/>
+  <text x="200" y="180" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="9" letter-spacing="3" fill="#FECDD3">THE ENGAGEMENT CEREMONY</text>
+  <text x="200" y="270" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" font-size="44" fill="url(#rg)">ROMEO</text>
+  <line x1="130" y1="298" x2="175" y2="298" stroke="#FB7185" stroke-opacity="0.5"/>
+  <text x="200" y="304" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="18" fill="#FDA4AF">&amp;</text>
+  <line x1="225" y1="298" x2="270" y2="298" stroke="#FB7185" stroke-opacity="0.5"/>
+  <text x="200" y="350" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" font-size="44" fill="url(#rg)">JULIET</text>
+  <rect x="120" y="380" width="160" height="24" rx="12" fill="#000" fill-opacity="0.6" stroke="#F43F5E" stroke-opacity="0.5"/>
+  <text x="200" y="396" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#FFE4E6">25 December 2026</text>
+</svg>
