@@ -118,7 +118,7 @@ export function ModernElegant({ data }: { data: InvitationData }) {
                 rel="noreferrer"
                 className="inline-block mt-4 text-sm underline decoration-neutral-600 hover:decoration-white transition-colors"
               >
-                View on Google Maps →
+                View on Google Maps
               </a>
             )}
           </div>

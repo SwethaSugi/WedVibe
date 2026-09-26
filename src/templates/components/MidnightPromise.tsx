@@ -160,7 +160,7 @@ export function MidnightPromise({ data }: { data: InvitationData }) {
           )}
           <Eyebrow className="text-[#e0bd78] mt-3">{headline}</Eyebrow>
           <a href="#mp-promise" className="mp-bounce inline-block mt-8 font-dmsans text-[10px] tracking-[0.3em] uppercase text-[#f7eee6]/80">
-            Scroll to explore ↓
+            Scroll to explore
           </a>
         </div>
       </section>
@@ -288,7 +288,7 @@ export function MidnightPromise({ data }: { data: InvitationData }) {
                           rel="noopener noreferrer"
                           className="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#f2d39a] to-[#bd9150] text-[#1a1208] font-dmsans text-[10px] font-semibold tracking-[0.25em] uppercase hover:brightness-110 transition"
                         >
-                          View Location ↗
+                          View Location
                         </a>
                       )}
                       {calUrl && (
@@ -379,7 +379,7 @@ export function MidnightPromise({ data }: { data: InvitationData }) {
                   rel="noopener noreferrer"
                   className="inline-block mt-6 px-6 py-3 rounded-full bg-[#1a1208] text-[#f2d39a] font-dmsans text-[10px] font-semibold tracking-[0.25em] uppercase hover:bg-black transition-colors"
                 >
-                  Open in Google Maps ↗
+                  Open in Google Maps
                 </a>
               )}
             </div>

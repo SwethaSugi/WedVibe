@@ -141,7 +141,7 @@ export default function ContactPage() {
               Thanks, {name.trim().split(" ")[0]}! We&apos;ve received your message and will reply on WhatsApp or by phone soon.
             </p>
             <Link href="/" className="inline-block mt-6 text-sm text-rose-600 hover:underline font-medium">
-              ← Back to Home
+              Back to Home
             </Link>
           </div>
         ) : (

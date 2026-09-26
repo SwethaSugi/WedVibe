@@ -1,36 +1,71 @@
-// WhatsApp OTP provider abstraction.
-// Set WHATSAPP_PROVIDER + WHATSAPP_API_URL/WHATSAPP_API_KEY in .env to plug in a real
-// WhatsApp Business/Cloud API provider. In "mock" mode the OTP is logged to the server
-// console so the flow can be tested without a live WhatsApp integration.
+// WhatsApp OTP provider, selected by WHATSAPP_PROVIDER:
+//   "meta" — real delivery through Meta's WhatsApp Cloud API using an approved
+//            AUTHENTICATION template (with a "Copy code" button). Needs:
+//              WHATSAPP_PHONE_NUMBER_ID   — from WhatsApp → API Setup
+//              WHATSAPP_ACCESS_TOKEN      — a permanent System User token
+//              WHATSAPP_OTP_TEMPLATE      — the approved template's name
+//              WHATSAPP_TEMPLATE_LANGUAGE — the template's language code (default "en")
+//              WHATSAPP_API_VERSION       — Graph API version (default "v23.0")
+//   "mock" — local testing only: the OTP is logged to the server console (and shown on the
+//            login screen by the send-otp route). Refused in production.
+
+export class WhatsAppSendError extends Error {}
+
+export function getWhatsAppProvider(): "meta" | "mock" {
+  return process.env.WHATSAPP_PROVIDER === "meta" ? "meta" : "mock";
+}
 
 export async function sendWhatsAppOtp(mobile: string, otp: string): Promise<void> {
-  const provider = process.env.WHATSAPP_PROVIDER ?? "mock";
+  const provider = getWhatsAppProvider();
 
   if (provider === "mock") {
+    if (process.env.NODE_ENV === "production") {
+      // A misconfigured production deploy must never "send" OTPs nobody receives.
+      throw new WhatsAppSendError("WHATSAPP_PROVIDER must be set to 'meta' in production.");
+    }
     console.log(`[WhatsApp OTP MOCK] to=${mobile} otp=${otp}`);
     return;
   }
 
-  const apiUrl = process.env.WHATSAPP_API_URL;
-  const apiKey = process.env.WHATSAPP_API_KEY;
-  if (!apiUrl || !apiKey) {
-    throw new Error("WhatsApp provider is not configured (missing WHATSAPP_API_URL/WHATSAPP_API_KEY)");
+  const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID;
+  const accessToken = process.env.WHATSAPP_ACCESS_TOKEN;
+  const template = process.env.WHATSAPP_OTP_TEMPLATE;
+  if (!phoneNumberId || !accessToken || !template) {
+    throw new WhatsAppSendError(
+      "WhatsApp is not configured: set WHATSAPP_PHONE_NUMBER_ID, WHATSAPP_ACCESS_TOKEN and WHATSAPP_OTP_TEMPLATE."
+    );
   }
+  const language = process.env.WHATSAPP_TEMPLATE_LANGUAGE || "en";
+  const version = process.env.WHATSAPP_API_VERSION || "v23.0";
 
-  const res = await fetch(apiUrl, {
+  // Authentication templates take the code twice: once for the message body and once for the
+  // "Copy code" button (sent as a URL-button parameter, as Meta requires).
+  const res = await fetch(`https://graph.facebook.com/${version}/${phoneNumberId}/messages`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
+      Authorization: `Bearer ${accessToken}`,
     },
     body: JSON.stringify({
-      to: mobile,
+      messaging_product: "whatsapp",
+      recipient_type: "individual",
+      to: mobile.replace(/\D/g, ""), // "+919876543210" -> "919876543210"
       type: "template",
-      template: { name: "otp_verification", params: [otp] },
+      template: {
+        name: template,
+        language: { code: language },
+        components: [
+          { type: "body", parameters: [{ type: "text", text: otp }] },
+          { type: "button", sub_type: "url", index: "0", parameters: [{ type: "text", text: otp }] },
+        ],
+      },
     }),
   });
 
   if (!res.ok) {
-    throw new Error(`WhatsApp OTP send failed: ${res.status}`);
+    // Log Meta's reason (never the OTP) so setup problems are easy to diagnose.
+    const detail = await res.text().catch(() => "");
+    console.error(`[WhatsApp OTP] Meta API error ${res.status}: ${detail.slice(0, 500)}`);
+    throw new WhatsAppSendError(`WhatsApp OTP send failed: ${res.status}`);
   }
 }

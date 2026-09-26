@@ -197,7 +197,7 @@ export function GoldenDoors({ data }: { data: InvitationData }) {
           <h2 className={`font-bodoni ${nameSize(groom)} text-[#f5dfaa] leading-tight mt-2 drop-shadow-[0_4px_18px_rgba(0,0,0,0.7)]`}>{groom}</h2>
           <p className="font-allura text-4xl text-white/95 my-1">weds</p>
           <h2 className={`font-bodoni ${nameSize(bride)} text-[#f5dfaa] leading-tight drop-shadow-[0_4px_18px_rgba(0,0,0,0.7)]`}>{bride}</h2>
-          <div className="gd-float mt-8 text-white/80 text-xs tracking-[0.3em] uppercase">Scroll ↓</div>
+          <div className="gd-float mt-8 text-white/80 text-xs tracking-[0.3em] uppercase">Scroll</div>
         </div>
       </section>
 

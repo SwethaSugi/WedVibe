@@ -87,7 +87,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
 
       <div className="relative px-3 pb-5 pt-3 border-t border-white/10">
         <Link href="/" target="_blank" className="flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs text-white/50 hover:text-white/80">
-          ↗ View website
+          View website
         </Link>
         <button
           onClick={logout}

@@ -385,17 +385,19 @@ export default function EditorPage() {
                         type="button"
                         onClick={() => moveEvent(e.id, -1)}
                         disabled={idx === 0}
-                        className="w-6 h-6 rounded-full hover:bg-neutral-200 disabled:opacity-30 disabled:hover:bg-transparent"
+                        aria-label="Move event up"
+                        className="px-2 h-6 rounded-full text-xs font-medium hover:bg-neutral-200 disabled:opacity-30 disabled:hover:bg-transparent"
                       >
-                        ↑
+                        Up
                       </button>
                       <button
                         type="button"
                         onClick={() => moveEvent(e.id, 1)}
                         disabled={idx === data.events.length - 1}
-                        className="w-6 h-6 rounded-full hover:bg-neutral-200 disabled:opacity-30 disabled:hover:bg-transparent"
+                        aria-label="Move event down"
+                        className="px-2 h-6 rounded-full text-xs font-medium hover:bg-neutral-200 disabled:opacity-30 disabled:hover:bg-transparent"
                       >
-                        ↓
+                        Down
                       </button>
                       <button
                         type="button"

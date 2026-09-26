@@ -213,7 +213,7 @@ export function CelestialCinema({ data }: { data: InvitationData }) {
                 {data.quote && <p className="text-xs italic text-zinc-300">&ldquo;{data.quote}&rdquo;</p>}
                 {data.instagramLink && (
                   <a href={data.instagramLink} target="_blank" rel="noopener noreferrer" className="inline-block text-xs text-amber-300 hover:underline">
-                    Follow the wedding story ↗
+                    Follow the wedding story
                   </a>
                 )}
               </div>

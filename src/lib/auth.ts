@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
+import { randomInt } from "crypto";
 
 // Sessions are signed with JWT_SECRET. The local-dev fallback is public (this repository is
 // public), so in production signing/verifying refuses to run without a real secret. Checked at
@@ -53,8 +54,9 @@ export async function clearSessionCookie() {
   store.delete(SESSION_COOKIE);
 }
 
+// Cryptographically secure 6-digit code (Math.random is predictable and unsafe for login codes).
 export function generateOtp(): string {
-  return String(Math.floor(100000 + Math.random() * 900000));
+  return String(randomInt(100000, 1000000));
 }
 
 export async function hashOtp(otp: string): Promise<string> {

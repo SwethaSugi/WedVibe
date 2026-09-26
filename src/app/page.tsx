@@ -118,7 +118,7 @@ export default async function Home() {
             <div className="flex items-center justify-between mb-8">
               <h2 className={`text-2xl font-semibold text-white ${textShadow}`}>Featured Templates</h2>
               <Link href="/templates" className="text-sm text-rose-200 hover:text-white hover:underline">
-                View all →
+                View all
               </Link>
             </div>
           </Reveal>

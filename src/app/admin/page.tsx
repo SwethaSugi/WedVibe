@@ -100,7 +100,7 @@ export default function AdminDashboardPage() {
                     <AdminIcon name={c.icon as "users"} />
                   </span>
                 </div>
-                <p className="mt-4 text-xs text-neutral-400 group-hover:text-[#b0843a] transition-colors">View details →</p>
+                <p className="mt-4 text-xs text-neutral-400 group-hover:text-[#b0843a] transition-colors">View details</p>
               </Link>
             ))}
           </div>
@@ -113,7 +113,7 @@ export default function AdminDashboardPage() {
                 { href: "/admin/templates", label: "Manage template prices" },
                 { href: "/admin/custom-requests", label: "Review custom requests" },
                 { href: "/admin/payments", label: "Check payments" },
-                { href: "/templates", label: "Open the marketplace ↗", external: true },
+                { href: "/templates", label: "Open the marketplace", external: true },
               ].map((a) => (
                 <Link
                   key={a.href}

@@ -166,7 +166,7 @@ export function AuraMinimal({ data }: { data: InvitationData }) {
                   rel="noopener noreferrer"
                   className="mt-4 inline-block px-5 py-2 bg-stone-200 text-stone-900 font-bold text-xs uppercase tracking-widest hover:bg-white transition-colors"
                 >
-                  Open Map →
+                  Open Map
                 </a>
               )}
             </div>

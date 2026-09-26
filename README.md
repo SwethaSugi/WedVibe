@@ -39,7 +39,7 @@ required.
 
 | Concern | Local / mock behaviour | Real integration |
 | --- | --- | --- |
-| WhatsApp OTP | OTP shown on screen in dev and logged to the console | Set `WHATSAPP_PROVIDER`, `WHATSAPP_API_URL`, `WHATSAPP_API_KEY` |
+| WhatsApp OTP | OTP shown on screen in dev and logged to the console (refused in production) | `WHATSAPP_PROVIDER=meta` + `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_ACCESS_TOKEN`, `WHATSAPP_OTP_TEMPLATE` (Meta WhatsApp Cloud API, Authentication template) |
 | Payments | Simulated checkout (refused in production) | `PAYMENT_PROVIDER=razorpay` with `PAYMENT_GATEWAY_KEY` / `PAYMENT_GATEWAY_SECRET` |
 | Payment webhook | — | `RAZORPAY_WEBHOOK_SECRET`; point a Razorpay webhook (`payment.captured`, `order.paid`, `payment.failed`) at `/api/payments/webhook` |
 | Image storage | Files saved under `public/uploads` | Set `STORAGE_PROVIDER` and implement it in `src/lib/providers/storage.ts` |

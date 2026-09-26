@@ -28,7 +28,7 @@ function lavenderPainter(label: string) {
     ctx.font = "500 16px 'Cormorant Garamond', serif";
     ctx.fillText(label, w / 2, h / 2 - 8);
     ctx.font = "600 8px Montserrat, sans-serif";
-    ctx.fillText("↑ SCRATCH", w / 2, h / 2 + 14);
+    ctx.fillText("SCRATCH", w / 2, h / 2 + 14);
   };
 }
 
@@ -83,15 +83,15 @@ function StorySlider({ photos }: { photos: string[] }) {
         </div>
       </div>
       {photos.length > 1 && (
-        <div className="mt-5 flex items-center justify-center gap-5">
+        <div className="mt-5 flex items-center justify-center gap-3 sm:gap-5">
           <button
             type="button"
             onClick={() => go(index - 1)}
             disabled={index === 0}
             aria-label="Previous photo"
-            className="w-10 h-10 rounded-full bg-white border border-[#d8c9c2] text-[#8e3d47] text-lg disabled:opacity-40 hover:bg-[#fbf3f1] transition"
+            className="px-4 h-9 rounded-full bg-white border border-[#d8c9c2] text-[#8e3d47] font-montserrat text-[10px] tracking-[0.2em] uppercase disabled:opacity-40 hover:bg-[#fbf3f1] transition"
           >
-            ←
+            Previous
           </button>
           <div className="text-center">
             <div className="font-cormorant text-lg text-[#342724] tabular-nums">
@@ -104,9 +104,9 @@ function StorySlider({ photos }: { photos: string[] }) {
             onClick={() => go(index + 1)}
             disabled={index === last}
             aria-label="Next photo"
-            className="w-10 h-10 rounded-full bg-white border border-[#d8c9c2] text-[#8e3d47] text-lg disabled:opacity-40 hover:bg-[#fbf3f1] transition"
+            className="px-4 h-9 rounded-full bg-white border border-[#d8c9c2] text-[#8e3d47] font-montserrat text-[10px] tracking-[0.2em] uppercase disabled:opacity-40 hover:bg-[#fbf3f1] transition"
           >
-            →
+            Next
           </button>
         </div>
       )}
@@ -288,7 +288,7 @@ export function BlushSeal({ data }: { data: InvitationData }) {
         </Reveal>
 
         <div className="bs-bounce mt-12 font-montserrat text-[10px] tracking-[0.3em] uppercase text-[#8d766c]">
-          Scroll to reveal <span className="block text-base mt-1">↓</span>
+          Scroll to reveal
         </div>
       </section>
 

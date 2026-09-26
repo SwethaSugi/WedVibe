@@ -91,7 +91,7 @@ export default function CustomInvitationPage() {
               href="#request-form"
               className="w-full sm:w-auto px-6 py-3 rounded-full border border-white/70 text-white font-medium backdrop-blur-sm hover:bg-white/15 transition-colors"
             >
-              Fill the request form ↓
+              Fill the request form
             </a>
           </div>
         </div>
@@ -153,7 +153,7 @@ export default function CustomInvitationPage() {
               {dmButton("Send details on WhatsApp", "mt-3")}
               <div>
                 <Link href="/templates" className="inline-block mt-6 text-sm text-rose-600 hover:underline font-medium">
-                  Browse ready-made templates →
+                  Browse ready-made templates
                 </Link>
               </div>
             </div>

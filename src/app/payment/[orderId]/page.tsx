@@ -205,7 +205,7 @@ export default function PaymentPage() {
     <div className="bg-neutral-50 flex-1">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-10 w-full">
         <Link href={`/editor/${invitation.id}`} className="text-sm text-neutral-500 hover:text-neutral-800">
-          ← Back to editor
+          Back to editor
         </Link>
         <h1 className="text-2xl font-semibold mt-3">Complete your payment</h1>
         <p className="text-neutral-500 text-sm mt-1">Your invitation link is created as soon as the payment succeeds.</p>
