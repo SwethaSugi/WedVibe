@@ -23,6 +23,15 @@ import { WeddingChronicle } from "./components/WeddingChronicle";
 import { GoldenDoors } from "./components/GoldenDoors";
 import { BlushSeal } from "./components/BlushSeal";
 import { MidnightPromise } from "./components/MidnightPromise";
+import { SacredGates } from "./components/SacredGates";
+import { BeachHorizon } from "./components/BeachHorizon";
+import { BookOfVows } from "./components/BookOfVows";
+import { TempleCurtains } from "./components/TempleCurtains";
+import { PaperBlossom } from "./components/PaperBlossom";
+import { LuxeGiftBox } from "./components/LuxeGiftBox";
+import { RoyalNikahVault } from "./components/RoyalNikahVault";
+import { VelvetEnvelope } from "./components/VelvetEnvelope";
+import { SilkScroll } from "./components/SilkScroll";
 
 // Template rendering engine: given a componentKey + standardized invitation data,
 // pick the right registered template component. Adding a new template means
@@ -51,6 +60,15 @@ const TEMPLATE_COMPONENTS: Record<string, ComponentType<{ data: InvitationData }
   "golden-doors": GoldenDoors,
   "blush-seal": BlushSeal,
   "midnight-promise": MidnightPromise,
+  "sacred-gates": SacredGates,
+  "beach-horizon": BeachHorizon,
+  "book-of-vows": BookOfVows,
+  "temple-curtains": TempleCurtains,
+  "paper-blossom": PaperBlossom,
+  "luxe-gift-box": LuxeGiftBox,
+  "royal-nikah-vault": RoyalNikahVault,
+  "velvet-envelope": VelvetEnvelope,
+  "silk-scroll": SilkScroll,
 };
 
 export function TemplateRenderer({ componentKey, data }: { componentKey: string; data: InvitationData }) {

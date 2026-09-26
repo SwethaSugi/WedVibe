@@ -60,3 +60,40 @@ export function googleCalendarUrl(title: string, date: Date | null, time: string
 }
 
 export const mapsSearchUrl = (q: string) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
+
+interface EventLike {
+  eventName: string;
+  eventDate?: string;
+  eventTime?: string;
+  venue?: string;
+  description?: string;
+}
+interface WeddingLike {
+  groomName?: string;
+  brideName?: string;
+  weddingDate?: string;
+  weddingTime?: string;
+  venueName?: string;
+  venueAddress?: string;
+  googleMapsUrl?: string;
+  welcomeMessage?: string;
+}
+
+/**
+ * Fills in an event's display details. The main ceremony (the only event, or one named like a
+ * wedding/engagement/nikah) falls back to the wedding's own date, time and venue; other events
+ * show only what the couple entered. Includes Google Maps and Google Calendar links.
+ */
+export function resolveEvent(evt: EventLike, data: WeddingLike, eventCount: number) {
+  const venueName = data.venueName?.trim() || "";
+  const isMain = eventCount === 1 || /wedding|marriage|engagement|muhurtham|nikah|anand karaj/i.test(evt.eventName);
+  const date = parseDate(evt.eventDate) ?? (isMain ? parseDate(data.weddingDate) : null);
+  const time = evt.eventTime?.trim() || (isMain ? data.weddingTime?.trim() || "" : "");
+  const venue = evt.venue?.trim() || (isMain ? venueName : "");
+  const address = venue && venue === venueName ? data.venueAddress?.trim() || "" : "";
+  const location = [venue, address].filter(Boolean).join(", ");
+  const mapsUrl = venue === venueName && data.googleMapsUrl ? data.googleMapsUrl : location ? mapsSearchUrl(location) : null;
+  const couple = [data.groomName?.trim(), data.brideName?.trim()].filter(Boolean).join(" & ");
+  const calendarUrl = googleCalendarUrl(`${evt.eventName}${couple ? ` — ${couple}` : ""}`, date, time, location, data.welcomeMessage ?? "");
+  return { date, time, venue, address, mapsUrl, calendarUrl };
+}

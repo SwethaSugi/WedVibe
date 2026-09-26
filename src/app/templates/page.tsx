@@ -18,7 +18,7 @@ interface TemplateItem {
 // Display order for category filters; only categories that currently have templates are shown.
 const CATEGORY_ORDER = [
   "Traditional", "Modern", "Minimal", "Royal", "Floral", "South Indian", "North Indian",
-  "Muslim Wedding", "Christian Wedding", "Reception", "Engagement", "Haldi", "Mehendi", "Multi-Event",
+  "Muslim Wedding", "Christian Wedding", "Destination", "Reception", "Engagement", "Haldi", "Mehendi", "Multi-Event",
 ];
 
 export default function TemplatesPage() {

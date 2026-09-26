@@ -44,6 +44,15 @@ export default async function TemplatePreviewPage({ params }: { params: Promise<
     "golden-doors": "/defaults/royal-gold-couple.jpg",
     "blush-seal": "/defaults/floral-love-couple.jpg",
     "midnight-promise": "/defaults/modern-elegant-couple.jpg",
+    "sacred-gates": "/defaults/royal-gold-couple.jpg",
+    "beach-horizon": "/defaults/modern-elegant-couple.jpg",
+    "book-of-vows": "/defaults/floral-love-couple.jpg",
+    "temple-curtains": "/defaults/royal-gold-couple.jpg",
+    "paper-blossom": "/defaults/floral-love-couple.jpg",
+    "luxe-gift-box": "/defaults/modern-elegant-couple.jpg",
+    "royal-nikah-vault": "/defaults/floral-love-couple.jpg",
+    "velvet-envelope": "/defaults/royal-gold-couple.jpg",
+    "silk-scroll": "/defaults/royal-gold-couple.jpg",
   }[template.componentKey];
 
   const sampleData = {

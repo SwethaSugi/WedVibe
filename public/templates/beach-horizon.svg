@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="45%" r="75%"><stop offset="0" stop-color="#0f766e"/><stop offset="0.6" stop-color="#0b4f4a"/><stop offset="1" stop-color="#042f2e"/></radialGradient>
+    <linearGradient id="ac" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fed7aa"/><stop offset="0.5" stop-color="#fdba74"/><stop offset="1" stop-color="#ea580c"/></linearGradient>
+  </defs>
+  <rect width="400" height="500" fill="url(#bg)"/>
+  <rect x="14" y="14" width="372" height="472" rx="14" fill="none" stroke="#fdba74" stroke-opacity="0.35"/>
+  <text x="200" y="62" text-anchor="middle" font-family="sans-serif" font-size="9" letter-spacing="4" fill="#fdba74">BY THE SEA, UNDER THE SUNSET</text>
+  <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fb7185"/><stop offset="0.6" stop-color="#fdba74"/><stop offset="1" stop-color="#fde68a"/></linearGradient></defs>
+      <rect x="60" y="90" width="280" height="170" rx="12" fill="url(#sky)"/>
+      <circle cx="200" cy="215" r="42" fill="#fff7ed" opacity="0.9"/>
+      <path d="M60 215 Q95 200 130 215 T200 215 T270 215 T340 215 V260 H60 Z" fill="#0d9488"/>
+      <path d="M60 235 Q95 222 130 235 T200 235 T270 235 T340 235 V260 H60 Z" fill="#0f766e"/>
+      <g fill="#fff" opacity="0.6"><circle cx="90" cy="130" r="3"/><circle cx="300" cy="120" r="4"/><circle cx="260" cy="150" r="2"/></g>
+  <text x="200" y="345" text-anchor="middle" font-family="Georgia, serif" font-size="38" fill="#f0fdfa">Kiran &amp; Maya</text>
+  <text x="200" y="375" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="16" fill="#f0fdfa" opacity="0.85">are getting married</text>
+  <text x="200" y="412" text-anchor="middle" font-family="Georgia, serif" font-size="14" letter-spacing="4" fill="#f0fdfa">25 · DECEMBER · 2026</text>
+  <line x1="150" y1="430" x2="250" y2="430" stroke="#fdba74" stroke-opacity="0.6"/>
+  <text x="200" y="453" text-anchor="middle" font-family="sans-serif" font-size="9" letter-spacing="4" fill="#fdba74">BEACH WEDDING</text>
+</svg>

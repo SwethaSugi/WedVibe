@@ -180,6 +180,96 @@ const NEW_TEMPLATES = [
     componentKey: "midnight-promise",
     previewImage: "/templates/midnight-promise.svg",
   },
+  {
+    name: "Sacred Gates",
+    slug: "sacred-gates",
+    description:
+      "Deep violet and saffron: carved golden gates swing open under a shower of petals, revealing the couple, a scratch-to-reveal date, a live countdown, a photo slider and ceremony details.",
+    category: "North Indian",
+    price: 549,
+    componentKey: "sacred-gates",
+    previewImage: "/templates/sacred-gates.svg",
+  },
+  {
+    name: "Beach Horizon",
+    slug: "beach-horizon",
+    description:
+      "Sunset sky and ocean teal: the horizon lifts like a curtain with rising bubbles, followed by an ocean-foil scratch date, countdown, photo slider and beach venue directions.",
+    category: "Destination",
+    price: 499,
+    componentKey: "beach-horizon",
+    previewImage: "/templates/beach-horizon.svg",
+  },
+  {
+    name: "Book of Vows",
+    slug: "book-of-vows",
+    description:
+      "Rose gold on navy: a leather-bound book opens to the first page of your story, then a scratch-to-reveal date, countdown, gallery and ceremony schedule.",
+    category: "Modern",
+    price: 449,
+    componentKey: "book-of-vows",
+    previewImage: "/templates/book-of-vows.svg",
+  },
+  {
+    name: "Temple Curtains",
+    slug: "temple-curtains",
+    description:
+      "Maroon silk and temple gold: pleated curtains part beneath a marigold garland and a glowing lamp, revealing the couple, the muhurtham date, countdown and ceremonies.",
+    category: "South Indian",
+    price: 499,
+    componentKey: "temple-curtains",
+    previewImage: "/templates/temple-curtains.svg",
+  },
+  {
+    name: "Paper Blossom",
+    slug: "paper-blossom",
+    description:
+      "Sage green and blush: folded paper petals unfold outward as the invitation blooms open, with a rose-petal scratch date, countdown, gallery and event cards.",
+    category: "Floral",
+    price: 399,
+    componentKey: "paper-blossom",
+    previewImage: "/templates/paper-blossom.svg",
+  },
+  {
+    name: "Luxe Gift Box",
+    slug: "luxe-gift-box",
+    description:
+      "Midnight navy and rose gold: a gift box tied with a holographic ribbon lifts its lid to reveal the couple, a prism scratch date, countdown, gallery and details.",
+    category: "Modern",
+    price: 549,
+    componentKey: "luxe-gift-box",
+    previewImage: "/templates/luxe-gift-box.svg",
+  },
+  {
+    name: "Royal Nikah Vault",
+    slug: "royal-nikah-vault",
+    description:
+      "Emerald and gold: a golden key turns and a jewelled lattice chest opens onto the Nikah invitation, with an emerald scratch date, countdown and celebration details.",
+    category: "Muslim Wedding",
+    price: 499,
+    componentKey: "royal-nikah-vault",
+    previewImage: "/templates/royal-nikah-vault.svg",
+  },
+  {
+    name: "Velvet Envelope",
+    slug: "velvet-envelope",
+    description:
+      "Maroon velvet and gold: break the wax seal, the flap folds back and the invitation card slides out, followed by a gold-foil scratch date, countdown and schedule.",
+    category: "Royal",
+    price: 499,
+    componentKey: "velvet-envelope",
+    previewImage: "/templates/velvet-envelope.svg",
+  },
+  {
+    name: "Silk Scroll",
+    slug: "silk-scroll",
+    description:
+      "Kumkum red, silk and gold: untie the golden ribbon and a silk scroll unrolls to reveal the couple, a kumkum scratch date, countdown, gallery and wedding ceremonies.",
+    category: "Traditional",
+    price: 449,
+    componentKey: "silk-scroll",
+    previewImage: "/templates/silk-scroll.svg",
+  },
 ];
 
 async function main() {
