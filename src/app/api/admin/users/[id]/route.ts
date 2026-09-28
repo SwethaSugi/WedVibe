@@ -14,6 +14,14 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   const parsed = schema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: "Invalid status." }, { status: 400 });
 
-  const user = await prisma.user.update({ where: { id }, data: { status: parsed.data.status } });
+  const exists = await prisma.user.findUnique({ where: { id }, select: { id: true } });
+  if (!exists) return NextResponse.json({ error: "User not found." }, { status: 404 });
+
+  // Only what the admin page needs; never the PIN hash.
+  const user = await prisma.user.update({
+    where: { id },
+    data: { status: parsed.data.status },
+    select: { id: true, name: true, mobile: true, status: true },
+  });
   return NextResponse.json({ user });
 }

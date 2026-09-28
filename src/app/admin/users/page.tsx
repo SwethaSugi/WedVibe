@@ -19,6 +19,8 @@ export default function AdminUsersPage() {
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [busyId, setBusyId] = useState<string | null>(null);
+  const [notice, setNotice] = useState<{ ok: boolean; text: string } | null>(null);
 
   function load() {
     adminFetch("/api/admin/users")
@@ -34,12 +36,30 @@ export default function AdminUsersPage() {
     if (nextStatus === "DISABLED" && !window.confirm(`Disable ${u.name || u.mobile}?\n\nThey won't be able to log in until you activate them again.`)) {
       return;
     }
-    await adminFetch(`/api/admin/users/${u.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: nextStatus }),
-    });
-    load();
+    setBusyId(u.id);
+    setNotice(null);
+    try {
+      const res = await adminFetch(`/api/admin/users/${u.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: nextStatus }),
+      });
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({}));
+        setNotice({ ok: false, text: d.error ?? "Couldn't update this user. Please try again." });
+      } else {
+        setUsers((list) => list.map((x) => (x.id === u.id ? { ...x, status: nextStatus } : x)));
+        setNotice({
+          ok: true,
+          text: nextStatus === "DISABLED" ? `${u.name || u.mobile} is disabled and has been signed out.` : `${u.name || u.mobile} can log in again.`,
+        });
+      }
+    } catch {
+      setNotice({ ok: false, text: "Couldn't reach the server. Please check your connection and try again." });
+    } finally {
+      setBusyId(null);
+      load();
+    }
   }
 
   const filtered = users.filter((u) => `${u.name ?? ""} ${u.mobile}`.toLowerCase().includes(search.toLowerCase()));
@@ -51,6 +71,16 @@ export default function AdminUsersPage() {
         subtitle={loading ? "Loading…" : `${users.length} registered customer${users.length === 1 ? "" : "s"}`}
         actions={<input placeholder="Search name or mobile…" value={search} onChange={(e) => setSearch(e.target.value)} className={`${adminInput} w-56`} />}
       />
+      {notice && (
+        <p
+          role="status"
+          className={`mb-4 rounded-xl px-4 py-3 text-sm border ${
+            notice.ok ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-red-50 border-red-200 text-red-600"
+          }`}
+        >
+          {notice.text}
+        </p>
+      )}
       <AdminPanel>
         {loading ? (
           <AdminLoadingRows />
@@ -94,11 +124,12 @@ export default function AdminUsersPage() {
                     <td className={`${adminTable.td} text-right`}>
                       <button
                         onClick={() => toggleStatus(u)}
-                        className={`px-3 py-1.5 rounded-full text-xs font-medium ${
+                        disabled={busyId !== null}
+                        className={`px-3 py-1.5 rounded-full text-xs font-medium disabled:opacity-50 disabled:cursor-wait ${
                           u.status === "ACTIVE" ? "bg-red-50 text-red-600 hover:bg-red-100" : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
                         }`}
                       >
-                        {u.status === "ACTIVE" ? "Disable" : "Activate"}
+                        {busyId === u.id ? (u.status === "ACTIVE" ? "Disabling…" : "Activating…") : u.status === "ACTIVE" ? "Disable" : "Activate"}
                       </button>
                     </td>
                   </tr>

@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { randomInt } from "crypto";
+import { prisma } from "@/lib/prisma";
 
 // Sessions are signed with JWT_SECRET. The local-dev fallback is public (this repository is
 // public), so in production signing/verifying refuses to run without a real secret. Checked at
@@ -31,11 +32,16 @@ export function verifySession(token: string): SessionPayload | null {
   }
 }
 
+// A valid token is not enough: the account must still exist and be ACTIVE, so disabling a user in
+// the admin panel ends their session right away instead of when the 30-day token expires.
 export async function getSession(): Promise<SessionPayload | null> {
   const store = await cookies();
   const token = store.get(SESSION_COOKIE)?.value;
   if (!token) return null;
-  return verifySession(token);
+  const session = verifySession(token);
+  if (!session) return null;
+  const user = await prisma.user.findUnique({ where: { id: session.userId }, select: { status: true } });
+  return user?.status === "ACTIVE" ? session : null;
 }
 
 export async function setSessionCookie(token: string) {

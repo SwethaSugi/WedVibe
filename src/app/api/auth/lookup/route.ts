@@ -15,5 +15,9 @@ export async function POST(req: NextRequest) {
   }
 
   const user = await prisma.user.findUnique({ where: { mobile }, select: { pinHash: true, status: true } });
-  return NextResponse.json({ mobile, hasPin: !!user?.pinHash && user.status === "ACTIVE" });
+  // Stop here for disabled accounts, so no (paid) WhatsApp code is sent to them.
+  if (user && user.status !== "ACTIVE") {
+    return NextResponse.json({ error: "This account has been disabled. Please contact support." }, { status: 403 });
+  }
+  return NextResponse.json({ mobile, hasPin: !!user?.pinHash });
 }
