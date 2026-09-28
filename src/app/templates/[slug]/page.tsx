@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { TemplateRenderer } from "@/templates/renderer";
 import { DEFAULT_INVITATION_DATA } from "@/lib/invitation-types";
 import { UseTemplateButton } from "@/components/UseTemplateButton";
+import { PriceTag } from "@/components/PriceTag";
 
 export default async function TemplatePreviewPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -78,13 +79,13 @@ export default async function TemplatePreviewPage({ params }: { params: Promise<
   return (
     <div className="w-full">
       <div className="border-b border-neutral-200 bg-white sticky top-16 z-30">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-3">
-          <div className="min-w-0">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+          <div className="min-w-[8rem] flex-1">
             <p className="text-xs uppercase tracking-wide text-neutral-400">{template.category}</p>
             <h1 className="text-lg sm:text-xl font-semibold truncate">{template.name}</h1>
           </div>
-          <div className="flex items-center gap-3 sm:gap-4 shrink-0">
-            <p className="text-lg font-semibold">₹{template.price}</p>
+          <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4 w-full sm:w-auto min-w-0">
+            <PriceTag template={template} size="md" priceClassName="text-neutral-900" className="min-w-0 sm:justify-end sm:text-right" />
             <UseTemplateButton templateId={template.id} templateSlug={template.slug} />
           </div>
         </div>

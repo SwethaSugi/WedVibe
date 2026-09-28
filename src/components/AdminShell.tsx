@@ -12,6 +12,7 @@ const ICONS: Record<string, ReactNode> = {
   invitations: <path d="M3 5h14v11H3zM3 5l7 6 7-6" />,
   payments: <path d="M2.5 5h15v10h-15zM2.5 8.5h15M5.5 12.5h3" />,
   requests: <path d="M4 3h12v11H9l-4 3v-3H4zM7 7h6M7 10h4" />,
+  music: <path d="M7.5 15.5V5l9-2v10.5M7.5 15.5a2 2 0 11-4 0 2 2 0 014 0zM16.5 13.5a2 2 0 11-4 0 2 2 0 014 0z" />,
   logout: <path d="M8 4H4v12h4M12 6l4 4-4 4M16 10H8" />,
   menu: <path d="M3 6h14M3 10h14M3 14h14" />,
   close: <path d="M5 5l10 10M15 5L5 15" />,
@@ -28,6 +29,7 @@ export function AdminIcon({ name, className = "w-5 h-5" }: { name: keyof typeof 
 const NAV = [
   { href: "/admin", label: "Dashboard", icon: "dashboard" },
   { href: "/admin/templates", label: "Templates", icon: "templates" },
+  { href: "/admin/music", label: "Music Library", icon: "music" },
   { href: "/admin/users", label: "Users", icon: "users" },
   { href: "/admin/invitations", label: "Invitations", icon: "invitations" },
   { href: "/admin/payments", label: "Payments", icon: "payments" },

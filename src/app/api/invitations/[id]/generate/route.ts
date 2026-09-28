@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
-import { createPaymentOrder } from "@/lib/providers/payment";
+import { createPaymentOrder, getPaymentProvider } from "@/lib/providers/payment";
+import { effectivePrice } from "@/lib/pricing";
 import { InvitationData } from "@/lib/invitation-types";
 
 function validate(data: InvitationData): string | null {
@@ -31,10 +32,19 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
     return NextResponse.json({ error: validationError }, { status: 400 });
   }
 
+  // What the customer pays: the offer price while an offer is active, otherwise the price.
+  const amount = effectivePrice(invitation.template);
+
   // Reuse an unpaid order for this invitation (e.g. the couple went back to the editor)
-  // instead of creating a new one on every click.
+  // instead of creating a new one on every click. Only orders from the current gateway: an old
+  // mock order can't be opened in Razorpay Checkout after switching PAYMENT_PROVIDER.
   const openOrder = await prisma.payment.findFirst({
-    where: { invitationId: invitation.id, status: "CREATED", amount: invitation.template.price },
+    where: {
+      invitationId: invitation.id,
+      status: "CREATED",
+      amount,
+      gateway: getPaymentProvider() === "razorpay" ? "RAZORPAY" : "MOCK",
+    },
     orderBy: { createdAt: "desc" },
   });
   if (openOrder) {
@@ -43,7 +53,7 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
 
   let order;
   try {
-    order = await createPaymentOrder(invitation.template.price, invitation.template.currency, invitation.invitationCode);
+    order = await createPaymentOrder(amount, invitation.template.currency, invitation.invitationCode);
   } catch {
     return NextResponse.json({ error: "Unable to start payment. Please try again." }, { status: 502 });
   }

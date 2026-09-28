@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { effectivePrice } from "@/lib/pricing";
 import { getSession } from "@/lib/auth";
 import { getEditInfo } from "@/lib/edit-policy";
+import { sanitizeMusic } from "@/lib/invitation-types";
 
 const updateSchema = z.object({
   data: z.record(z.string(), z.unknown()),
@@ -29,7 +31,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
         id: invitation.template.id,
         name: invitation.template.name,
         componentKey: invitation.template.componentKey,
-        price: invitation.template.price,
+        price: effectivePrice(invitation.template),
         currency: invitation.template.currency,
       },
     },
@@ -63,6 +65,9 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   if (Array.isArray(nextData.galleryImages)) {
     nextData.galleryImages = nextData.galleryImages.slice(0, 3);
   }
+  const music = sanitizeMusic(nextData.music);
+  if (music) nextData.music = music;
+  else delete nextData.music;
 
   const updated = await prisma.invitation.update({
     where: { id },

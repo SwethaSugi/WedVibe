@@ -70,10 +70,10 @@ export async function compareOtp(otp: string, hash: string): Promise<boolean> {
 export const PIN_MAX_ATTEMPTS = 5;
 export const PIN_LOCK_MINUTES = 15;
 
-// A 4–6 digit PIN is only safe with lockouts (see pin-login) and without trivially
+// A 4-digit PIN is only safe with lockouts (see pin-login) and without trivially
 // guessable choices.
 export function validatePin(pin: string): string | null {
-  if (!/^\d{4,6}$/.test(pin)) return "PIN must be 4 to 6 digits.";
+  if (!/^\d{4}$/.test(pin)) return "PIN must be 4 digits.";
   if (/^(\d)\1+$/.test(pin)) return "Avoid repeating the same digit (like 1111).";
   const ascending = "01234567890123456789";
   const descending = "98765432109876543210";

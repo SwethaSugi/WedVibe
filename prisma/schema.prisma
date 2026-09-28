@@ -43,6 +43,7 @@ model Template {
   description    String?
   category       String
   price          Int      // in paise/rupees (INR whole rupees)
+  offerPrice     Int?     // optional discounted price (whole rupees); used only while it is below price
   currency       String   @default("INR")
   previewImage   String?
   componentKey   String   // maps to a registered template component, e.g. "royal-gold"
@@ -52,6 +53,20 @@ model Template {
   updatedAt      DateTime @updatedAt
 
   invitations    Invitation[]
+}
+
+// Royalty-free songs admins add for couples to pick in the editor. Keep a record of where each
+// track came from and its licence, so every song's right to be used can be shown if asked.
+model MusicTrack {
+  id         String   @id @default(cuid())
+  title      String
+  mood       String   // e.g. "Shehnai", "Nadaswaram", "Piano", "Romantic"
+  url        String   // /uploads/music/<file>
+  source     String   // e.g. "Pixabay Music"
+  sourceUrl  String?  // page the track was downloaded from
+  license    String?  // e.g. "Pixabay Content License"
+  status     String   @default("ACTIVE") // ACTIVE | INACTIVE
+  createdAt  DateTime @default(now())
 }
 
 model Invitation {

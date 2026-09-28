@@ -29,6 +29,25 @@ export interface InvitationData {
   coupleImage?: string;
   galleryImages?: string[];
   events: InvitationEvent[];
+  music?: InvitationMusic;
+}
+
+/** Background song: one from the WedVibe library, or the couple's own upload. */
+export interface InvitationMusic {
+  url: string; // always a /uploads/music/… file on this site
+  title: string;
+  source: "library" | "upload";
+}
+
+const MUSIC_URL = /^\/uploads\/music\/[A-Za-z0-9_-]+\.(mp3|m4a)$/;
+
+/** Keeps only a well-formed song stored on this site; anything else means "no music". */
+export function sanitizeMusic(value: unknown): InvitationMusic | undefined {
+  if (!value || typeof value !== "object") return undefined;
+  const m = value as Record<string, unknown>;
+  if (typeof m.url !== "string" || !MUSIC_URL.test(m.url)) return undefined;
+  const title = typeof m.title === "string" && m.title.trim() ? m.title.trim().slice(0, 80) : "Our song";
+  return { url: m.url, title, source: m.source === "library" ? "library" : "upload" };
 }
 
 export const DEFAULT_INVITATION_DATA: InvitationData = {

@@ -7,6 +7,7 @@ import { InvitationData, InvitationEvent } from "@/lib/invitation-types";
 import { TemplateRenderer } from "@/templates/renderer";
 import { ImageUploadField } from "@/components/ImageUploadField";
 import { GalleryUploadField } from "@/components/GalleryUploadField";
+import { MusicField } from "@/components/MusicField";
 import type { EditInfo } from "@/lib/edit-policy";
 
 interface LoadedInvitation {
@@ -463,6 +464,10 @@ export default function EditorPage() {
               onChange={(v) => update({ instagramLink: v })}
               placeholder="https://instagram.com/yourhandle"
             />
+          </SectionCard>
+
+          <SectionCard icon="🎵" title="Background Music" optional>
+            <MusicField value={data.music} onChange={(music) => update({ music })} />
           </SectionCard>
         </fieldset>
 

@@ -325,10 +325,17 @@ async function main() {
   }
 
   // No built-in default password (the repository is public): use ADMIN_PASSWORD, or generate a
-  // random one and print it once when the admin account is first created.
+  // random one and print it once when the admin account is first created. When ADMIN_PASSWORD is
+  // set, re-running the seed also resets that admin's password to it, so .env stays the source of truth.
   const adminUsername = process.env.ADMIN_USERNAME || "admin";
   const existingAdmin = await prisma.adminUser.findUnique({ where: { username: adminUsername } });
-  if (!existingAdmin) {
+  if (existingAdmin && process.env.ADMIN_PASSWORD) {
+    await prisma.adminUser.update({
+      where: { id: existingAdmin.id },
+      data: { passwordHash: await bcrypt.hash(process.env.ADMIN_PASSWORD, 10), status: "ACTIVE" },
+    });
+    console.log(`Admin password updated from .env for: ${adminUsername}`);
+  } else if (!existingAdmin) {
     const adminPassword = process.env.ADMIN_PASSWORD || crypto.randomBytes(12).toString("base64url");
     await prisma.adminUser.create({
       data: { username: adminUsername, passwordHash: await bcrypt.hash(adminPassword, 10), role: "ADMIN" },

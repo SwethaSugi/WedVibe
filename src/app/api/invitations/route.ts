@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { nanoid } from "nanoid";
 import { prisma } from "@/lib/prisma";
+import { effectivePrice } from "@/lib/pricing";
 import { getSession } from "@/lib/auth";
 import { DEFAULT_INVITATION_DATA } from "@/lib/invitation-types";
 import { getEditInfo } from "@/lib/edit-policy";
@@ -34,7 +35,7 @@ export async function GET() {
       status: inv.status,
       templateName: inv.template.name,
       templatePreviewImage: inv.template.previewImage,
-      price: inv.template.price,
+      price: effectivePrice(inv.template),
       currency: inv.template.currency,
       views: inv.views,
       editInfo: getEditInfo(inv),

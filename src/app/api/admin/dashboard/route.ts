@@ -19,12 +19,23 @@ export async function GET() {
   const failedPayments = payments.filter((p) => p.status === "FAILED");
   const totalRevenue = successfulPayments.reduce((sum, p) => sum + p.amount, 0);
 
+  // Successful revenue per calendar month in Indian time, keyed "YYYY-MM" (e.g. "2026-09").
+  const monthKey = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit" });
+  const monthly: Record<string, { revenue: number; count: number }> = {};
+  for (const p of successfulPayments) {
+    const key = monthKey.format(p.createdAt);
+    monthly[key] ??= { revenue: 0, count: 0 };
+    monthly[key].revenue += p.amount;
+    monthly[key].count += 1;
+  }
+
   return NextResponse.json({
     totalUsers,
     totalInvitations,
     activeInvitations,
     totalTemplates,
     totalRevenue,
+    monthly,
     successfulPayments: successfulPayments.length,
     failedPayments: failedPayments.length,
   });

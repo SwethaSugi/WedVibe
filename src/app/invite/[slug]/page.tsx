@@ -1,7 +1,8 @@
 import { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { TemplateRenderer } from "@/templates/renderer";
-import { InvitationData } from "@/lib/invitation-types";
+import { InvitationData, sanitizeMusic } from "@/lib/invitation-types";
+import { InvitationMusicPlayer } from "@/components/InvitationMusicPlayer";
 
 async function getInvitation(slug: string) {
   const invitation = await prisma.invitation.findUnique({ where: { slug }, include: { template: true } });
@@ -43,6 +44,12 @@ export default async function PublicInvitationPage({ params }: { params: Promise
   await prisma.invitation.update({ where: { id: invitation.id }, data: { views: { increment: 1 } } });
 
   const data: InvitationData = JSON.parse(invitation.invitationData);
+  const music = sanitizeMusic(data.music);
 
-  return <TemplateRenderer componentKey={invitation.template.componentKey} data={data} />;
+  return (
+    <>
+      <TemplateRenderer componentKey={invitation.template.componentKey} data={data} />
+      {music && <InvitationMusicPlayer music={music} />}
+    </>
+  );
 }

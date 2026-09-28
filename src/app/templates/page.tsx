@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { designCountLabel } from "@/lib/design-count";
+import { priceInfo } from "@/lib/pricing";
+import { PriceTag } from "@/components/PriceTag";
 
 interface TemplateItem {
   id: string;
@@ -11,6 +13,7 @@ interface TemplateItem {
   description: string | null;
   category: string;
   price: number;
+  offerPrice: number | null;
   currency: string;
   previewImage: string | null;
 }
@@ -127,12 +130,17 @@ export default function TemplatesPage() {
                     <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur text-[11px] font-medium text-neutral-700 shadow-sm">
                       {t.category}
                     </span>
+                    {priceInfo(t).percentOff > 0 && (
+                      <span className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-[11px] font-bold tracking-wide shadow-md">
+                        {priceInfo(t).percentOff}% OFF
+                      </span>
+                    )}
                   </div>
                 )}
                 <div className="p-5 flex flex-col flex-1">
                   <div className="flex items-start justify-between gap-3">
                     <h3 className="font-semibold text-lg">{t.name}</h3>
-                    <p className="font-semibold text-rose-700 shrink-0">₹{t.price}</p>
+                    <PriceTag template={t} className="shrink-0 justify-end text-right" />
                   </div>
                   {t.description && <p className="mt-2 text-sm text-neutral-500 line-clamp-2">{t.description}</p>}
                   <div className="mt-auto pt-4 flex gap-3">

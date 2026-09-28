@@ -79,7 +79,7 @@ const sections: LegalSection[] = [
     body: (
       <>
         <p>
-          You keep ownership of the names, details, messages and photos you add (&ldquo;your content&rdquo;). You give us permission to
+          You keep ownership of the names, details, messages, photos and songs you add (&ldquo;your content&rdquo;). You give us permission to
           store and display your content only to provide the service — for example, to show it on your invitation page.
         </p>
         <p>You confirm that you have the right to use everything you upload, and that your content does not:</p>
@@ -88,6 +88,11 @@ const sections: LegalSection[] = [
           <li>contain unlawful, hateful, obscene or misleading material;</li>
           <li>impersonate another person or promote fraud.</li>
         </ul>
+        <p>
+          <strong>Music.</strong> If you upload your own song, you confirm that you own it or have the copyright holder&apos;s
+          permission to use it on your invitation. If a copyright holder asks us to, we will remove the song from your invitation.
+          Songs in our own music library are royalty-free tracks licensed for this use.
+        </p>
         <p>We may remove content or deactivate an invitation that breaks these rules, with or without prior notice.</p>
       </>
     ),

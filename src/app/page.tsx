@@ -2,15 +2,24 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { Reveal } from "@/templates/Reveal";
 import { designCountLabel } from "@/lib/design-count";
+import { effectivePrice, priceInfo } from "@/lib/pricing";
+import { PriceTag } from "@/components/PriceTag";
 
 export const dynamic = "force-dynamic";
 
 async function getHomeData() {
   const [featured, stats] = await Promise.all([
-    prisma.template.findMany({ where: { status: "ACTIVE" }, take: 3, orderBy: { createdAt: "asc" } }),
-    prisma.template.aggregate({ where: { status: "ACTIVE" }, _count: true, _min: { price: true } }),
+    // The 10 templates customers use most (by invitations created), newest first on ties.
+    prisma.template.findMany({
+      where: { status: "ACTIVE" },
+      take: 10,
+      orderBy: [{ invitations: { _count: "desc" } }, { createdAt: "desc" }],
+    }),
+    prisma.template.findMany({ where: { status: "ACTIVE" }, select: { price: true, offerPrice: true } }),
   ]);
-  return { featured, count: stats._count, minPrice: stats._min.price };
+  // "From ₹…" uses what customers actually pay, so an active offer lowers it.
+  const prices = stats.map(effectivePrice);
+  return { featured, count: stats.length, minPrice: prices.length ? Math.min(...prices) : null };
 }
 
 // Shared deep tone the photo sections fade into, so stacked sections blend without hard lines.
@@ -57,6 +66,57 @@ function PhotoBackdrop({
 }
 
 const textShadow = "drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]";
+
+type FeaturedTemplate = { id: string; slug: string; name: string; category: string; price: number; offerPrice: number | null; previewImage: string | null };
+
+// One card in the moving featured row. Uses a right margin (not flex gap) so the
+// duplicated track is exactly twice as wide and the loop has no jump. The duplicate
+// copy is hidden from keyboard and screen readers.
+function FeaturedCard({ t, hidden }: { t: FeaturedTemplate; hidden: boolean }) {
+  const tab = hidden ? -1 : undefined;
+  const { percentOff } = priceInfo(t);
+  return (
+    <div className="group w-[280px] sm:w-[300px] shrink-0 mr-6 bg-white rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.35)] hover:-translate-y-1.5 hover:shadow-[0_28px_60px_rgba(0,0,0,0.45)] transition-all duration-300">
+      {t.previewImage && (
+        <Link href={`/templates/${t.slug}`} tabIndex={tab} className="relative block overflow-hidden">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={t.previewImage}
+            alt={hidden ? "" : t.name}
+            loading="lazy"
+            className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+          {percentOff > 0 && (
+            <span className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-[11px] font-bold tracking-wide shadow-md">
+              {percentOff}% OFF
+            </span>
+          )}
+        </Link>
+      )}
+      <div className="p-5">
+        <p className="text-xs uppercase tracking-wide text-neutral-400">{t.category}</p>
+        <h3 className="font-semibold text-lg mt-1 truncate">{t.name}</h3>
+        <PriceTag template={t} priceClassName="text-neutral-800" className="mt-1" />
+        <div className="mt-4 flex gap-2.5">
+          <Link
+            href={`/templates/${t.slug}`}
+            tabIndex={tab}
+            className="flex-1 text-center text-sm whitespace-nowrap px-3 py-2.5 rounded-full border border-neutral-300 hover:bg-neutral-50 transition-colors"
+          >
+            Preview
+          </Link>
+          <Link
+            href={`/templates/${t.slug}`}
+            tabIndex={tab}
+            className="flex-1 text-center text-sm font-medium whitespace-nowrap px-3 py-2.5 rounded-full bg-rose-600 text-white hover:bg-rose-700 hover:shadow-md transition-all"
+          >
+            Use Template
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default async function Home() {
   const { featured: templates, count, minPrice } = await getHomeData();
@@ -113,52 +173,34 @@ export default async function Home() {
       {/* ===== Featured templates ===== */}
       <section className="relative overflow-hidden">
         <PhotoBackdrop photos={["/defaults/featured-rings-silver.jpg", "/defaults/featured-ring-gold.jpg"]} shade="bg-black/55" />
-        <div className="relative max-w-6xl mx-auto px-6 py-24">
+        <div className="relative py-24">
           <Reveal>
-            <div className="flex items-center justify-between mb-8">
-              <h2 className={`text-2xl font-semibold text-white ${textShadow}`}>Featured Templates</h2>
-              <Link href="/templates" className="text-sm text-rose-200 hover:text-white hover:underline">
+            <div className="max-w-6xl mx-auto px-6 flex items-end justify-between gap-4 mb-10">
+              <div>
+                <p className="text-xs uppercase tracking-[0.25em] text-rose-200">Most loved by couples</p>
+                <h2 className={`mt-1 text-2xl font-semibold text-white ${textShadow}`}>Featured Templates</h2>
+              </div>
+              <Link href="/templates" className="shrink-0 text-sm text-rose-200 hover:text-white hover:underline">
                 View all
               </Link>
             </div>
           </Reveal>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {templates.map((t, i) => (
-              <Reveal key={t.id} delay={i * 120}>
-                <div className="group bg-white rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.35)] hover:-translate-y-1 transition-all duration-300">
-                  {t.previewImage && (
-                    <div className="overflow-hidden">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={t.previewImage}
-                        alt={t.name}
-                        className="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    </div>
-                  )}
-                  <div className="p-5">
-                    <p className="text-xs uppercase tracking-wide text-neutral-400">{t.category}</p>
-                    <h3 className="font-semibold text-lg mt-1">{t.name}</h3>
-                    <p className="mt-1 text-neutral-500 text-sm">₹{t.price}</p>
-                    <div className="mt-4 flex gap-3">
-                      <Link
-                        href={`/templates/${t.slug}`}
-                        className="flex-1 text-center text-sm px-4 py-2 rounded-full border border-neutral-300 hover:bg-neutral-50 transition-colors"
-                      >
-                        Preview
-                      </Link>
-                      <Link
-                        href={`/templates/${t.slug}`}
-                        className="flex-1 text-center text-sm px-4 py-2 rounded-full bg-rose-600 text-white hover:bg-rose-700 hover:shadow-md transition-all"
-                      >
-                        Use Template
-                      </Link>
-                    </div>
+          <Reveal delay={120}>
+            <div className="wv-marquee overflow-hidden">
+              <div
+                className="wv-marquee-track flex w-max py-4"
+                style={{ "--wv-marquee-duration": `${templates.length * 6}s` } as React.CSSProperties}
+              >
+                {[0, 1].map((copy) => (
+                  <div key={copy} className={`flex ${copy ? "wv-marquee-dup" : ""}`} aria-hidden={copy ? true : undefined}>
+                    {templates.map((t) => (
+                      <FeaturedCard key={t.id} t={t} hidden={copy === 1} />
+                    ))}
                   </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+                ))}
+              </div>
+            </div>
+          </Reveal>
         </div>
       </section>
 

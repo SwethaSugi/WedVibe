@@ -1,8 +1,13 @@
 @import "tailwindcss";
 
+/* WedVibe is designed as a light site (white cards, light pages), so it stays light even when the
+   visitor's device is in dark mode. A dark-mode text colour here would turn any text without its
+   own colour (card titles, outline buttons, form fields) near-white on white. `color-scheme` also
+   keeps native form controls, scrollbars and autofill in their light style. */
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  color-scheme: light;
 }
 
 @theme inline {
@@ -10,13 +15,6 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
@@ -178,6 +176,31 @@ body {
 @keyframes underline-in {
   from { transform: scaleX(0); }
   to { transform: scaleX(1); }
+}
+
+/* Homepage featured templates: an endless right-to-left carousel. The track holds the
+   list twice, so sliding it by exactly half loops seamlessly. Pauses on hover/focus. */
+@keyframes wv-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.wv-marquee {
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+.wv-marquee-track {
+  animation: wv-marquee var(--wv-marquee-duration, 60s) linear infinite;
+}
+.wv-marquee:hover .wv-marquee-track,
+.wv-marquee:focus-within .wv-marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No movement: let people swipe/scroll through the cards instead, and hide the duplicate set. */
+  .wv-marquee { overflow-x: auto; mask-image: none; -webkit-mask-image: none; }
+  .wv-marquee-track { animation: none !important; }
+  .wv-marquee-dup { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

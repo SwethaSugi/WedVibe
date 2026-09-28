@@ -8,6 +8,8 @@ const updateSchema = z.object({
   description: z.string().optional(),
   category: z.string().min(1).optional(),
   price: z.number().int().nonnegative().optional(),
+  // null removes the offer.
+  offerPrice: z.number().int().positive().nullable().optional(),
   previewImage: z.string().optional(),
   status: z.enum(["ACTIVE", "INACTIVE", "DRAFT"]).optional(),
 });
@@ -21,6 +23,14 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   const parsed = updateSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json({ error: "Invalid template data." }, { status: 400 });
+  }
+
+  if (parsed.data.offerPrice != null) {
+    const current = await prisma.template.findUnique({ where: { id }, select: { price: true } });
+    if (!current) return NextResponse.json({ error: "Template not found." }, { status: 404 });
+    if (parsed.data.offerPrice >= (parsed.data.price ?? current.price)) {
+      return NextResponse.json({ error: "Offer price must be lower than the regular price." }, { status: 400 });
+    }
   }
 
   const template = await prisma.template.update({ where: { id }, data: parsed.data });
