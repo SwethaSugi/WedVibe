@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AdminShell, AdminPageHeader, AdminIcon, AdminPanel } from "@/components/AdminShell";
 import { useAdminFetch } from "@/lib/use-admin-fetch";
+import { ORDER_MODE } from "@/lib/site-config";
 
 interface Stats {
   totalUsers: number;
@@ -14,9 +15,111 @@ interface Stats {
   monthly: Record<string, { revenue: number; count: number }>;
   successfulPayments: number;
   failedPayments: number;
+  orders: {
+    drafts: number;
+    detailsReceived: number;
+    live: number;
+    inactive: number;
+    publishedTotal: number;
+    publishedThisMonth: number;
+    musicTracks: number;
+    newCustomRequests: number;
+  };
 }
 
 const inr = (n: number) => n.toLocaleString("en-IN");
+
+/** Dashboard for WhatsApp ordering: what needs doing and what's live, instead of online revenue. */
+function OrdersOverview({ orders, activeTemplates }: { orders: Stats["orders"]; activeTemplates: number }) {
+  const cards = [
+    { label: "In progress", value: orders.drafts, hint: "Drafts you're building", href: "/admin/invitations", tint: "from-amber-50 to-white text-amber-600", icon: "invitations" },
+    {
+      label: "Details received",
+      value: orders.detailsReceived,
+      hint: orders.detailsReceived ? "Customers are waiting: review and publish" : "No customer forms waiting",
+      href: "/admin/invitations",
+      tint: "from-emerald-50 to-white text-emerald-600",
+      icon: "requests",
+    },
+    { label: "Live invitations", value: orders.live, hint: `${orders.inactive} deactivated`, href: "/admin/invitations", tint: "from-rose-50 to-white text-rose-600", icon: "invitations" },
+    { label: "Active templates", value: activeTemplates, hint: "Shown on the website", href: "/admin/templates", tint: "from-violet-50 to-white text-violet-600", icon: "templates" },
+    { label: "Songs in library", value: orders.musicTracks, hint: "Offered for invitations", href: "/admin/music", tint: "from-sky-50 to-white text-sky-600", icon: "music" },
+    {
+      label: "New custom requests",
+      value: orders.newCustomRequests,
+      hint: orders.newCustomRequests ? "Waiting for your reply" : "All caught up",
+      href: "/admin/custom-requests",
+      tint: "from-orange-50 to-white text-orange-600",
+      icon: "requests",
+    },
+  ];
+
+  return (
+    <>
+      <div className="relative overflow-hidden rounded-3xl bg-[#140d0e] text-white p-7 sm:p-8 mb-6 shadow-[0_20px_50px_rgba(20,13,14,0.25)]">
+        <div className="absolute -top-20 -right-10 w-72 h-72 rounded-full bg-amber-500/20 blur-3xl" aria-hidden />
+        <div className="absolute -bottom-24 left-10 w-72 h-72 rounded-full bg-rose-700/25 blur-3xl" aria-hidden />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#d9b36a]/60 to-transparent" aria-hidden />
+        <div className="relative flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+          <div>
+            <p className="text-xs uppercase tracking-[0.3em] text-[#d9b36a]">Invitations delivered</p>
+            <p className="mt-2 text-4xl sm:text-5xl font-semibold tracking-tight">{inr(orders.publishedTotal)}</p>
+            <p className="mt-2 text-sm text-white/60">{inr(orders.publishedThisMonth)} published this month</p>
+          </div>
+          <Link
+            href="/admin/invitations"
+            className="self-start md:self-auto px-5 py-2.5 rounded-full text-sm font-semibold bg-gradient-to-r from-[#f3d68a] via-[#e2b75a] to-[#c99534] text-[#2b1a0c] hover:brightness-110"
+          >
+            + New invitation
+          </Link>
+        </div>
+      </div>
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {cards.map((c) => (
+          <Link
+            key={c.label}
+            href={c.href}
+            className="group relative bg-white rounded-2xl border border-[#efe5dd] p-5 shadow-[0_10px_30px_rgba(90,60,40,0.06)] hover:shadow-[0_18px_40px_rgba(90,60,40,0.12)] hover:-translate-y-0.5 transition-all"
+          >
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-xs uppercase tracking-[0.15em] text-neutral-500">{c.label}</p>
+                <p className="text-3xl font-semibold tracking-tight text-neutral-900 mt-2">{inr(c.value)}</p>
+              </div>
+              <span className={`w-11 h-11 rounded-xl bg-gradient-to-br ${c.tint} border border-[#f1e8e1] flex items-center justify-center`}>
+                <AdminIcon name={c.icon as "users"} />
+              </span>
+            </div>
+            <p className="mt-4 text-xs text-neutral-400 group-hover:text-[#b0843a] transition-colors">{c.hint}</p>
+          </Link>
+        ))}
+      </div>
+
+      <AdminPanel className="mt-6 p-5">
+        <p className="text-xs uppercase tracking-[0.15em] text-neutral-500 mb-3">Quick actions</p>
+        <div className="flex flex-wrap gap-2">
+          {[
+            { href: "/admin/invitations", label: "Create or manage invitations" },
+            { href: "/admin/templates", label: "Manage template prices" },
+            { href: "/admin/music", label: "Add songs" },
+            { href: "/admin/custom-requests", label: "Review custom requests" },
+            { href: "/templates", label: "Open the website", external: true },
+          ].map((a) => (
+            <Link
+              key={a.href}
+              href={a.href}
+              target={a.external ? "_blank" : undefined}
+              className="px-4 py-2 rounded-full text-sm border border-[#e7dcd3] text-neutral-700 hover:border-[#d9b36a] hover:bg-[#fdf8f1] transition-colors"
+            >
+              {a.label}
+            </Link>
+          ))}
+        </div>
+      </AdminPanel>
+    </>
+  );
+}
 
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -162,6 +265,8 @@ export default function AdminDashboardPage() {
             <div key={i} className="h-32 rounded-2xl bg-white/70 border border-[#efe5dd] animate-pulse" />
           ))}
         </div>
+      ) : ORDER_MODE === "whatsapp" ? (
+        <OrdersOverview orders={stats.orders} activeTemplates={stats.totalTemplates} />
       ) : (
         <>
           {/* Revenue hero */}

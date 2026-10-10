@@ -4,6 +4,8 @@ import { TemplateRenderer } from "@/templates/renderer";
 import { DEFAULT_INVITATION_DATA } from "@/lib/invitation-types";
 import { UseTemplateButton } from "@/components/UseTemplateButton";
 import { PriceTag } from "@/components/PriceTag";
+import { OrderOnWhatsAppButton } from "@/components/OrderOnWhatsAppButton";
+import { ORDER_MODE } from "@/lib/site-config";
 
 export default async function TemplatePreviewPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -86,7 +88,11 @@ export default async function TemplatePreviewPage({ params }: { params: Promise<
           </div>
           <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4 w-full sm:w-auto min-w-0">
             <PriceTag template={template} size="md" priceClassName="text-neutral-900" className="min-w-0 sm:justify-end sm:text-right" />
-            <UseTemplateButton templateId={template.id} templateSlug={template.slug} />
+            {ORDER_MODE === "whatsapp" ? (
+              <OrderOnWhatsAppButton template={template} className="px-5 py-3 text-sm" />
+            ) : (
+              <UseTemplateButton templateId={template.id} templateSlug={template.slug} />
+            )}
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { ORDER_MODE } from "@/lib/site-config";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { generateOtp, hashOtp } from "@/lib/auth";
@@ -15,6 +16,8 @@ const RESEND_COOLDOWN_MS = 30 * 1000;
 const MAX_OTPS_PER_HOUR = 5;
 
 export async function POST(req: NextRequest) {
+  if (ORDER_MODE !== "online") return NextResponse.json({ error: "Online ordering is turned off. Please order on WhatsApp." }, { status: 403 });
+
   const body = await req.json().catch(() => null);
   const parsed = schema.safeParse(body);
   if (!parsed.success) {

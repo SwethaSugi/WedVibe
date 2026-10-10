@@ -4,6 +4,8 @@ import { Reveal } from "@/templates/Reveal";
 import { designCountLabel } from "@/lib/design-count";
 import { effectivePrice, priceInfo } from "@/lib/pricing";
 import { PriceTag } from "@/components/PriceTag";
+import { OrderOnWhatsAppButton } from "@/components/OrderOnWhatsAppButton";
+import { ORDER_MODE } from "@/lib/site-config";
 
 export const dynamic = "force-dynamic";
 
@@ -105,13 +107,17 @@ function FeaturedCard({ t, hidden }: { t: FeaturedTemplate; hidden: boolean }) {
           >
             Preview
           </Link>
-          <Link
-            href={`/templates/${t.slug}`}
-            tabIndex={tab}
-            className="flex-1 text-center text-sm font-medium whitespace-nowrap px-3 py-2.5 rounded-full bg-rose-600 text-white hover:bg-rose-700 hover:shadow-md transition-all"
-          >
-            Use Template
-          </Link>
+          {ORDER_MODE === "whatsapp" ? (
+            <OrderOnWhatsAppButton template={t} label="Order Now" tabIndex={tab} className="flex-1 text-sm px-3 py-2.5" />
+          ) : (
+            <Link
+              href={`/templates/${t.slug}`}
+              tabIndex={tab}
+              className="flex-1 text-center text-sm font-medium whitespace-nowrap px-3 py-2.5 rounded-full bg-rose-600 text-white hover:bg-rose-700 hover:shadow-md transition-all"
+            >
+              Use Template
+            </Link>
+          )}
         </div>
       </div>
     </div>
@@ -212,12 +218,20 @@ export default async function Home() {
             <h2 className={`text-2xl font-semibold text-center mb-12 ${textShadow}`}>How It Works</h2>
           </Reveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-            {[
-              { step: "1", title: "Choose a Template", desc: "Browse and preview real, live invitation designs." },
-              { step: "2", title: "Login with WhatsApp", desc: "Verify your number once with an OTP, then log in with your PIN." },
-              { step: "3", title: "Customize & Preview", desc: "Add your details and see the invitation update instantly." },
-              { step: "4", title: "Pay & Share", desc: "Generate your unique link and share it on WhatsApp." },
-            ].map((s, i) => (
+            {(ORDER_MODE === "whatsapp"
+              ? [
+                  { step: "1", title: "Choose a Template", desc: "Browse and preview real, live invitation designs." },
+                  { step: "2", title: "Order on WhatsApp", desc: "Tap Order on WhatsApp and send us your wedding details and photos." },
+                  { step: "3", title: "We Personalise It", desc: "Our team designs your invitation and shares a preview for your approval." },
+                  { step: "4", title: "Share Your Link", desc: "Get your unique invitation link, ready to share with every guest." },
+                ]
+              : [
+                  { step: "1", title: "Choose a Template", desc: "Browse and preview real, live invitation designs." },
+                  { step: "2", title: "Login with WhatsApp", desc: "Verify your number once with an OTP, then log in with your PIN." },
+                  { step: "3", title: "Customize & Preview", desc: "Add your details and see the invitation update instantly." },
+                  { step: "4", title: "Pay & Share", desc: "Generate your unique link and share it on WhatsApp." },
+                ]
+            ).map((s, i) => (
               <Reveal key={s.step} delay={i * 100}>
                 <div className="group">
                   <div className="w-10 h-10 rounded-full bg-rose-600 text-white flex items-center justify-center mx-auto font-semibold shadow-sm transition-transform duration-300 group-hover:scale-110 group-hover:shadow-rose-300 group-hover:shadow-lg">

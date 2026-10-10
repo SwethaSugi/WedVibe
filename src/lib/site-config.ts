@@ -17,3 +17,26 @@ export function whatsappLink(message?: string) {
   if (!SUPPORT_WHATSAPP) return "/contact";
   return `https://wa.me/${SUPPORT_WHATSAPP}${message ? `?text=${encodeURIComponent(message)}` : ""}`;
 }
+
+// How customers order, set by NEXT_PUBLIC_ORDER_MODE:
+//   "whatsapp" (default) — customers browse and preview templates, then tap "Order on WhatsApp";
+//                          the team builds and publishes the invitation from the admin panel.
+//                          Customer login, My Invitations, the self-serve editor and online
+//                          payment are switched off (their code stays, ready for "online").
+//   "online"             — the self-serve flow: WhatsApp OTP login, editor and Razorpay checkout.
+export const ORDER_MODE: "whatsapp" | "online" = process.env.NEXT_PUBLIC_ORDER_MODE === "online" ? "online" : "whatsapp";
+
+/** WhatsApp message for ordering a template: name, price (with the regular price when on offer) and preview link. */
+export function templateOrderMessage(t: { name: string; price: number; original?: number | null; previewUrl: string }) {
+  const inr = (n: number) => `₹${n.toLocaleString("en-IN")}`;
+  return [
+    `Hello ${BUSINESS_NAME}!`,
+    "",
+    "I'd like to order this wedding invitation:",
+    `• Template: ${t.name}`,
+    `• Price: ${inr(t.price)}${t.original ? ` (regular ${inr(t.original)})` : ""}`,
+    `• Preview: ${t.previewUrl}`,
+    "",
+    "Please share the next steps. Thank you!",
+  ].join("\n");
+}

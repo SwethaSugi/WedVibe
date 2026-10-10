@@ -59,10 +59,9 @@ export default function AdminLoginPage() {
         <div className="relative w-full max-w-sm">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/logo-rings.jpg"
-            alt=""
-            className="w-16 h-16 rounded-full object-cover mx-auto ring-2 ring-[#d9b36a]/60 shadow-[0_0_30px_rgba(217,179,106,0.25)]"
-            style={{ objectPosition: "42% 58%" }}
+            src="/logo-wedvibe.webp"
+            alt="WedVibe"
+            className="w-24 h-24 rounded-full mx-auto shadow-[0_0_30px_rgba(217,179,106,0.3)]"
           />
           <h1 className="text-2xl font-semibold text-center mt-5">WedVibe Admin</h1>
           <p className="text-sm text-white/55 text-center mt-1">Sign in to manage the platform</p>

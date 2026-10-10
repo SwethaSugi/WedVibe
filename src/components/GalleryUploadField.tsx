@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { uploadFile } from "@/lib/upload-client";
+import { useUploadAuth } from "@/components/UploadAuth";
 
 const MAX_IMAGES = 3;
 
@@ -13,6 +15,7 @@ export function GalleryUploadField({
 }) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
+  const { detailsToken } = useUploadAuth();
   const remaining = MAX_IMAGES - images.length;
 
   async function handleFiles(files: FileList) {
@@ -25,15 +28,11 @@ export function GalleryUploadField({
       }
       const uploaded: string[] = [];
       for (const file of toUpload) {
-        const formData = new FormData();
-        formData.append("file", file);
-        const res = await fetch("/api/uploads/image", { method: "POST", body: formData });
-        const data = await res.json();
-        if (!res.ok) {
-          setError(data.error ?? "Unable to upload one or more images.");
-          continue;
+        try {
+          uploaded.push(await uploadFile(file, "image", { detailsToken }));
+        } catch (err) {
+          setError(err instanceof Error ? err.message : "Unable to upload one or more images.");
         }
-        uploaded.push(data.url);
       }
       if (uploaded.length) onChange([...images, ...uploaded]);
     } finally {

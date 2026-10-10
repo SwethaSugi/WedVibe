@@ -5,6 +5,8 @@ import { useEffect, useMemo, useState } from "react";
 import { designCountLabel } from "@/lib/design-count";
 import { priceInfo } from "@/lib/pricing";
 import { PriceTag } from "@/components/PriceTag";
+import { OrderOnWhatsAppButton } from "@/components/OrderOnWhatsAppButton";
+import { ORDER_MODE } from "@/lib/site-config";
 
 interface TemplateItem {
   id: string;
@@ -150,12 +152,16 @@ export default function TemplatesPage() {
                     >
                       Preview
                     </Link>
-                    <Link
-                      href={`/templates/${t.slug}`}
-                      className="flex-1 text-center text-sm px-4 py-2 rounded-full bg-rose-600 text-white hover:bg-rose-700 hover:shadow-md transition-all"
-                    >
-                      Use Template
-                    </Link>
+                    {ORDER_MODE === "whatsapp" ? (
+                      <OrderOnWhatsAppButton template={t} className="flex-1 text-sm px-3 py-2" />
+                    ) : (
+                      <Link
+                        href={`/templates/${t.slug}`}
+                        className="flex-1 text-center text-sm px-4 py-2 rounded-full bg-rose-600 text-white hover:bg-rose-700 hover:shadow-md transition-all"
+                      >
+                        Use Template
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>

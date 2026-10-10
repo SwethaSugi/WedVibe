@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { effectivePrice } from "@/lib/pricing";
 import { getSession } from "@/lib/auth";
 import { getEditInfo } from "@/lib/edit-policy";
-import { sanitizeMusic } from "@/lib/invitation-types";
+import { cleanInvitationData } from "@/lib/invitation-data";
 
 const updateSchema = z.object({
   data: z.record(z.string(), z.unknown()),
@@ -61,13 +61,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     return NextResponse.json({ error: "Invalid invitation data." }, { status: 400 });
   }
 
-  const nextData = { ...parsed.data.data };
-  if (Array.isArray(nextData.galleryImages)) {
-    nextData.galleryImages = nextData.galleryImages.slice(0, 3);
-  }
-  const music = sanitizeMusic(nextData.music);
-  if (music) nextData.music = music;
-  else delete nextData.music;
+  const nextData = cleanInvitationData(parsed.data.data);
 
   const updated = await prisma.invitation.update({
     where: { id },

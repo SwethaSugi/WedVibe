@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { uploadFile } from "@/lib/upload-client";
+import { useUploadAuth } from "@/components/UploadAuth";
 
 export function ImageUploadField({
   label,
@@ -13,20 +15,15 @@ export function ImageUploadField({
 }) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
+  const { detailsToken } = useUploadAuth();
 
   async function handleFile(file: File) {
     setUploading(true);
     setError("");
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      const res = await fetch("/api/uploads/image", { method: "POST", body: formData });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error ?? "Unable to upload image.");
-        return;
-      }
-      onChange(data.url);
+      onChange(await uploadFile(file, "image", { detailsToken }));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to upload image.");
     } finally {
       setUploading(false);
     }

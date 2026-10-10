@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { ORDER_MODE } from "@/lib/site-config";
 import { z } from "zod";
 import { nanoid } from "nanoid";
 import { prisma } from "@/lib/prisma";
@@ -46,6 +47,8 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  if (ORDER_MODE !== "online") return NextResponse.json({ error: "Online ordering is turned off. Please order on WhatsApp." }, { status: 403 });
+
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 

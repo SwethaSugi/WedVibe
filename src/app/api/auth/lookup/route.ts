@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { ORDER_MODE } from "@/lib/site-config";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { normalizeMobile } from "@/lib/phone";
@@ -7,6 +8,8 @@ const schema = z.object({ mobile: z.string() });
 
 // Tells the login page whether this number signs in with a PIN or needs an OTP.
 export async function POST(req: NextRequest) {
+  if (ORDER_MODE !== "online") return NextResponse.json({ error: "Online ordering is turned off. Please order on WhatsApp." }, { status: 403 });
+
   const body = await req.json().catch(() => null);
   const parsed = schema.safeParse(body);
   const mobile = parsed.success ? normalizeMobile(parsed.data.mobile) : null;

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
-import { whatsappLink } from "@/lib/site-config";
+import { ORDER_MODE, whatsappLink } from "@/lib/site-config";
 
 const COLUMNS = [
   {
@@ -14,13 +14,21 @@ const COLUMNS = [
       { href: "/#pricing", label: "Pricing" },
     ],
   },
-  {
-    title: "Your Account",
-    links: [
-      { href: "/dashboard", label: "My Invitations" },
-      { href: "/login", label: "Login" },
-    ],
-  },
+  ORDER_MODE === "whatsapp"
+    ? {
+        title: "Order",
+        links: [
+          { href: "/templates", label: "Choose a Template" },
+          { href: "/#how-it-works", label: "How Ordering Works" },
+        ],
+      }
+    : {
+        title: "Your Account",
+        links: [
+          { href: "/dashboard", label: "My Invitations" },
+          { href: "/login", label: "Login" },
+        ],
+      },
   {
     title: "Need Something Special?",
     links: [
@@ -77,10 +85,9 @@ export function Footer() {
             <Link href="/" className="inline-flex items-center gap-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/logo-rings.jpg"
+                src="/logo-wedvibe.webp"
                 alt=""
-                className="w-11 h-11 rounded-full object-cover ring-2 ring-[#d9b36a]/50"
-                style={{ objectPosition: "42% 58%" }}
+                className="w-14 h-14 rounded-full shadow-[0_0_24px_rgba(217,179,106,0.25)]"
               />
               <span>
                 <span className="block text-xl font-semibold tracking-tight">WedVibe</span>

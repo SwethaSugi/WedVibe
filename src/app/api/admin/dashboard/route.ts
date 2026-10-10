@@ -29,7 +29,30 @@ export async function GET() {
     monthly[key].count += 1;
   }
 
+  // Order progress for WhatsApp ordering (invitations the team builds).
+  const thisMonth = monthKey.format(new Date());
+  const [drafts, detailsReceived, liveInvitations, inactiveInvitations, published, musicTracks, newCustomRequests] = await Promise.all([
+    prisma.invitation.count({ where: { status: { in: ["DRAFT", "PAYMENT_PENDING"] } } }),
+    prisma.invitation.count({ where: { status: { in: ["DRAFT", "PAYMENT_PENDING"] }, detailsSubmittedAt: { not: null } } }),
+    prisma.invitation.count({ where: { status: { in: ["ACTIVE", "PUBLISHED"] } } }),
+    prisma.invitation.count({ where: { status: "INACTIVE" } }),
+    prisma.invitation.findMany({ where: { activatedAt: { not: null } }, select: { activatedAt: true } }),
+    prisma.musicTrack.count({ where: { status: "ACTIVE" } }),
+    prisma.customRequest.count({ where: { status: "NEW" } }),
+  ]);
+  const orders = {
+    drafts,
+    detailsReceived,
+    live: liveInvitations,
+    inactive: inactiveInvitations,
+    publishedTotal: published.length,
+    publishedThisMonth: published.filter((p) => monthKey.format(p.activatedAt!) === thisMonth).length,
+    musicTracks,
+    newCustomRequests,
+  };
+
   return NextResponse.json({
+    orders,
     totalUsers,
     totalInvitations,
     activeInvitations,

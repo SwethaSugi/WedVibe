@@ -3,6 +3,10 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { ORDER_MODE, whatsappLink, BUSINESS_NAME } from "@/lib/site-config";
+import { WhatsAppIcon } from "@/components/WhatsAppIcon";
+
+const chatLink = whatsappLink(`Hello ${BUSINESS_NAME}! I'm interested in a digital wedding invitation. Could you please share the details?`);
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -31,10 +35,13 @@ export function Header() {
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch("/api/auth/me")
-      .then((res) => res.json())
-      .then((d) => setUser(d.user))
-      .catch(() => setUser(null));
+    // Customer accounts only exist in the self-serve ("online") ordering mode.
+    if (ORDER_MODE === "online") {
+      fetch("/api/auth/me")
+        .then((res) => res.json())
+        .then((d) => setUser(d.user))
+        .catch(() => setUser(null));
+    }
     setMenuOpen(false);
     setMobileNavOpen(false);
   }, [pathname]);
@@ -92,10 +99,9 @@ export function Header() {
           <span className="wv-logo-glow rounded-full">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/logo-rings.jpg"
+              src="/logo-wedvibe.webp"
               alt="WedVibe"
-              className="w-9 h-9 shrink-0 rounded-full object-cover ring-2 ring-white shadow-sm transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6"
-              style={{ objectPosition: "42% 58%" }}
+              className="w-11 h-11 shrink-0 rounded-full shadow-sm transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6"
             />
           </span>
           <span className="leading-tight">
@@ -111,7 +117,17 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
-          {user === undefined ? (
+          {ORDER_MODE === "whatsapp" ? (
+            <a
+              href={chatLink}
+              target={chatLink.startsWith("http") ? "_blank" : undefined}
+              rel="noopener noreferrer"
+              className="hidden sm:inline-flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-full bg-[#25D366] text-white shadow-sm hover:bg-[#1ebe5b] hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all"
+            >
+              <WhatsAppIcon className="w-4 h-4" />
+              Chat with us
+            </a>
+          ) : user === undefined ? (
             <div className="w-24 h-8 rounded-full bg-neutral-100 animate-pulse" />
           ) : user ? (
             <div className="relative" ref={menuRef}>
@@ -245,14 +261,27 @@ export function Header() {
               {link.label}
             </Link>
           ))}
-          {!user && (
-            <Link
-              href="/templates"
+          {ORDER_MODE === "whatsapp" ? (
+            <a
+              href={chatLink}
+              target={chatLink.startsWith("http") ? "_blank" : undefined}
+              rel="noopener noreferrer"
               onClick={() => setMobileNavOpen(false)}
-              className="mt-3 text-center text-sm font-medium px-4 py-2.5 rounded-full bg-rose-600 text-white hover:bg-rose-700"
+              className="mt-3 inline-flex items-center justify-center gap-2 text-sm font-medium px-4 py-2.5 rounded-full bg-[#25D366] text-white hover:bg-[#1ebe5b]"
             >
-              Create Invitation
-            </Link>
+              <WhatsAppIcon className="w-4 h-4" />
+              Chat with us on WhatsApp
+            </a>
+          ) : (
+            !user && (
+              <Link
+                href="/templates"
+                onClick={() => setMobileNavOpen(false)}
+                className="mt-3 text-center text-sm font-medium px-4 py-2.5 rounded-full bg-rose-600 text-white hover:bg-rose-700"
+              >
+                Create Invitation
+              </Link>
+            )
           )}
         </nav>
       )}

@@ -2,6 +2,14 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// SQLite, both locally (DATABASE_URL="file:./dev.db") and on the server (a file outside the code
+// folder, see deploy/). Schema changes are applied with `prisma db push`.
+// To move to a hosted Postgres database (e.g. Neon) later, switch to:
+//   provider  = "postgresql"
+//   url       = env("DATABASE_URL")            // pooled connection
+//   directUrl = env("DATABASE_URL_UNPOOLED")   // direct connection for migrations
+// prisma/postgres-baseline/migration.sql is the starting schema, and
+// scripts/migrate-to-postgres.cjs copies the data across.
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
@@ -80,6 +88,10 @@ model Invitation {
   views          Int      @default(0)
   activatedAt    DateTime? // when payment was verified and the invitation went live
   editCount      Int      @default(0) // edits saved after going live (limited)
+  // Private no-login link (/details/<token>) an admin can send a customer to type their own
+  // details; cleared by the admin when no longer needed.
+  detailsToken       String?   @unique
+  detailsSubmittedAt DateTime? // when the customer pressed "Submit details" on that link
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 

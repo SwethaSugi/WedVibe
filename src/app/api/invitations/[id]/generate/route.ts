@@ -1,19 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
+import { ORDER_MODE } from "@/lib/site-config";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 import { createPaymentOrder, getPaymentProvider } from "@/lib/providers/payment";
 import { effectivePrice } from "@/lib/pricing";
 import { InvitationData } from "@/lib/invitation-types";
+import { missingForPublish } from "@/lib/invitation-data";
 
-function validate(data: InvitationData): string | null {
-  if (!data.groomName?.trim()) return "Groom name is required.";
-  if (!data.brideName?.trim()) return "Bride name is required.";
-  if (!data.weddingDate) return "Please enter the wedding date.";
-  if (!data.venueName?.trim()) return "Wedding venue is required.";
-  return null;
-}
+const validate = missingForPublish;
 
 export async function POST(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  if (ORDER_MODE !== "online") return NextResponse.json({ error: "Online ordering is turned off. Please order on WhatsApp." }, { status: 403 });
+
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
+import { ORDER_MODE } from "@/lib/site-config";
 
 // Simple 20×20 stroke icons for the sidebar.
 const ICONS: Record<string, ReactNode> = {
@@ -26,15 +27,17 @@ export function AdminIcon({ name, className = "w-5 h-5" }: { name: keyof typeof 
   );
 }
 
+// Users and Payments only matter when customers log in and pay online; with WhatsApp ordering
+// they're hidden (the pages still exist for "online" mode and for older records).
 const NAV = [
-  { href: "/admin", label: "Dashboard", icon: "dashboard" },
-  { href: "/admin/templates", label: "Templates", icon: "templates" },
-  { href: "/admin/music", label: "Music Library", icon: "music" },
-  { href: "/admin/users", label: "Users", icon: "users" },
-  { href: "/admin/invitations", label: "Invitations", icon: "invitations" },
-  { href: "/admin/payments", label: "Payments", icon: "payments" },
-  { href: "/admin/custom-requests", label: "Custom Requests", icon: "requests" },
-] as const;
+  { href: "/admin", label: "Dashboard", icon: "dashboard", onlineOnly: false },
+  { href: "/admin/invitations", label: "Invitations", icon: "invitations", onlineOnly: false },
+  { href: "/admin/templates", label: "Templates", icon: "templates", onlineOnly: false },
+  { href: "/admin/music", label: "Music Library", icon: "music", onlineOnly: false },
+  { href: "/admin/users", label: "Users", icon: "users", onlineOnly: true },
+  { href: "/admin/payments", label: "Payments", icon: "payments", onlineOnly: true },
+  { href: "/admin/custom-requests", label: "Custom Requests", icon: "requests", onlineOnly: false },
+].filter((item) => !item.onlineOnly || ORDER_MODE === "online") as { href: string; label: string; icon: "dashboard" }[];
 
 export function AdminShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -56,10 +59,9 @@ export function AdminShell({ children }: { children: ReactNode }) {
       <div className="relative flex items-center gap-3 px-5 pt-6 pb-5 border-b border-white/10">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/logo-rings.jpg"
+          src="/logo-wedvibe.webp"
           alt=""
-          className="w-10 h-10 rounded-full object-cover ring-2 ring-[#d9b36a]/50"
-          style={{ objectPosition: "42% 58%" }}
+          className="w-12 h-12 rounded-full shadow-[0_0_20px_rgba(217,179,106,0.25)]"
         />
         <div className="leading-tight">
           <p className="font-semibold tracking-tight">WedVibe</p>
@@ -69,7 +71,8 @@ export function AdminShell({ children }: { children: ReactNode }) {
 
       <nav className="relative flex-1 px-3 py-5 space-y-1 overflow-y-auto">
         {NAV.map((item) => {
-          const active = pathname === item.href;
+          // Sub-pages (e.g. one invitation's builder) keep their section highlighted.
+          const active = item.href === "/admin" ? pathname === item.href : !!pathname?.startsWith(item.href);
           return (
             <Link
               key={item.href}

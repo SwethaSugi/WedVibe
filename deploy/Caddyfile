@@ -1,0 +1,14 @@
+# Caddy: free automatic HTTPS for the domain, serves uploaded photos/songs straight from disk,
+# and passes everything else to the WedVibe app. __DOMAIN__ is filled in by setup-server.sh.
+__DOMAIN__ {
+	encode zstd gzip
+
+	# Files uploaded after the site was built (couple photos, songs) live in the data folder.
+	handle_path /uploads/* {
+		root * /srv/wedvibe/data/uploads
+		header Cache-Control "public, max-age=2592000"
+		file_server
+	}
+
+	reverse_proxy 127.0.0.1:3000
+}

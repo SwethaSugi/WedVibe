@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AdminShell, AdminPageHeader, AdminPanel, StatusPill, AdminEmpty, AdminLoadingRows, adminTable, adminInput } from "@/components/AdminShell";
 import { useAdminFetch } from "@/lib/use-admin-fetch";
+import { uploadFile } from "@/lib/upload-client";
 
 interface Track {
   id: string;
@@ -57,10 +58,18 @@ export default function AdminMusicPage() {
     if (!file) return setNote({ ok: false, text: "Choose an MP3 or M4A file." });
     setSaving(true);
     setNote(null);
-    const body = new FormData();
-    body.append("file", file);
-    Object.entries(form).forEach(([k, v]) => body.append(k, v));
-    const res = await adminFetch("/api/admin/music", { method: "POST", body });
+    let url: string;
+    try {
+      url = await uploadFile(file, "admin-music");
+    } catch (err) {
+      setSaving(false);
+      return setNote({ ok: false, text: err instanceof Error ? err.message : "Unable to upload the song." });
+    }
+    const res = await adminFetch("/api/admin/music", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...form, url }),
+    });
     const d = await res.json().catch(() => ({}));
     setSaving(false);
     if (!res.ok) return setNote({ ok: false, text: d.error ?? "Unable to add the song." });

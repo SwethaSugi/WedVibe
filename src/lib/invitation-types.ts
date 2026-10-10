@@ -39,13 +39,21 @@ export interface InvitationMusic {
   source: "library" | "upload";
 }
 
-const MUSIC_URL = /^\/uploads\/music\/[A-Za-z0-9_-]+\.(mp3|m4a)$/;
+const LOCAL_MUSIC_URL = /^\/uploads\/music\/[A-Za-z0-9_-]+\.(mp3|m4a)$/;
+const BLOB_MUSIC_URL = /^https:\/\/([a-z0-9]+\.public\.blob\.vercel-storage\.com)\/music\/[A-Za-z0-9._-]+\.(mp3|m4a)$/;
 
-/** Keeps only a well-formed song stored on this site; anything else means "no music". */
-export function sanitizeMusic(value: unknown): InvitationMusic | undefined {
+/**
+ * Keeps only a well-formed song stored by this site (local uploads, or this project's Vercel Blob
+ * store); anything else means "no music". Pass `blobHost` (server side) to accept only our own
+ * Blob store; without it any Vercel Blob music URL passes the shape check.
+ */
+export function sanitizeMusic(value: unknown, blobHost?: string | null): InvitationMusic | undefined {
   if (!value || typeof value !== "object") return undefined;
   const m = value as Record<string, unknown>;
-  if (typeof m.url !== "string" || !MUSIC_URL.test(m.url)) return undefined;
+  if (typeof m.url !== "string") return undefined;
+  const blob = BLOB_MUSIC_URL.exec(m.url);
+  const ok = LOCAL_MUSIC_URL.test(m.url) || (!!blob && (blobHost === undefined || blob[1] === blobHost));
+  if (!ok) return undefined;
   const title = typeof m.title === "string" && m.title.trim() ? m.title.trim().slice(0, 80) : "Our song";
   return { url: m.url, title, source: m.source === "library" ? "library" : "upload" };
 }

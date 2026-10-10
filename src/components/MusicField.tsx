@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { InvitationMusic } from "@/lib/invitation-types";
+import { uploadFile } from "@/lib/upload-client";
+import { useUploadAuth } from "@/components/UploadAuth";
 
 interface Track {
   id: string;
@@ -20,6 +22,7 @@ export function MusicField({ value, onChange }: { value?: InvitationMusic; onCha
   const [rights, setRights] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
+  const { detailsToken } = useUploadAuth();
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -50,14 +53,11 @@ export function MusicField({ value, onChange }: { value?: InvitationMusic; onCha
     setError("");
     setUploading(true);
     try {
-      const form = new FormData();
-      form.append("file", file);
-      form.append("rightsConfirmed", String(rights));
-      const res = await fetch("/api/uploads/audio", { method: "POST", body: form });
-      const d = await res.json().catch(() => ({}));
-      if (!res.ok) return setError(d.error ?? "Unable to upload the song.");
+      const url = await uploadFile(file, "music", { rightsConfirmed: rights, detailsToken });
       const title = file.name.replace(/\.[^.]+$/, "").replace(/[_-]+/g, " ").trim().slice(0, 80) || "Our song";
-      onChange({ url: d.url, title, source: "upload" });
+      onChange({ url, title, source: "upload" });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to upload the song.");
     } finally {
       setUploading(false);
     }

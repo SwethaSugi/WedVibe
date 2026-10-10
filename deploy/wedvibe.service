@@ -1,0 +1,18 @@
+# systemd service: keeps WedVibe running, starts it on boot and restarts it if it stops.
+# Installed to /etc/systemd/system/ by deploy/setup-server.sh.
+[Unit]
+Description=WedVibe website
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/wedvibe
+Environment=NODE_ENV=production
+# Only reachable from this server; Caddy serves it to the internet over HTTPS.
+ExecStart=/usr/bin/npm run start -- -p 3000 -H 127.0.0.1
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
