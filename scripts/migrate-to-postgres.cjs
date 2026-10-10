@@ -1,12 +1,15 @@
-// One-time move of the local SQLite data to Postgres (Neon) + uploads to Vercel Blob.
+// One-time move of the local SQLite data to Postgres (Neon), plus the uploaded files it links to
+// into Netlify Blobs (same /uploads/... keys, so no links change).
 //
 //   node scripts/migrate-to-postgres.cjs <path-to-sqlite-client>          (dry run: counts only)
 //   node scripts/migrate-to-postgres.cjs <path-to-sqlite-client> --apply  (copy everything)
+//   add --rows-only or --files-only to do just the database rows or just the files.
 //
 // <path-to-sqlite-client> is a Prisma client generated from the old SQLite schema (output dir).
-// Needs in .env: DATABASE_URL / DATABASE_URL_UNPOOLED (Postgres, schema already migrated with
-// `npx prisma migrate deploy`) and BLOB_READ_WRITE_TOKEN. Keeps every id and timestamp; skips
-// OTP codes (short-lived). Refuses to run if the Postgres database already has users.
+// Needs DATABASE_URL / DATABASE_URL_UNPOOLED in .env (Postgres, schema already created with
+// `npx prisma db push`), and NETLIFY_SITE_ID + NETLIFY_AUTH_TOKEN in the environment for the
+// files. Keeps every id and timestamp; skips OTP codes (short-lived). Refuses to run if the
+// Postgres database already has users.
 
 const fs = require("fs");
 const path = require("path");
@@ -17,52 +20,21 @@ for (const line of fs.readFileSync(path.join(ROOT, ".env"), "utf8").split(/\r?\n
   if (m && !(m[1] in process.env)) process.env[m[1]] = m[2].replace(/^"|"$/g, "");
 }
 
-const [sqliteClientPath, flag] = process.argv.slice(2);
+const [sqliteClientPath, ...flags] = process.argv.slice(2);
 if (!sqliteClientPath) throw new Error("Pass the path to the SQLite Prisma client.");
-const apply = flag === "--apply";
+const apply = flags.includes("--apply");
+// The two halves can run separately: --rows-only (database) and --files-only (Netlify Blobs).
+const doRows = !flags.includes("--files-only");
+const doFiles = !flags.includes("--rows-only");
 
 const { PrismaClient: SqliteClient } = require(path.resolve(sqliteClientPath));
 const { PrismaClient } = require("@prisma/client");
-const { put } = require("@vercel/blob");
+const { getStore } = require("@netlify/blobs");
 
 const src = new SqliteClient();
 const dst = new PrismaClient();
 
 const CONTENT_TYPES = { jpg: "image/jpeg", png: "image/png", webp: "image/webp", mp3: "audio/mpeg", m4a: "audio/mp4" };
-const urlMap = new Map(); // "/uploads/..." -> Blob URL
-
-async function toBlob(localUrl) {
-  if (urlMap.has(localUrl)) return urlMap.get(localUrl);
-  const file = path.join(ROOT, "public", localUrl);
-  if (!fs.existsSync(file)) {
-    console.warn(`  missing file, link kept as-is: ${localUrl}`);
-    urlMap.set(localUrl, localUrl);
-    return localUrl;
-  }
-  const name = path.basename(localUrl);
-  const ext = name.split(".").pop().toLowerCase();
-  const folder = localUrl.startsWith("/uploads/music/") ? "music" : "images";
-  const blob = await put(`${folder}/${name}`, fs.readFileSync(file), {
-    access: "public",
-    addRandomSuffix: true,
-    contentType: CONTENT_TYPES[ext],
-    token: process.env.BLOB_READ_WRITE_TOKEN,
-  });
-  urlMap.set(localUrl, blob.url);
-  return blob.url;
-}
-
-// Replaces every "/uploads/..." string inside a JSON value with its Blob URL.
-async function rewrite(value) {
-  if (typeof value === "string") return value.startsWith("/uploads/") ? toBlob(value) : value;
-  if (Array.isArray(value)) return Promise.all(value.map(rewrite));
-  if (value && typeof value === "object") {
-    const out = {};
-    for (const [k, v] of Object.entries(value)) out[k] = await rewrite(v);
-    return out;
-  }
-  return value;
-}
 
 (async () => {
   const data = {
@@ -77,16 +49,38 @@ async function rewrite(value) {
   };
   console.log("SQLite rows:", Object.fromEntries(Object.entries(data).map(([k, v]) => [k, v.length])));
 
+  // Every /uploads/... file any row links to.
+  const files = new Set();
+  for (const rows of Object.values(data)) {
+    for (const s of JSON.stringify(rows).match(/\/uploads\/(music\/)?[A-Za-z0-9_-]+\.(jpg|png|webp|mp3|m4a)/g) ?? []) files.add(s);
+  }
+  console.log("Linked upload files:", files.size);
+
   const existingUsers = await dst.user.count();
   console.log("Postgres users already present:", existingUsers);
   if (!apply) return console.log("\nDry run only. Re-run with --apply to copy.");
-  if (existingUsers > 0) throw new Error("Postgres already has data; refusing to copy twice.");
+  if (doRows && existingUsers > 0) throw new Error("Postgres already has data; refusing to copy twice.");
 
-  console.log("\nUploading files to Vercel Blob…");
-  for (const t of data.musicTrack) t.url = await rewrite(t.url);
-  for (const inv of data.invitation) inv.invitationData = JSON.stringify(await rewrite(JSON.parse(inv.invitationData)));
-  console.log(`  ${[...urlMap.values()].filter((u) => u.startsWith("https://")).length} files uploaded`);
+  if (doFiles && files.size) {
+    if (!process.env.NETLIFY_SITE_ID || !process.env.NETLIFY_AUTH_TOKEN) throw new Error("Set NETLIFY_SITE_ID and NETLIFY_AUTH_TOKEN.");
+    const store = getStore({ name: "uploads", siteID: process.env.NETLIFY_SITE_ID, token: process.env.NETLIFY_AUTH_TOKEN });
+    console.log("\nUploading files to Netlify Blobs…");
+    for (const url of files) {
+      const file = path.join(ROOT, "public", url);
+      if (!fs.existsSync(file)) {
+        console.warn(`  missing file, link kept as-is: ${url}`);
+        continue;
+      }
+      const buf = fs.readFileSync(file);
+      const key = url.slice("/uploads/".length);
+      await store.set(key, buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.length), {
+        metadata: { contentType: CONTENT_TYPES[key.split(".").pop()] },
+      });
+      console.log(`  ${key}`);
+    }
+  }
 
+  if (!doRows) return;
   console.log("Copying rows…");
   await dst.$transaction([
     dst.adminUser.createMany({ data: data.adminUser }),

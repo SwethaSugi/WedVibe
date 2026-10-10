@@ -18,6 +18,7 @@
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@netlify/blobs": "11.1.0",
     "@prisma/client": "6.19.3",
     "@vercel/blob": "^2.8.1",
     "bcryptjs": "^3.0.3",

@@ -2,6 +2,10 @@
 //   "blob"  — Vercel Blob, used whenever BLOB_READ_WRITE_TOKEN is set (production on Vercel).
 //             Browsers upload straight to Blob (Vercel functions cap request bodies at 4.5MB);
 //             the server issues a short-lived upload token, then checks the stored file.
+//   "netlify" — Netlify Blobs, used when STORAGE_PROVIDER=netlify (production on Netlify).
+//             Netlify functions cap request bodies at 6MB, so the browser sends files in 4MB
+//             parts (/api/uploads/part) and the server joins them. Files keep the same
+//             /uploads/... URLs as local mode and are served by app/uploads/[...path].
 //   "local" — files written under public/uploads, for local development only.
 // Either way the file's first bytes are checked, because the browser-supplied type can be anything.
 
@@ -9,6 +13,7 @@ import { mkdir, writeFile } from "fs/promises";
 import path from "path";
 import { nanoid } from "nanoid";
 import { del } from "@vercel/blob";
+import { getStore } from "@netlify/blobs";
 
 export type UploadKind = "image" | "music" | "admin-music";
 
@@ -48,7 +53,8 @@ export function isUploadKind(value: unknown): value is UploadKind {
   return value === "image" || value === "music" || value === "admin-music";
 }
 
-export function storageMode(): "blob" | "local" {
+export function storageMode(): "blob" | "netlify" | "local" {
+  if (process.env.STORAGE_PROVIDER === "netlify") return "netlify";
   return process.env.BLOB_READ_WRITE_TOKEN ? "blob" : "local";
 }
 
@@ -89,6 +95,77 @@ export async function saveLocalUpload(file: File, kind: UploadKind): Promise<str
   const filename = `${nanoid(16)}.${ext}`;
   await writeFile(path.join(dir, filename), buffer);
   return sub ? `/uploads/${sub}/${filename}` : `/uploads/${filename}`;
+}
+
+// ---- Netlify Blobs ------------------------------------------------------------------------
+
+/** Size of each part the browser sends; well under Netlify's 6MB request limit. */
+export const UPLOAD_PART_BYTES = 4 * 1024 * 1024;
+
+const CONTENT_TYPES: Record<string, string> = { jpg: "image/jpeg", png: "image/png", webp: "image/webp", mp3: "audio/mpeg", m4a: "audio/mp4" };
+
+/** Finished files, keyed by their path under /uploads/ (e.g. "music/abc.mp3", "abc.jpg"). */
+export function uploadsStore() {
+  return getStore({ name: "uploads", consistency: "strong" });
+}
+
+function partsStore() {
+  return getStore({ name: "upload-parts", consistency: "strong" });
+}
+
+/**
+ * Netlify mode: stores one part of an upload. When `last` is set, joins all parts, checks the
+ * whole file (size and real type) and returns its /uploads/... URL; otherwise returns null.
+ */
+export async function saveNetlifyUploadPart(
+  part: File,
+  kind: UploadKind,
+  uploadId: string,
+  index: number,
+  last: boolean
+): Promise<string | null> {
+  const rule = UPLOAD_RULES[kind];
+  const maxParts = Math.ceil(rule.maxBytes / UPLOAD_PART_BYTES);
+  if (!/^[A-Za-z0-9_-]{16,32}$/.test(uploadId)) throw new Error("Invalid upload.");
+  if (!Number.isInteger(index) || index < 0 || index >= maxParts) throw new Error(rule.tooLarge);
+  if (part.size > UPLOAD_PART_BYTES || (!last && part.size !== UPLOAD_PART_BYTES)) throw new Error("Invalid upload part.");
+
+  const parts = partsStore();
+  const prefix = `${uploadId}/`;
+  const bytes = await part.arrayBuffer();
+  if (!last) {
+    await parts.set(`${prefix}${index}`, bytes, { metadata: { kind } });
+    return null;
+  }
+
+  // Join the earlier parts (all of the same kind, none missing) with this last one.
+  const chunks: Uint8Array[] = [];
+  try {
+    for (let i = 0; i < index; i++) {
+      const stored = await parts.getWithMetadata(`${prefix}${i}`, { type: "arrayBuffer" });
+      if (!stored || stored.metadata.kind !== kind) throw new Error("Upload incomplete. Please try again.");
+      chunks.push(new Uint8Array(stored.data));
+    }
+  } finally {
+    const { blobs } = await parts.list({ prefix });
+    await Promise.all(blobs.map((b) => parts.delete(b.key)));
+  }
+  chunks.push(new Uint8Array(bytes));
+
+  const size = chunks.reduce((n, c) => n + c.length, 0);
+  if (size > rule.maxBytes) throw new Error(rule.tooLarge);
+  const file = new Uint8Array(size);
+  let offset = 0;
+  for (const c of chunks) {
+    file.set(c, offset);
+    offset += c.length;
+  }
+  const ext = detectFile(file, rule.folder);
+  if (!ext) throw new Error(rule.wrongType);
+
+  const key = `${rule.folder === "music" ? "music/" : ""}${nanoid(16)}.${ext}`;
+  await uploadsStore().set(key, file.buffer, { metadata: { contentType: CONTENT_TYPES[ext] } });
+  return `/uploads/${key}`;
 }
 
 /** True when the URL points at a file this site stored for the given kind. */

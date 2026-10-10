@@ -1,0 +1,8 @@
+# Main app on Netlify (the Next.js runtime is added automatically). The showcase site is a
+# separate Cloudflare Pages project built from this same repo (see deploy/SHOWCASE.md).
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
