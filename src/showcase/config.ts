@@ -3,7 +3,7 @@ import templates from "./templates.json";
 // The showcase site's public address, used for share links and social previews. Set
 // SHOWCASE_URL in the Cloudflare Pages project settings (e.g. https://designs.wedvibe.in);
 // otherwise the default *.pages.dev address is used.
-export const SHOWCASE_URL = (process.env.SHOWCASE_URL || "https://wedvibe-designs.pages.dev").replace(/\/+$/, "");
+export const SHOWCASE_URL = (process.env.SHOWCASE_URL || "https://wedvibe.pages.dev").replace(/\/+$/, "");
 
 export interface ShowcaseTemplate {
   slug: string;

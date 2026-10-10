@@ -15,14 +15,14 @@ No prices, ordering, login or database. Hosted free on **Cloudflare Pages**.
 2. **Workers & Pages → Create → Pages → Connect to Git** → connect GitHub and pick
    **SwethaSugi/WedVibe**.
 3. Settings:
-   - **Project name:** `wedvibe-designs` (this becomes `wedvibe-designs.pages.dev`)
+   - **Project name:** `wedvibe` (this becomes `wedvibe.pages.dev`)
    - **Production branch:** `main`
    - **Framework preset:** None
    - **Build command:** `npm run build:showcase`
    - **Build output directory:** `out`
    - **Environment variables:**
      - `NODE_VERSION` = `22`
-     - `SHOWCASE_URL` = `https://wedvibe-designs.pages.dev` (your site's address; used for share
+     - `SHOWCASE_URL` = `https://wedvibe.pages.dev` (your site's address; used for share
        previews. Update it if the name differs or when you add your own domain.)
 4. **Save and Deploy.** The first build takes a few minutes.
 
