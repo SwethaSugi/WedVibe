@@ -92,6 +92,11 @@ to support all of these without a rewrite.
 See [`deploy/README.md`](deploy/README.md): a one-time setup script, HTTPS with Caddy, a systemd
 service that restarts automatically, daily backups, and a one-command update script.
 
+## Showcase site (template demos for social media)
+
+A static site of live template demos, built from the same code (`npm run build:showcase`) and
+hosted free on Cloudflare Pages. See [`deploy/SHOWCASE.md`](deploy/SHOWCASE.md).
+
 ## Docker
 
 ```bash

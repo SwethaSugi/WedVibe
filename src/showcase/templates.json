@@ -1,0 +1,258 @@
+[
+  {
+    "slug": "silk-scroll",
+    "name": "Silk Scroll",
+    "category": "Traditional",
+    "description": "Kumkum red, silk and gold: untie the golden ribbon and a silk scroll unrolls to reveal the couple, a kumkum scratch date, countdown, gallery and wedding ceremonies.",
+    "componentKey": "silk-scroll",
+    "previewImage": "/templates/silk-scroll.svg"
+  },
+  {
+    "slug": "velvet-envelope",
+    "name": "Velvet Envelope",
+    "category": "Royal",
+    "description": "Maroon velvet and gold: break the wax seal, the flap folds back and the invitation card slides out, followed by a gold-foil scratch date, countdown and schedule.",
+    "componentKey": "velvet-envelope",
+    "previewImage": "/templates/velvet-envelope.svg"
+  },
+  {
+    "slug": "royal-nikah-vault",
+    "name": "Royal Nikah Vault",
+    "category": "Muslim Wedding",
+    "description": "Emerald and gold: a golden key turns and a jewelled lattice chest opens onto the Nikah invitation, with an emerald scratch date, countdown and celebration details.",
+    "componentKey": "royal-nikah-vault",
+    "previewImage": "/templates/royal-nikah-vault.svg"
+  },
+  {
+    "slug": "luxe-gift-box",
+    "name": "Luxe Gift Box",
+    "category": "Modern",
+    "description": "Midnight navy and rose gold: a gift box tied with a holographic ribbon lifts its lid to reveal the couple, a prism scratch date, countdown, gallery and details.",
+    "componentKey": "luxe-gift-box",
+    "previewImage": "/templates/luxe-gift-box.svg"
+  },
+  {
+    "slug": "paper-blossom",
+    "name": "Paper Blossom",
+    "category": "Floral",
+    "description": "Sage green and blush: folded paper petals unfold outward as the invitation blooms open, with a rose-petal scratch date, countdown, gallery and event cards.",
+    "componentKey": "paper-blossom",
+    "previewImage": "/templates/paper-blossom.svg"
+  },
+  {
+    "slug": "temple-curtains",
+    "name": "Temple Curtains",
+    "category": "South Indian",
+    "description": "Maroon silk and temple gold: pleated curtains part beneath a marigold garland and a glowing lamp, revealing the couple, the muhurtham date, countdown and ceremonies.",
+    "componentKey": "temple-curtains",
+    "previewImage": "/templates/temple-curtains.svg"
+  },
+  {
+    "slug": "book-of-vows",
+    "name": "Book of Vows",
+    "category": "Modern",
+    "description": "Rose gold on navy: a leather-bound book opens to the first page of your story, then a scratch-to-reveal date, countdown, gallery and ceremony schedule.",
+    "componentKey": "book-of-vows",
+    "previewImage": "/templates/book-of-vows.svg"
+  },
+  {
+    "slug": "beach-horizon",
+    "name": "Beach Horizon",
+    "category": "Destination",
+    "description": "Sunset sky and ocean teal: the horizon lifts like a curtain with rising bubbles, followed by an ocean-foil scratch date, countdown, photo slider and beach venue directions.",
+    "componentKey": "beach-horizon",
+    "previewImage": "/templates/beach-horizon.svg"
+  },
+  {
+    "slug": "sacred-gates",
+    "name": "Sacred Gates",
+    "category": "North Indian",
+    "description": "Deep violet and saffron: carved golden gates swing open under a shower of petals, revealing the couple, a scratch-to-reveal date, a live countdown, a photo slider and ceremony details.",
+    "componentKey": "sacred-gates",
+    "previewImage": "/templates/sacred-gates.svg"
+  },
+  {
+    "slug": "midnight-promise",
+    "name": "Midnight Promise",
+    "category": "Engagement",
+    "description": "Black, champagne gold and blush: a glowing ring opens onto a veiled couple photo, a live countdown, ceremony details with map and calendar buttons, and directions.",
+    "componentKey": "midnight-promise",
+    "previewImage": "/templates/midnight-promise.svg"
+  },
+  {
+    "slug": "blush-seal",
+    "name": "Blush Seal",
+    "category": "Traditional",
+    "description": "A wax seal opens onto an ivory and wine-rose invitation with Month/Day/Year scratch tiles, a live countdown, a swipeable story slider and day-by-day ceremony cards.",
+    "componentKey": "blush-seal",
+    "previewImage": "/templates/blush-seal.svg"
+  },
+  {
+    "slug": "golden-doors",
+    "name": "Golden Doors",
+    "category": "South Indian",
+    "description": "Carved doors swing open to a full-screen couple photo, a scratch-to-reveal date, an event timeline with map and calendar buttons, and a live countdown.",
+    "componentKey": "golden-doors",
+    "previewImage": "/templates/golden-doors.svg"
+  },
+  {
+    "slug": "wedding-chronicle",
+    "name": "Wedding Chronicle",
+    "category": "Multi-Event",
+    "description": "An indigo and saffron multi-day invite with a numbered schedule and a spotlight photo gallery.",
+    "componentKey": "wedding-chronicle",
+    "previewImage": "/templates/wedding-chronicle.svg"
+  },
+  {
+    "slug": "royal-punjabi",
+    "name": "Royal Punjabi",
+    "category": "North Indian",
+    "description": "A festive saffron and crimson North Indian invite with sparkling bursts and auto-flipping photo cards.",
+    "componentKey": "royal-punjabi",
+    "previewImage": "/templates/royal-punjabi.svg"
+  },
+  {
+    "slug": "riverside-heritage",
+    "name": "Riverside Heritage",
+    "category": "Traditional",
+    "description": "A crimson and temple-gold traditional invite with glowing lamps and bobbing lotus-arch photo frames.",
+    "componentKey": "riverside-heritage",
+    "previewImage": "/templates/riverside-heritage.svg"
+  },
+  {
+    "slug": "cosmic-vows",
+    "name": "Cosmic Vows",
+    "category": "Modern",
+    "description": "A starry twilight design with nebula glows, a turning constellation ring and floating photo cards.",
+    "componentKey": "cosmic-vows",
+    "previewImage": "/templates/cosmic-vows.svg"
+  },
+  {
+    "slug": "champagne-noir",
+    "name": "Champagne Noir",
+    "category": "Reception",
+    "description": "An art-deco black and gold reception invite with rising sparkles and a fanned photo deck.",
+    "componentKey": "champagne-noir",
+    "previewImage": "/templates/champagne-noir.svg"
+  },
+  {
+    "slug": "velvet-royale",
+    "name": "Velvet Royale",
+    "category": "Reception",
+    "description": "A midnight-velvet reception invite with rich gold lettering and a scrolling photo gallery.",
+    "componentKey": "velvet-royale",
+    "previewImage": "/templates/velvet-royale.svg"
+  },
+  {
+    "slug": "temple-bells",
+    "name": "Temple Bells",
+    "category": "South Indian",
+    "description": "A traditional South Indian invite in crimson silk and temple gold, with swaying bells and a gold-framed gallery.",
+    "componentKey": "temple-bells",
+    "previewImage": "/templates/temple-bells.svg"
+  },
+  {
+    "slug": "serene-chapel",
+    "name": "Serene Chapel",
+    "category": "Christian Wedding",
+    "description": "A graceful church wedding invite with stained-glass light, script lettering and expanding photo panels.",
+    "componentKey": "serene-chapel",
+    "previewImage": "/templates/serene-chapel.svg"
+  },
+  {
+    "slug": "ring-of-eternity",
+    "name": "Ring of Eternity",
+    "category": "Engagement",
+    "description": "A rose-gold engagement invite with an orbiting ring emblem and a rotating 3D photo carousel.",
+    "componentKey": "ring-of-eternity",
+    "previewImage": "/templates/ring-of-eternity.svg"
+  },
+  {
+    "slug": "emerald-nikah",
+    "name": "Emerald Nikah",
+    "category": "Muslim Wedding",
+    "description": "An emerald and gold Nikah invitation with swaying lanterns, arched motifs and a scrolling gallery.",
+    "componentKey": "emerald-nikah",
+    "previewImage": "/templates/emerald-nikah.svg"
+  },
+  {
+    "slug": "modern-aura",
+    "name": "Modern Aura",
+    "category": "Modern",
+    "description": "A frosted-glass editorial card on a glowing aurora, with couple portraits, love story and an events timeline.",
+    "componentKey": "modern-aura",
+    "previewImage": "/templates/modern-aura.svg"
+  },
+  {
+    "slug": "mehendi-nights",
+    "name": "Mehendi Nights",
+    "category": "Mehendi",
+    "description": "A fairy-lit Mehendi evening in peacock teal and fuchsia, with twinkling lights and a diamond-cut gallery.",
+    "componentKey": "mehendi-nights",
+    "previewImage": "/templates/mehendi-nights.svg"
+  },
+  {
+    "slug": "haldi-sunshine",
+    "name": "Haldi Sunshine",
+    "category": "Haldi",
+    "description": "A bright marigold Haldi invite with a spinning sunburst photo frame, floating flowers and shuffling polaroids.",
+    "componentKey": "haldi-sunshine",
+    "previewImage": "/templates/haldi-sunshine.svg"
+  },
+  {
+    "slug": "aura-minimal",
+    "name": "Aura Minimal",
+    "category": "Minimal",
+    "description": "A Swiss editorial design with hairline grids, a duotone couple photo and a vertical film-strip gallery.",
+    "componentKey": "aura-minimal",
+    "previewImage": "/templates/aura-minimal.svg"
+  },
+  {
+    "slug": "boho-botanica",
+    "name": "Boho Botanica",
+    "category": "Floral",
+    "description": "A sage-green garden lookbook with drifting leaves, script lettering and an auto-scrolling gallery.",
+    "componentKey": "boho-botanica",
+    "previewImage": "/templates/boho-botanica.svg"
+  },
+  {
+    "slug": "celestial-cinema",
+    "name": "Celestial Cinema",
+    "category": "Modern",
+    "description": "A cinematic full-screen couple photo with a slow Ken-Burns drift, gold names and a scrolling film-reel gallery.",
+    "componentKey": "celestial-cinema",
+    "previewImage": "/templates/celestial-cinema.svg"
+  },
+  {
+    "slug": "royal-rajputana",
+    "name": "Royal Rajputana",
+    "category": "Royal",
+    "description": "Regal palace splendour in royal maroon and antique gold, with jharokha arches, a glowing diya and falling petals.",
+    "componentKey": "royal-rajputana",
+    "previewImage": "/templates/royal-rajputana.svg"
+  },
+  {
+    "slug": "modern-elegant",
+    "name": "Modern Elegant",
+    "category": "Modern",
+    "description": "A minimal dark-themed design for the contemporary couple.",
+    "componentKey": "modern-elegant",
+    "previewImage": "/templates/modern-elegant.svg"
+  },
+  {
+    "slug": "floral-love",
+    "name": "Floral Love",
+    "category": "Floral",
+    "description": "A soft, romantic floral design perfect for garden weddings.",
+    "componentKey": "floral-love",
+    "previewImage": "/templates/floral-love.svg"
+  },
+  {
+    "slug": "royal-gold",
+    "name": "Royal Gold Wedding",
+    "category": "Traditional",
+    "description": "An elegant traditional invitation in deep gold and maroon tones.",
+    "componentKey": "royal-gold",
+    "previewImage": "/templates/royal-gold.svg"
+  }
+]

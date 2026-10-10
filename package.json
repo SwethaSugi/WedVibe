@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "showcase:export": "node scripts/export-showcase.cjs",
+    "build:showcase": "node scripts/build-showcase.cjs",
     "start": "next start",
     "lint": "eslint",
     "prisma:generate": "prisma generate",
