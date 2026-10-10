@@ -1,6 +1,7 @@
 import { InvitationData } from "@/lib/invitation-types";
 import { Countdown } from "../Countdown";
 import { Reveal } from "../Reveal";
+import { EventLinks, VenueLinks } from "../shared/InviteLinks";
 
 // Formats "YYYY-MM-DD" as Indian-style "25 December 2026".
 function formatIndianDate(dateStr?: string): string {
@@ -269,16 +270,14 @@ export function ModernAura({ data }: { data: InvitationData }) {
                 </div>
                 <h3 className="text-xl sm:text-2xl font-cormorant font-semibold text-[#F3F4F6] mb-1">{venue}</h3>
                 <p className="text-xs sm:text-sm text-[#9CA3AF] font-sans-modern font-light max-w-sm mx-auto leading-relaxed mb-5">{address}</p>
-                {data.googleMapsUrl && (
-                  <a
-                    href={data.googleMapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full ma-btn text-[#0A0D14] font-sans-modern text-xs sm:text-sm font-semibold tracking-wider uppercase active:scale-95"
-                  >
-                    View Location
-                  </a>
-                )}
+                <VenueLinks
+                  data={data}
+                  render={(href, isCalendar) => (
+                    <a href={href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 rounded-full ma-btn text-[#0A0D14] font-sans-modern text-xs sm:text-sm font-semibold tracking-wider uppercase active:scale-95">
+                      {isCalendar ? "Add to Calendar" : <>View Location</>}
+                    </a>
+                  )}
+                />
               </div>
             </section>
           </Reveal>
@@ -304,6 +303,7 @@ export function ModernAura({ data }: { data: InvitationData }) {
                         {evt.description && (
                           <p className="text-xs text-[#D1D5DB]/80 italic font-sans-modern mt-2 border-t border-white/[0.06] pt-2 leading-relaxed">{evt.description}</p>
                         )}
+                        <EventLinks evt={evt} data={data} count={data.events.length} className="text-[#E2B89B]" />
                       </div>
                     </div>
                   ))}

@@ -1,6 +1,7 @@
 import { InvitationData } from "@/lib/invitation-types";
 import { Countdown } from "../Countdown";
 import { Reveal } from "../Reveal";
+import { EventLinks, VenueLinks } from "../shared/InviteLinks";
 
 // Formats "YYYY-MM-DD" as Indian-style "25 December 2026".
 function formatIndianDate(dateStr?: string): string {
@@ -310,19 +311,17 @@ export function RoyalRajputana({ data }: { data: InvitationData }) {
                 </div>
                 <h3 className="text-lg sm:text-xl font-cinzel font-bold text-[#FFDF79] mb-1">{venue}</h3>
                 <p className="text-xs sm:text-sm text-[#F7E59E]/85 font-marcellus max-w-sm mx-auto leading-relaxed mb-4">{address}</p>
-                {data.googleMapsUrl && (
-                  <a
-                    href={data.googleMapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full rr-gold-btn text-[#2A050B] font-cinzel text-xs sm:text-sm font-bold uppercase tracking-wider shadow-md hover:scale-105 active:scale-95 transition-all"
-                  >
-                    <span>View Location</span>
+                <VenueLinks
+                  data={data}
+                  render={(href, isCalendar) => (
+                    <a href={href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 rounded-full rr-gold-btn text-[#2A050B] font-cinzel text-xs sm:text-sm font-bold uppercase tracking-wider shadow-md hover:scale-105 active:scale-95 transition-all">
+                      {isCalendar ? "Add to Calendar" : <><span>View Location</span>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                  </a>
-                )}
+                    </svg></>}
+                    </a>
+                  )}
+                />
               </div>
             </section>
           </Reveal>
@@ -356,6 +355,7 @@ export function RoyalRajputana({ data }: { data: InvitationData }) {
                             {evt.description}
                           </p>
                         )}
+                        <EventLinks evt={evt} data={data} count={data.events.length} className="text-[#E6C158]" />
                       </div>
                     </div>
                   ))}

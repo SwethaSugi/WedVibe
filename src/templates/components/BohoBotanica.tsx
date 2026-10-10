@@ -1,6 +1,7 @@
 import { InvitationData } from "@/lib/invitation-types";
 import { Countdown } from "../Countdown";
 import { Reveal } from "../Reveal";
+import { EventLinks, VenueLinks } from "../shared/InviteLinks";
 
 // Formats "YYYY-MM-DD" as Indian-style "25 December 2026".
 function formatIndianDate(dateStr?: string): string {
@@ -182,16 +183,14 @@ export function BohoBotanica({ data }: { data: InvitationData }) {
               <span className="text-2xl text-[#8FA89B]">🌿</span>
               <h3 className="font-playfair text-xl text-[#F3EFE6] mt-1">{venue}</h3>
               <p className="text-xs text-[#AEBCB4] font-modern mt-1 max-w-sm mx-auto">{address}</p>
-              {data.googleMapsUrl && (
-                <a
-                  href={data.googleMapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 inline-flex items-center gap-2 px-6 py-2 rounded-full bg-[#D8B18A] text-[#1A221E] font-modern font-semibold text-xs uppercase tracking-wider shadow-md hover:scale-105 active:scale-95 transition-transform"
-                >
-                  View Garden Map
-                </a>
-              )}
+              <VenueLinks
+                data={data}
+                render={(href, isCalendar) => (
+                  <a href={href} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-2 px-6 py-2 rounded-full bg-[#D8B18A] text-[#1A221E] font-modern font-semibold text-xs uppercase tracking-wider shadow-md hover:scale-105 active:scale-95 transition-transform">
+                    {isCalendar ? "Add to Calendar" : <>View Garden Map</>}
+                  </a>
+                )}
+              />
             </div>
           </Reveal>
 
@@ -208,6 +207,7 @@ export function BohoBotanica({ data }: { data: InvitationData }) {
                     {evt.eventDate && <div className="text-xs text-[#8FA89B] mt-0.5">{formatIndianDate(evt.eventDate)}</div>}
                     {evt.venue && <div className="text-xs text-[#B2C1B8] mt-1">📍 {evt.venue}</div>}
                     {evt.description && <p className="text-xs text-[#9BB0A4] mt-1 italic">{evt.description}</p>}
+                    <EventLinks evt={evt} data={data} count={data.events.length} className="text-[#D8B18A]" />
                   </div>
                 ))}
               </div>

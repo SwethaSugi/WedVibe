@@ -1,6 +1,7 @@
 import { InvitationData } from "@/lib/invitation-types";
 import { Countdown } from "../Countdown";
 import { Reveal } from "../Reveal";
+import { EventLinks, VenueLinks } from "../shared/InviteLinks";
 
 const PETALS = [
   { left: "6%", duration: "9s", delay: "0s", size: "text-lg" },
@@ -105,16 +106,14 @@ export function FloralLove({ data }: { data: InvitationData }) {
           <div className="mt-10 bg-white/60 rounded-2xl p-6 shadow-sm backdrop-blur-sm transition-shadow hover:shadow-md">
             <h2 className="text-lg font-semibold mb-1">📍 {venueName}</h2>
             <p className="text-sm text-rose-600">{venueAddress}</p>
-            {data.googleMapsUrl && (
-              <a
-                href={data.googleMapsUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-block mt-3 text-sm px-4 py-2 rounded-full bg-rose-500 text-white transition-transform hover:scale-105 hover:bg-rose-600"
-              >
-                View Location
-              </a>
-            )}
+            <VenueLinks
+              data={data}
+              render={(href, isCalendar) => (
+                <a href={href} target="_blank" rel="noreferrer" className="inline-block mt-3 text-sm px-4 py-2 rounded-full bg-rose-500 text-white transition-transform hover:scale-105 hover:bg-rose-600">
+                  {isCalendar ? "Add to Calendar" : <>View Location</>}
+                </a>
+              )}
+            />
           </div>
         </Reveal>
 
@@ -133,6 +132,7 @@ export function FloralLove({ data }: { data: InvitationData }) {
                       {e.eventTime}
                       {e.venue ? ` · ${e.venue}` : ""}
                     </p>
+                    <EventLinks evt={e} data={data} count={data.events.length} className="text-rose-600" />
                   </div>
                 </Reveal>
               ))}

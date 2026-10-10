@@ -1,6 +1,7 @@
 import { InvitationData } from "@/lib/invitation-types";
 import { Countdown } from "../Countdown";
 import { Reveal } from "../Reveal";
+import { EventLinks, VenueLinks } from "../shared/InviteLinks";
 
 function Divider() {
   return <div className="tpl-shimmer-line tpl-grow-line h-px w-24 mx-auto" />;
@@ -159,16 +160,14 @@ export function RoyalGold({ data }: { data: InvitationData }) {
           <h2 className="text-xl tracking-widest uppercase mb-2">Venue</h2>
           <p>{venueName}</p>
           <p className="opacity-80">{venueAddress}</p>
-          {data.googleMapsUrl && (
-            <a
-              href={data.googleMapsUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-block mt-3 text-sm underline text-[#c9a24b] transition-transform hover:scale-105"
-            >
-              View Location
-            </a>
-          )}
+          <VenueLinks
+            data={data}
+            render={(href, isCalendar) => (
+              <a href={href} target="_blank" rel="noreferrer" className="inline-block mt-3 text-sm underline text-[#c9a24b] transition-transform hover:scale-105">
+                {isCalendar ? "Add to Calendar" : <>View Location</>}
+              </a>
+            )}
+          />
         </Reveal>
 
         {data.events?.length > 0 && (
@@ -188,6 +187,7 @@ export function RoyalGold({ data }: { data: InvitationData }) {
                     {e.eventTime}
                     {e.venue ? ` · ${e.venue}` : ""}
                   </p>
+                  <EventLinks evt={e} data={data} count={data.events.length} className="text-[#c9a24b]" />
                 </Reveal>
               ))}
             </div>

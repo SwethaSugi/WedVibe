@@ -1,6 +1,7 @@
 import { InvitationData } from "@/lib/invitation-types";
 import { Countdown } from "../Countdown";
 import { Reveal } from "../Reveal";
+import { EventLinks, VenueLinks } from "../shared/InviteLinks";
 
 // Formats "YYYY-MM-DD" as Indian-style "25 December 2026".
 function formatIndianDate(dateStr?: string): string {
@@ -180,16 +181,14 @@ export function RiversideHeritage({ data }: { data: InvitationData }) {
               <div className="text-2xl mb-1">🛕</div>
               <h3 className="font-rozha text-2xl text-[#FFF1D0]">{venue}</h3>
               <p className="text-xs text-amber-200/80 mt-1 max-w-sm mx-auto">{address}</p>
-              {data.googleMapsUrl && (
-                <a
-                  href={data.googleMapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 text-[#2A0508] font-bold text-xs uppercase tracking-wider shadow-lg hover:scale-105 active:scale-95 transition-transform"
-                >
-                  Get Directions
-                </a>
-              )}
+              <VenueLinks
+                data={data}
+                render={(href, isCalendar) => (
+                  <a href={href} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 text-[#2A0508] font-bold text-xs uppercase tracking-wider shadow-lg hover:scale-105 active:scale-95 transition-transform">
+                    {isCalendar ? "Add to Calendar" : <>Get Directions</>}
+                  </a>
+                )}
+              />
             </div>
           </Reveal>
 
@@ -206,6 +205,7 @@ export function RiversideHeritage({ data }: { data: InvitationData }) {
                     {evt.eventDate && <div className="text-xs text-amber-300/80 mt-0.5">{formatIndianDate(evt.eventDate)}</div>}
                     {evt.venue && <div className="text-xs text-amber-200/80 mt-1">📍 {evt.venue}</div>}
                     {evt.description && <p className="text-xs text-amber-100/70 mt-1 italic">{evt.description}</p>}
+                    <EventLinks evt={evt} data={data} count={data.events.length} className="text-amber-400" />
                   </div>
                 ))}
               </div>

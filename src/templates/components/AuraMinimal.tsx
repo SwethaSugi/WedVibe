@@ -1,6 +1,7 @@
 import { InvitationData } from "@/lib/invitation-types";
 import { Countdown } from "../Countdown";
 import { Reveal } from "../Reveal";
+import { EventLinks, VenueLinks } from "../shared/InviteLinks";
 
 // Formats "YYYY-MM-DD" as Indian-style "25 December 2026".
 function formatIndianDate(dateStr?: string): string {
@@ -159,16 +160,14 @@ export function AuraMinimal({ data }: { data: InvitationData }) {
               <div className="text-[10px] text-amber-500 uppercase tracking-widest mb-1">VENUE</div>
               <h3 className="font-syne text-xl text-white font-bold">{venue}</h3>
               <p className="text-xs text-stone-400 mt-1">{address}</p>
-              {data.googleMapsUrl && (
-                <a
-                  href={data.googleMapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 inline-block px-5 py-2 bg-stone-200 text-stone-900 font-bold text-xs uppercase tracking-widest hover:bg-white transition-colors"
-                >
-                  Open Map
-                </a>
-              )}
+              <VenueLinks
+                data={data}
+                render={(href, isCalendar) => (
+                  <a href={href} target="_blank" rel="noopener noreferrer" className="mt-4 inline-block px-5 py-2 bg-stone-200 text-stone-900 font-bold text-xs uppercase tracking-widest hover:bg-white transition-colors">
+                    {isCalendar ? "Add to Calendar" : <>Open Map</>}
+                  </a>
+                )}
+              />
             </div>
           </Reveal>
 
@@ -181,6 +180,7 @@ export function AuraMinimal({ data }: { data: InvitationData }) {
                     <div>
                       <div className="font-syne font-bold text-sm text-stone-100">{evt.eventName}</div>
                       {evt.venue && <div className="text-xs text-stone-400 mt-0.5">{evt.venue}</div>}
+                      <EventLinks evt={evt} data={data} count={data.events.length} className="text-amber-400" />
                     </div>
                     <div className="text-right shrink-0">
                       <div className="text-xs text-amber-400 font-bold">{evt.eventTime}</div>

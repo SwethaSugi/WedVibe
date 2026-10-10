@@ -1,6 +1,7 @@
 import { InvitationData } from "@/lib/invitation-types";
 import { Countdown } from "../Countdown";
 import { Reveal } from "../Reveal";
+import { EventLinks, VenueLinks } from "../shared/InviteLinks";
 
 export function ModernElegant({ data }: { data: InvitationData }) {
   const groomName = data.groomName || "Groom Name";
@@ -111,16 +112,14 @@ export function ModernElegant({ data }: { data: InvitationData }) {
             <p className="text-xs uppercase text-neutral-500 mb-1">Venue</p>
             <p className="text-lg">{venueName}</p>
             <p className="text-neutral-400 text-sm">{venueAddress}</p>
-            {data.googleMapsUrl && (
-              <a
-                href={data.googleMapsUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-block mt-4 text-sm underline decoration-neutral-600 hover:decoration-white transition-colors"
-              >
-                View on Google Maps
-              </a>
-            )}
+            <VenueLinks
+              data={data}
+              render={(href, isCalendar) => (
+                <a href={href} target="_blank" rel="noreferrer" className="inline-block mt-4 text-sm underline decoration-neutral-600 hover:decoration-white transition-colors">
+                  {isCalendar ? "Add to Calendar" : <>View on Google Maps</>}
+                </a>
+              )}
+            />
           </div>
         </Reveal>
 
@@ -136,6 +135,7 @@ export function ModernElegant({ data }: { data: InvitationData }) {
                     <span className="transition-transform group-hover:translate-x-1">{e.eventName}</span>
                     <span className="text-neutral-400 text-sm">{e.eventTime}</span>
                   </div>
+                  <EventLinks evt={e} data={data} count={data.events.length} className="text-neutral-400" />
                 </Reveal>
               ))}
             </div>
