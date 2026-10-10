@@ -1,7 +1,7 @@
 import { InvitationData } from "@/lib/invitation-types";
 import { Countdown } from "../Countdown";
 import { Reveal } from "../Reveal";
-import { EventLinks, VenueLinks } from "../shared/InviteLinks";
+import { EventLinks, VenueButtons } from "../shared/InviteLinks";
 
 // Formats "YYYY-MM-DD" as Indian-style "25 December 2026".
 function formatIndianDate(dateStr?: string): string {
@@ -195,13 +195,10 @@ export function EmeraldNikah({ data }: { data: InvitationData }) {
               <div className="text-2xl mb-1">🕌</div>
               <h3 className="font-amiri text-2xl text-[#F5D77F]">{venue}</h3>
               <p className="text-xs text-emerald-200/80 font-cinzel mt-1 max-w-sm mx-auto">{address}</p>
-              <VenueLinks
+              <VenueButtons
                 data={data}
-                render={(href, isCalendar) => (
-                  <a href={href} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-2 px-6 py-2 rounded-full bg-gradient-to-r from-[#F5D77F] to-[#D4AF37] text-[#061C16] font-bold text-xs uppercase tracking-wider shadow-lg hover:scale-105 active:scale-95 transition-transform">
-                    {isCalendar ? "Add to Calendar" : <>Get Directions</>}
-                  </a>
-                )}
+                solid="bg-gradient-to-r from-[#F5D77F] to-[#D4AF37] text-[#061C16] shadow-lg hover:brightness-105"
+                outline="border-[#F5D77F]/70 text-[#F5D77F] hover:bg-[#F5D77F]/10"
               />
             </div>
           </Reveal>

@@ -1,7 +1,7 @@
 import { InvitationData } from "@/lib/invitation-types";
 import { Countdown } from "../Countdown";
 import { Reveal } from "../Reveal";
-import { EventLinks, VenueLinks } from "../shared/InviteLinks";
+import { EventLinks, VenueButtons } from "../shared/InviteLinks";
 
 // Formats "YYYY-MM-DD" as Indian-style "25 December 2026".
 function formatIndianDate(dateStr?: string): string {
@@ -205,13 +205,10 @@ export function ChampagneNoir({ data }: { data: InvitationData }) {
               <span className="text-2xl">🏛️</span>
               <h3 className="font-cinzel text-xl text-white font-bold mt-1">{venue}</h3>
               <p className="text-xs text-zinc-400 mt-1 max-w-sm mx-auto">{address}</p>
-              <VenueLinks
+              <VenueButtons
                 data={data}
-                render={(href, isCalendar) => (
-                  <a href={href} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#996515] text-black font-bold text-xs uppercase tracking-wider shadow-lg hover:scale-105 active:scale-95 transition-transform">
-                    {isCalendar ? "Add to Calendar" : <>Get Directions</>}
-                  </a>
-                )}
+                solid="bg-gradient-to-r from-[#D4AF37] to-[#996515] text-black shadow-lg hover:brightness-110"
+                outline="border-[#D4AF37]/70 text-[#D4AF37] hover:bg-[#D4AF37]/10"
               />
             </div>
           </Reveal>

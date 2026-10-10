@@ -1,7 +1,7 @@
 import { InvitationData } from "@/lib/invitation-types";
 import { Countdown } from "../Countdown";
 import { Reveal } from "../Reveal";
-import { EventLinks, VenueLinks } from "../shared/InviteLinks";
+import { EventLinks, VenueButtons } from "../shared/InviteLinks";
 
 // Formats "YYYY-MM-DD" as Indian-style "25 December 2026".
 function formatIndianDate(dateStr?: string): string {
@@ -270,13 +270,11 @@ export function ModernAura({ data }: { data: InvitationData }) {
                 </div>
                 <h3 className="text-xl sm:text-2xl font-cormorant font-semibold text-[#F3F4F6] mb-1">{venue}</h3>
                 <p className="text-xs sm:text-sm text-[#9CA3AF] font-sans-modern font-light max-w-sm mx-auto leading-relaxed mb-5">{address}</p>
-                <VenueLinks
+                <VenueButtons
                   data={data}
-                  render={(href, isCalendar) => (
-                    <a href={href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 rounded-full ma-btn text-[#0A0D14] font-sans-modern text-xs sm:text-sm font-semibold tracking-wider uppercase active:scale-95">
-                      {isCalendar ? "Add to Calendar" : <>View Location</>}
-                    </a>
-                  )}
+                  font="font-sans-modern"
+                  solid="ma-btn text-[#0A0D14]"
+                  outline="border-[#E2B89B]/70 text-[#E2B89B] hover:bg-[#E2B89B]/10"
                 />
               </div>
             </section>

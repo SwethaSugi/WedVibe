@@ -1,7 +1,7 @@
 import { InvitationData } from "@/lib/invitation-types";
 import { Countdown } from "../Countdown";
 import { Reveal } from "../Reveal";
-import { EventLinks, VenueLinks } from "../shared/InviteLinks";
+import { EventLinks, VenueButtons } from "../shared/InviteLinks";
 
 // Formats "YYYY-MM-DD" as Indian-style "25 December 2026".
 function formatIndianDate(dateStr?: string): string {
@@ -179,13 +179,11 @@ export function SereneChapel({ data }: { data: InvitationData }) {
               <span className="text-2xl">⛪</span>
               <h3 className="font-cormorant text-2xl text-white mt-1">{venue}</h3>
               <p className="text-xs text-slate-400 font-inter mt-1 max-w-sm mx-auto">{address}</p>
-              <VenueLinks
+              <VenueButtons
                 data={data}
-                render={(href, isCalendar) => (
-                  <a href={href} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-1.5 px-6 py-2.5 rounded-full bg-slate-100 text-slate-900 font-inter font-semibold text-xs uppercase tracking-wider shadow-lg hover:bg-white active:scale-95 transition-all">
-                    {isCalendar ? "Add to Calendar" : <>Get Directions</>}
-                  </a>
-                )}
+                font="font-inter"
+                solid="bg-slate-100 text-slate-900 shadow-lg hover:bg-white"
+                outline="border-slate-400/70 text-slate-100 hover:bg-white/10"
               />
             </div>
           </Reveal>

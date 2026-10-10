@@ -1,7 +1,7 @@
 import { InvitationData } from "@/lib/invitation-types";
 import { Countdown } from "../Countdown";
 import { Reveal } from "../Reveal";
-import { EventLinks, VenueLinks } from "../shared/InviteLinks";
+import { EventLinks, VenueButtons } from "../shared/InviteLinks";
 
 // Formats "YYYY-MM-DD" as Indian-style "25 December 2026".
 function formatIndianDate(dateStr?: string): string {
@@ -188,13 +188,11 @@ export function HaldiSunshine({ data }: { data: InvitationData }) {
               <div className="text-3xl mb-1">🏡</div>
               <h3 className="font-shrikhand text-xl text-[#B45309]">{venue}</h3>
               <p className="text-xs text-[#92400E] font-baloo mt-1">{address}</p>
-              <VenueLinks
+              <VenueButtons
                 data={data}
-                render={(href, isCalendar) => (
-                  <a href={href} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-1.5 px-6 py-2 rounded-full bg-[#F59E0B] text-white font-baloo font-bold text-xs uppercase tracking-wider shadow-md hover:bg-[#D97706] active:scale-95 transition-all">
-                    {isCalendar ? "Add to Calendar" : <>📍 Open Location Map</>}
-                  </a>
-                )}
+                font="font-baloo"
+                solid="bg-[#F59E0B] text-white shadow-md hover:bg-[#D97706]"
+                outline="border-[#F59E0B] bg-white text-[#B45309] hover:bg-[#FEF3C7]"
               />
             </div>
           </Reveal>

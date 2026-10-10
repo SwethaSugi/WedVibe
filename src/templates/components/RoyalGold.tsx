@@ -1,7 +1,7 @@
 import { InvitationData } from "@/lib/invitation-types";
 import { Countdown } from "../Countdown";
 import { Reveal } from "../Reveal";
-import { EventLinks, VenueLinks } from "../shared/InviteLinks";
+import { EventLinks, VenueButtons } from "../shared/InviteLinks";
 
 function Divider() {
   return <div className="tpl-shimmer-line tpl-grow-line h-px w-24 mx-auto" />;
@@ -160,13 +160,10 @@ export function RoyalGold({ data }: { data: InvitationData }) {
           <h2 className="text-xl tracking-widest uppercase mb-2">Venue</h2>
           <p>{venueName}</p>
           <p className="opacity-80">{venueAddress}</p>
-          <VenueLinks
+          <VenueButtons
             data={data}
-            render={(href, isCalendar) => (
-              <a href={href} target="_blank" rel="noreferrer" className="inline-block mt-3 text-sm underline text-[#c9a24b] transition-transform hover:scale-105">
-                {isCalendar ? "Add to Calendar" : <>View Location</>}
-              </a>
-            )}
+            variant="text"
+            link="text-sm text-[#c9a24b] underline underline-offset-4 decoration-[#c9a24b]/50 hover:decoration-[#c9a24b] transition-colors"
           />
         </Reveal>
 

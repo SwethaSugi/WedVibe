@@ -1,7 +1,7 @@
 import { InvitationData } from "@/lib/invitation-types";
 import { Countdown } from "../Countdown";
 import { Reveal } from "../Reveal";
-import { EventLinks, VenueLinks } from "../shared/InviteLinks";
+import { EventLinks, VenueButtons } from "../shared/InviteLinks";
 
 // Formats "YYYY-MM-DD" as Indian-style "25 December 2026".
 function formatIndianDate(dateStr?: string): string {
@@ -172,13 +172,11 @@ export function JashnEMehendi({ data }: { data: InvitationData }) {
               <span className="text-2xl text-[#F43F5E]">🪷</span>
               <h3 className="font-aref text-2xl text-[#FDE047] mt-1">{venue}</h3>
               <p className="text-xs text-teal-200 font-outfit mt-1 max-w-sm mx-auto">{address}</p>
-              <VenueLinks
+              <VenueButtons
                 data={data}
-                render={(href, isCalendar) => (
-                  <a href={href} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-1.5 px-6 py-2 rounded-full bg-gradient-to-r from-[#F43F5E] to-[#BE185D] text-white font-outfit font-semibold text-xs uppercase tracking-wider shadow-lg hover:scale-105 active:scale-95 transition-transform">
-                    {isCalendar ? "Add to Calendar" : <>View Venue on Map</>}
-                  </a>
-                )}
+                font="font-outfit"
+                solid="bg-gradient-to-r from-[#F43F5E] to-[#BE185D] text-white shadow-lg hover:brightness-110"
+                outline="border-[#F43F5E]/70 text-[#FDA4AF] hover:bg-[#F43F5E]/10"
               />
             </div>
           </Reveal>

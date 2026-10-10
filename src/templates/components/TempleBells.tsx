@@ -1,7 +1,7 @@
 import { InvitationData } from "@/lib/invitation-types";
 import { Countdown } from "../Countdown";
 import { Reveal } from "../Reveal";
-import { EventLinks, VenueLinks } from "../shared/InviteLinks";
+import { EventLinks, VenueButtons } from "../shared/InviteLinks";
 
 // Formats "YYYY-MM-DD" as Indian-style "25 December 2026".
 function formatIndianDate(dateStr?: string): string {
@@ -195,13 +195,10 @@ export function TempleBells({ data }: { data: InvitationData }) {
               <div className="text-2xl mb-2">🛕</div>
               <h3 className="text-xl font-rozha text-amber-200">{venue}</h3>
               <p className="text-xs text-amber-300/80 mt-1 max-w-sm mx-auto">{address}</p>
-              <VenueLinks
+              <VenueButtons
                 data={data}
-                render={(href, isCalendar) => (
-                  <a href={href} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-2 px-6 py-2 rounded-full bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 text-[#2D0B0A] font-bold text-xs uppercase tracking-wider shadow-md hover:scale-105 active:scale-95 transition-transform">
-                    {isCalendar ? "Add to Calendar" : <>Get Directions</>}
-                  </a>
-                )}
+                solid="bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 text-[#2D0B0A] shadow-md hover:brightness-110"
+                outline="border-amber-400/70 text-amber-300 hover:bg-amber-400/10"
               />
             </div>
           </Reveal>

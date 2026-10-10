@@ -1,7 +1,7 @@
 import { InvitationData } from "@/lib/invitation-types";
 import { Countdown } from "../Countdown";
 import { Reveal } from "../Reveal";
-import { EventLinks, VenueLinks } from "../shared/InviteLinks";
+import { EventLinks, VenueButtons } from "../shared/InviteLinks";
 
 export function ModernElegant({ data }: { data: InvitationData }) {
   const groomName = data.groomName || "Groom Name";
@@ -112,13 +112,11 @@ export function ModernElegant({ data }: { data: InvitationData }) {
             <p className="text-xs uppercase text-neutral-500 mb-1">Venue</p>
             <p className="text-lg">{venueName}</p>
             <p className="text-neutral-400 text-sm">{venueAddress}</p>
-            <VenueLinks
+            <VenueButtons
               data={data}
-              render={(href, isCalendar) => (
-                <a href={href} target="_blank" rel="noreferrer" className="inline-block mt-4 text-sm underline decoration-neutral-600 hover:decoration-white transition-colors">
-                  {isCalendar ? "Add to Calendar" : <>View on Google Maps</>}
-                </a>
-              )}
+              variant="text"
+              align="left"
+              link="text-sm text-neutral-300 underline underline-offset-4 decoration-neutral-600 hover:decoration-white hover:text-white transition-colors"
             />
           </div>
         </Reveal>
@@ -131,11 +129,13 @@ export function ModernElegant({ data }: { data: InvitationData }) {
             <div className="space-y-4">
               {data.events.map((e, i) => (
                 <Reveal key={e.id} delay={i * 100}>
-                  <div className="flex justify-between border-b border-neutral-800 pb-2 group">
-                    <span className="transition-transform group-hover:translate-x-1">{e.eventName}</span>
-                    <span className="text-neutral-400 text-sm">{e.eventTime}</span>
+                  <div className="border-b border-neutral-800 pb-3 group">
+                    <div className="flex justify-between">
+                      <span className="transition-transform group-hover:translate-x-1">{e.eventName}</span>
+                      <span className="text-neutral-400 text-sm">{e.eventTime}</span>
+                    </div>
+                    <EventLinks evt={e} data={data} count={data.events.length} className="text-neutral-400" />
                   </div>
-                  <EventLinks evt={e} data={data} count={data.events.length} className="text-neutral-400" />
                 </Reveal>
               ))}
             </div>

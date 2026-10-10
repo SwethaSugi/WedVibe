@@ -1,7 +1,7 @@
 import { InvitationData } from "@/lib/invitation-types";
 import { Countdown } from "../Countdown";
 import { Reveal } from "../Reveal";
-import { EventLinks, VenueLinks } from "../shared/InviteLinks";
+import { EventLinks, VenueButtons } from "../shared/InviteLinks";
 
 // Formats "YYYY-MM-DD" as Indian-style "25 December 2026".
 function formatIndianDate(dateStr?: string): string {
@@ -176,13 +176,10 @@ export function CelestialCinema({ data }: { data: InvitationData }) {
               <span className="text-amber-300 text-lg">📍</span>
               <h3 className="font-italiana text-2xl text-amber-100 mt-1">{venue}</h3>
               <p className="text-xs text-zinc-400 mt-1 max-w-sm mx-auto">{address}</p>
-              <VenueLinks
+              <VenueButtons
                 data={data}
-                render={(href, isCalendar) => (
-                  <a href={href} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 text-black text-xs font-bold uppercase tracking-wider shadow-lg hover:brightness-110 active:scale-95 transition-all">
-                    {isCalendar ? "Add to Calendar" : <>View Location on Map</>}
-                  </a>
-                )}
+                solid="bg-gradient-to-r from-amber-400 to-amber-600 text-black shadow-lg hover:brightness-110"
+                outline="border-amber-400/70 text-amber-300 hover:bg-amber-400/10"
               />
             </div>
           </Reveal>

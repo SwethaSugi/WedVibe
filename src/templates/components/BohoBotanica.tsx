@@ -1,7 +1,7 @@
 import { InvitationData } from "@/lib/invitation-types";
 import { Countdown } from "../Countdown";
 import { Reveal } from "../Reveal";
-import { EventLinks, VenueLinks } from "../shared/InviteLinks";
+import { EventLinks, VenueButtons } from "../shared/InviteLinks";
 
 // Formats "YYYY-MM-DD" as Indian-style "25 December 2026".
 function formatIndianDate(dateStr?: string): string {
@@ -183,13 +183,11 @@ export function BohoBotanica({ data }: { data: InvitationData }) {
               <span className="text-2xl text-[#8FA89B]">🌿</span>
               <h3 className="font-playfair text-xl text-[#F3EFE6] mt-1">{venue}</h3>
               <p className="text-xs text-[#AEBCB4] font-modern mt-1 max-w-sm mx-auto">{address}</p>
-              <VenueLinks
+              <VenueButtons
                 data={data}
-                render={(href, isCalendar) => (
-                  <a href={href} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-2 px-6 py-2 rounded-full bg-[#D8B18A] text-[#1A221E] font-modern font-semibold text-xs uppercase tracking-wider shadow-md hover:scale-105 active:scale-95 transition-transform">
-                    {isCalendar ? "Add to Calendar" : <>View Garden Map</>}
-                  </a>
-                )}
+                font="font-modern"
+                solid="bg-[#D8B18A] text-[#1A221E] shadow-md hover:brightness-105"
+                outline="border-[#D8B18A]/70 text-[#D8B18A] hover:bg-[#D8B18A]/10"
               />
             </div>
           </Reveal>

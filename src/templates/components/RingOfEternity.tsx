@@ -1,7 +1,7 @@
 import { InvitationData } from "@/lib/invitation-types";
 import { Countdown } from "../Countdown";
 import { Reveal } from "../Reveal";
-import { EventLinks, VenueLinks } from "../shared/InviteLinks";
+import { EventLinks, VenueButtons } from "../shared/InviteLinks";
 
 // Formats "YYYY-MM-DD" as Indian-style "25 December 2026".
 function formatIndianDate(dateStr?: string): string {
@@ -195,13 +195,11 @@ export function RingOfEternity({ data }: { data: InvitationData }) {
               <span className="text-2xl">💎</span>
               <h3 className="font-cinzel text-xl text-white mt-1 font-bold">{venue}</h3>
               <p className="text-xs text-slate-400 font-montserrat mt-1 max-w-sm mx-auto">{address}</p>
-              <VenueLinks
+              <VenueButtons
                 data={data}
-                render={(href, isCalendar) => (
-                  <a href={href} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-rose-500 to-rose-600 text-white font-montserrat font-bold text-xs uppercase tracking-wider shadow-lg hover:scale-105 active:scale-95 transition-transform">
-                    {isCalendar ? "Add to Calendar" : <>Get Directions</>}
-                  </a>
-                )}
+                font="font-montserrat"
+                solid="bg-gradient-to-r from-rose-500 to-rose-600 text-white shadow-lg hover:brightness-110"
+                outline="border-rose-400/70 text-rose-300 hover:bg-rose-500/10"
               />
             </div>
           </Reveal>
