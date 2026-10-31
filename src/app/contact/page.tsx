@@ -3,7 +3,7 @@
 import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
-import { BUSINESS_ADDRESS, BUSINESS_NAME, SUPPORT_EMAIL, SUPPORT_HOURS, whatsappLink } from "@/lib/site-config";
+import { BUSINESS_ADDRESS, BUSINESS_NAME, SUPPORT_HOURS, whatsappLink } from "@/lib/site-config";
 
 const TOPICS = ["General question", "Help with my invitation", "Payment or refund", "Custom design", "Something else"];
 
@@ -96,14 +96,6 @@ export default function ContactPage() {
               </a>
             </div>
           </div>
-
-          {SUPPORT_EMAIL && (
-            <InfoCard icon={svg("M3 5h14v10H3zM3 5l7 6 7-6")} title="Email">
-              <a href={`mailto:${SUPPORT_EMAIL}`} className="font-medium hover:text-rose-700 break-all">
-                {SUPPORT_EMAIL}
-              </a>
-            </InfoCard>
-          )}
 
           {BUSINESS_ADDRESS && (
             <InfoCard icon={svg("M10 18s6-5.2 6-10a6 6 0 10-12 0c0 4.8 6 10 6 10zM10 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z")} title="Address">

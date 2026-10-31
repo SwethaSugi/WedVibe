@@ -178,29 +178,10 @@ body {
   to { transform: scaleX(1); }
 }
 
-/* Homepage featured templates: an endless right-to-left carousel. The track holds the
-   list twice, so sliding it by exactly half loops seamlessly. Pauses on hover/focus. */
-@keyframes wv-marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
+/* Homepage featured templates (components/FeaturedMarquee.tsx): soft fade at both edges. */
 .wv-marquee {
   mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
   -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
-}
-.wv-marquee-track {
-  animation: wv-marquee var(--wv-marquee-duration, 60s) linear infinite;
-}
-.wv-marquee:hover .wv-marquee-track,
-.wv-marquee:focus-within .wv-marquee-track {
-  animation-play-state: paused;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  /* No movement: let people swipe/scroll through the cards instead, and hide the duplicate set. */
-  .wv-marquee { overflow-x: auto; mask-image: none; -webkit-mask-image: none; }
-  .wv-marquee-track { animation: none !important; }
-  .wv-marquee-dup { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

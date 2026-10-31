@@ -8,7 +8,7 @@ export const BUSINESS_NAME = "WedVibe";
 export const SUPPORT_WHATSAPP = (process.env.NEXT_PUBLIC_SUPPORT_WHATSAPP ?? "").replace(/\D/g, "");
 
 // Optional details for the Contact page and policies — each is shown only when set in .env.
-export const SUPPORT_EMAIL = process.env.NEXT_PUBLIC_SUPPORT_EMAIL?.trim() || "";
+// (No support email is shown: customers reach us on WhatsApp.)
 export const BUSINESS_ADDRESS = process.env.NEXT_PUBLIC_BUSINESS_ADDRESS?.trim() || "";
 export const SUPPORT_HOURS = process.env.NEXT_PUBLIC_SUPPORT_HOURS?.trim() || "Monday to Saturday, 10:00 AM – 7:00 PM IST";
 

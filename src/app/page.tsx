@@ -6,6 +6,7 @@ import { effectivePrice, priceInfo } from "@/lib/pricing";
 import { PriceTag } from "@/components/PriceTag";
 import { OrderOnWhatsAppButton } from "@/components/OrderOnWhatsAppButton";
 import { ORDER_MODE } from "@/lib/site-config";
+import { FeaturedMarquee } from "@/components/FeaturedMarquee";
 
 export const dynamic = "force-dynamic";
 
@@ -78,7 +79,7 @@ function FeaturedCard({ t, hidden }: { t: FeaturedTemplate; hidden: boolean }) {
   const tab = hidden ? -1 : undefined;
   const { percentOff } = priceInfo(t);
   return (
-    <div className="group w-[280px] sm:w-[300px] shrink-0 mr-6 bg-white rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.35)] hover:-translate-y-1.5 hover:shadow-[0_28px_60px_rgba(0,0,0,0.45)] transition-all duration-300">
+    <div data-marquee-card className="group w-[280px] sm:w-[300px] shrink-0 mr-6 bg-white rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.35)] hover:-translate-y-1.5 hover:shadow-[0_28px_60px_rgba(0,0,0,0.45)] transition-all duration-300">
       {t.previewImage && (
         <Link href={`/templates/${t.slug}`} tabIndex={tab} className="relative block overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -192,20 +193,15 @@ export default async function Home() {
             </div>
           </Reveal>
           <Reveal delay={120}>
-            <div className="wv-marquee overflow-hidden">
-              <div
-                className="wv-marquee-track flex w-max py-4"
-                style={{ "--wv-marquee-duration": `${templates.length * 6}s` } as React.CSSProperties}
-              >
-                {[0, 1].map((copy) => (
-                  <div key={copy} className={`flex ${copy ? "wv-marquee-dup" : ""}`} aria-hidden={copy ? true : undefined}>
-                    {templates.map((t) => (
-                      <FeaturedCard key={t.id} t={t} hidden={copy === 1} />
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </div>
+            <FeaturedMarquee>
+              {[0, 1].map((copy) => (
+                <div key={copy} className="flex" aria-hidden={copy ? true : undefined}>
+                  {templates.map((t) => (
+                    <FeaturedCard key={t.id} t={t} hidden={copy === 1} />
+                  ))}
+                </div>
+              ))}
+            </FeaturedMarquee>
           </Reveal>
         </div>
       </section>

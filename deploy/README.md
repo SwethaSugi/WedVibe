@@ -68,9 +68,9 @@ bash setup-server.sh wedvibe.duckdns.org
 It takes about 5–10 minutes and ends with "WedVibe is running". Open `https://<your address>`.
 The admin panel is at `https://<your address>/admin` with your existing admin login.
 
-Optional: add your support email/address in `~/wedvibe/.env`
-(`NEXT_PUBLIC_SUPPORT_EMAIL`, `NEXT_PUBLIC_BUSINESS_ADDRESS`), then run the update below so they
-appear on the site.
+Optional: add your business address in `~/wedvibe/.env`
+(`NEXT_PUBLIC_BUSINESS_ADDRESS`), then run the update below so it
+appears on the site.
 
 ## Everyday commands (server)
 
