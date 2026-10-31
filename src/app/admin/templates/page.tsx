@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import { AdminShell, AdminPageHeader, AdminPanel, StatusPill, AdminEmpty, AdminLoadingRows, adminTable, adminInput } from "@/components/AdminShell";
 import { useAdminFetch } from "@/lib/use-admin-fetch";
 import { priceInfo } from "@/lib/pricing";
+import { OCCASIONS, occasionLabel } from "@/lib/occasions";
 
 interface AdminTemplate {
   id: string;
   name: string;
   slug: string;
   category: string;
+  occasion: string;
   price: number;
   offerPrice: number | null;
   status: string;
@@ -45,6 +47,21 @@ export default function AdminTemplatesPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: nextStatus }),
     });
+    load();
+  }
+
+  async function updateOccasion(t: AdminTemplate, occasion: string) {
+    if (occasion === t.occasion) return;
+    setTemplates((list) => list.map((x) => (x.id === t.id ? { ...x, occasion } : x)));
+    const res = await adminFetch(`/api/admin/templates/${t.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ occasion }),
+    });
+    if (res.ok) {
+      setSavedId(t.id);
+      setTimeout(() => setSavedId((id) => (id === t.id ? null : id)), 1800);
+    }
     load();
   }
 
@@ -109,7 +126,7 @@ export default function AdminTemplatesPage() {
     load();
   }
 
-  const filtered = templates.filter((t) => `${t.name} ${t.category}`.toLowerCase().includes(search.toLowerCase()));
+  const filtered = templates.filter((t) => `${t.name} ${t.category} ${occasionLabel(t.occasion)}`.toLowerCase().includes(search.toLowerCase()));
   const activeCount = templates.filter((t) => t.status === "ACTIVE").length;
   const offerCount = templates.filter((t) => priceInfo(t).original !== null).length;
   const bulkPercent = Number(bulk.percent);
@@ -201,6 +218,7 @@ export default function AdminTemplatesPage() {
               <thead className={adminTable.thead}>
                 <tr>
                   <th className={adminTable.th}>Template</th>
+                  <th className={adminTable.th}>Occasion</th>
                   <th className={adminTable.th}>Category</th>
                   <th className={adminTable.th}>Price (₹)</th>
                   <th className={adminTable.th}>Offer price (₹)</th>
@@ -221,6 +239,20 @@ export default function AdminTemplatesPage() {
                         )}
                         <span className="font-medium text-neutral-900">{t.name}</span>
                       </div>
+                    </td>
+                    <td className={adminTable.td}>
+                      <select
+                        aria-label={`Occasion for ${t.name}`}
+                        value={t.occasion}
+                        onChange={(e) => updateOccasion(t, e.target.value)}
+                        className={`${adminInput} py-1.5 pr-8`}
+                      >
+                        {OCCASIONS.map((o) => (
+                          <option key={o.key} value={o.key}>
+                            {o.label}
+                          </option>
+                        ))}
+                      </select>
                     </td>
                     <td className={`${adminTable.td} text-neutral-500`}>{t.category}</td>
                     <td className={adminTable.td}>

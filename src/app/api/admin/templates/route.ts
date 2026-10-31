@@ -3,6 +3,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/require-admin";
 import { SUPPORTED_FIELDS } from "@/lib/invitation-types";
+import { OCCASION_KEYS } from "@/lib/occasions";
 
 function slugify(text: string) {
   return text
@@ -15,6 +16,7 @@ const createSchema = z.object({
   name: z.string().min(1),
   description: z.string().optional(),
   category: z.string().min(1),
+  occasion: z.enum(OCCASION_KEYS).optional(),
   price: z.number().int().nonnegative(),
   componentKey: z.string().min(1),
   previewImage: z.string().optional(),

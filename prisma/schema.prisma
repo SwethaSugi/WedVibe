@@ -48,7 +48,9 @@ model Template {
   slug           String   @unique
   description    String?
   category       String
-  price          Int      // in paise/rupees (INR whole rupees)
+  // Kind of event: wedding | baby-family | house-business | traditional (src/lib/occasions.ts)
+  occasion       String   @default("wedding")
+  price          Int     // in paise/rupees (INR whole rupees)
   offerPrice     Int?     // optional discounted price (whole rupees); used only while it is below price
   currency       String   @default("INR")
   previewImage   String?

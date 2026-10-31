@@ -2,11 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/require-admin";
+import { OCCASION_KEYS } from "@/lib/occasions";
 
 const updateSchema = z.object({
   name: z.string().min(1).optional(),
   description: z.string().optional(),
   category: z.string().min(1).optional(),
+  occasion: z.enum(OCCASION_KEYS).optional(),
   price: z.number().int().nonnegative().optional(),
   // null removes the offer.
   offerPrice: z.number().int().positive().nullable().optional(),

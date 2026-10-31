@@ -6,7 +6,8 @@ import { designCountLabel } from "@/lib/design-count";
 import { priceInfo } from "@/lib/pricing";
 import { PriceTag } from "@/components/PriceTag";
 import { OrderOnWhatsAppButton } from "@/components/OrderOnWhatsAppButton";
-import { ORDER_MODE } from "@/lib/site-config";
+import { ORDER_MODE, whatsappLink } from "@/lib/site-config";
+import { OCCASIONS, isOccasion, type OccasionKey } from "@/lib/occasions";
 
 interface TemplateItem {
   id: string;
@@ -14,6 +15,7 @@ interface TemplateItem {
   slug: string;
   description: string | null;
   category: string;
+  occasion: string;
   price: number;
   offerPrice: number | null;
   currency: string;
@@ -29,24 +31,48 @@ const CATEGORY_ORDER = [
 export default function TemplatesPage() {
   const [templates, setTemplates] = useState<TemplateItem[] | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [occasion, setOccasion] = useState<OccasionKey>("wedding");
+
+  function chooseOccasion(key: OccasionKey) {
+    setOccasion(key);
+    setActiveCategory(null);
+    const url = new URL(window.location.href);
+    if (key === "wedding") url.searchParams.delete("occasion");
+    else url.searchParams.set("occasion", key);
+    window.history.replaceState(null, "", url);
+  }
 
   useEffect(() => {
     fetch("/api/templates")
       .then((res) => res.json())
-      .then((d) => setTemplates(d.templates ?? []))
+      .then((d) => {
+        // ?occasion=baby-family opens that tab directly (handy for sharing).
+        const q = new URLSearchParams(window.location.search).get("occasion");
+        if (isOccasion(q)) setOccasion(q);
+        setTemplates(d.templates ?? []);
+      })
       .catch(() => setTemplates([]));
   }, []);
 
+  const counts = useMemo(() => {
+    const c: Record<string, number> = {};
+    for (const t of templates ?? []) c[t.occasion ?? "wedding"] = (c[t.occasion ?? "wedding"] ?? 0) + 1;
+    return c;
+  }, [templates]);
+
+  const inOccasion = useMemo(() => (templates ?? []).filter((t) => (t.occasion ?? "wedding") === occasion), [templates, occasion]);
+  const current = OCCASIONS.find((o) => o.key === occasion)!;
+
   const categories = useMemo(() => {
-    const present = new Set((templates ?? []).map((t) => t.category));
+    const present = new Set(inOccasion.map((t) => t.category));
     const ordered = CATEGORY_ORDER.filter((c) => present.has(c));
     const extra = [...present].filter((c) => !CATEGORY_ORDER.includes(c)).sort();
     return [...ordered, ...extra];
-  }, [templates]);
+  }, [inOccasion]);
 
   const visible = useMemo(
-    () => (templates ?? []).filter((t) => !activeCategory || t.category === activeCategory),
-    [templates, activeCategory]
+    () => inOccasion.filter((t) => !activeCategory || t.category === activeCategory),
+    [inOccasion, activeCategory]
   );
 
 
@@ -78,17 +104,55 @@ export default function TemplatesPage() {
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-16 pb-28 sm:pt-20 sm:pb-32 text-center text-white">
           <p className="text-xs uppercase tracking-[0.35em] text-[#f3d68a]">{(templates && designCountLabel(templates.length) && `${designCountLabel(templates.length)} designs`) || "Designs"}</p>
           <h1 className="mt-3 text-3xl sm:text-5xl font-semibold tracking-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]">
-            Wedding Invitation Templates
+            Invitation Templates
           </h1>
           <p className="mt-3 text-white/85 max-w-xl mx-auto drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)]">
-            Pick a design, preview it, then personalise it with your own details.
+            Weddings, baby functions, housewarmings and more. Pick a design, preview it, then personalise it with your own details.
           </p>
         </div>
       </section>
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pb-16 w-full">
+        {/* Occasion: the main filter */}
+        <div className="-mt-16 relative z-10 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4" role="tablist" aria-label="Invitation categories">
+          {OCCASIONS.map((o) => {
+            const active = o.key === occasion;
+            const n = counts[o.key] ?? 0;
+            return (
+              <button
+                key={o.key}
+                role="tab"
+                aria-selected={active}
+                onClick={() => chooseOccasion(o.key)}
+                className={`group text-left rounded-2xl p-4 sm:p-5 border transition-all duration-300 ${
+                  active
+                    ? "bg-gradient-to-br from-[#5b1530] to-[#8f1d45] text-white border-transparent shadow-[0_18px_40px_rgba(91,21,48,0.35)] -translate-y-0.5"
+                    : "bg-white/85 backdrop-blur-md border-white text-neutral-800 shadow-[0_14px_40px_rgba(90,60,40,0.10)] hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(90,60,40,0.16)]"
+                }`}
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <span className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center text-xl sm:text-2xl ${active ? "bg-white/15" : "bg-[#fbf1ea]"}`} aria-hidden>
+                    {o.icon}
+                  </span>
+                  {templates !== null && (
+                    <span
+                      className={`text-[10px] sm:text-[11px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap ${
+                        n > 0 ? (active ? "bg-white/20 text-white" : "bg-rose-50 text-rose-700") : active ? "bg-amber-300/25 text-amber-100" : "bg-amber-50 text-amber-700"
+                      }`}
+                    >
+                      {n > 0 ? `${n} design${n === 1 ? "" : "s"}` : "Coming soon"}
+                    </span>
+                  )}
+                </div>
+                <p className="mt-3 font-semibold text-[15px] sm:text-base leading-snug">{o.label}</p>
+                <p className={`mt-0.5 text-xs sm:text-[13px] leading-snug ${active ? "text-white/75" : "text-neutral-500"}`}>{o.hint}</p>
+              </button>
+            );
+          })}
+        </div>
+
         {categories.length > 1 && (
-          <div className="-mt-16 relative z-10 rounded-3xl bg-white/75 backdrop-blur-md border border-white shadow-[0_18px_50px_rgba(90,60,40,0.12)] p-3 sm:p-4 flex flex-wrap justify-center gap-2">
+          <div className="mt-6 relative z-10 rounded-3xl bg-white/75 backdrop-blur-md border border-white shadow-[0_18px_50px_rgba(90,60,40,0.12)] p-3 sm:p-4 flex flex-wrap justify-center gap-2">
             <button onClick={() => setActiveCategory(null)} className={chip(!activeCategory)}>
               All
             </button>
@@ -113,7 +177,28 @@ export default function TemplatesPage() {
             ))}
           </div>
         ) : visible.length === 0 ? (
-          <p className="mt-10 text-center text-neutral-400">New designs are on their way. Please check back soon.</p>
+          <div className="mt-10 max-w-xl mx-auto text-center rounded-3xl bg-white/80 border border-white shadow-[0_14px_40px_rgba(90,60,40,0.10)] px-6 py-10">
+            <div className="mx-auto w-16 h-16 rounded-2xl bg-[#fbf1ea] flex items-center justify-center text-3xl" aria-hidden>
+              {current.icon}
+            </div>
+            <h2 className="mt-4 text-xl font-semibold text-neutral-900">{current.label} designs are coming soon</h2>
+            <p className="mt-2 text-sm text-neutral-500">
+              We&apos;re creating beautiful invitations for {current.hint.toLowerCase()}. Need one now? We&apos;ll design it just for you.
+            </p>
+            <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+              <a
+                href={whatsappLink(`Hi WedVibe! I need an invitation for: ${current.label} (${current.hint}).`)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-2.5 rounded-full bg-[#25D366] text-white text-sm font-semibold hover:bg-[#1ebe5b] transition-colors"
+              >
+                Ask on WhatsApp
+              </a>
+              <Link href="/custom-invitation" className="px-6 py-2.5 rounded-full border border-neutral-300 text-sm font-medium text-neutral-700 hover:bg-white">
+                Request a custom design
+              </Link>
+            </div>
+          </div>
         ) : (
           <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {visible.map((t) => (
