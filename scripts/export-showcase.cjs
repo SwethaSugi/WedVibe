@@ -1,6 +1,9 @@
 // Exports the active templates for the static showcase site (no prices) and makes a 1200x630
 // share-preview image for each (WhatsApp/Instagram/Facebook can't show SVG previews).
 //   npm run showcase:export      (then commit + push; Cloudflare Pages rebuilds the showcase)
+// On the templates-dev branch, include DRAFT templates too, so new designs can be reviewed on the
+// dev showcase (templates-dev.wedvibe.pages.dev) before they go live:
+//   SHOWCASE_INCLUDE_DRAFTS=1 npm run showcase:export
 const fs = require("fs");
 const path = require("path");
 const sharp = require("sharp");
@@ -25,7 +28,7 @@ async function shareImage(t) {
     <rect x="70" y="58" width="420" height="514" rx="26" fill="#ffffff" opacity="0.9"/>
     <text x="560" y="250" font-family="Georgia, serif" font-size="28" letter-spacing="6" fill="#b0843a">${esc(t.category.toUpperCase())}</text>
     <text x="560" y="330" font-family="Georgia, serif" font-size="64" font-weight="bold" fill="#5b1530">${esc(t.name)}</text>
-    <text x="560" y="395" font-family="Arial, sans-serif" font-size="30" fill="#6b5a52">Live digital wedding invitation</text>
+    <text x="560" y="395" font-family="Arial, sans-serif" font-size="30" fill="#6b5a52">${t.occasion === "wedding" ? "Live digital wedding invitation" : "Live digital invitation"}</text>
     <text x="560" y="440" font-family="Arial, sans-serif" font-size="30" fill="#6b5a52">Tap to open the full design</text>
     <text x="690" y="535" font-family="Georgia, serif" font-size="34" font-weight="bold" fill="#5b1530">WedVibe</text>
   </svg>`);
@@ -37,9 +40,9 @@ async function shareImage(t) {
 (async () => {
   const prisma = new PrismaClient();
   const templates = await prisma.template.findMany({
-    where: { status: "ACTIVE" },
+    where: { status: process.env.SHOWCASE_INCLUDE_DRAFTS === "1" ? { in: ["ACTIVE", "DRAFT"] } : "ACTIVE" },
     orderBy: { createdAt: "desc" },
-    select: { slug: true, name: true, category: true, description: true, componentKey: true, previewImage: true },
+    select: { slug: true, name: true, category: true, occasion: true, description: true, componentKey: true, previewImage: true },
   });
   await prisma.$disconnect();
 

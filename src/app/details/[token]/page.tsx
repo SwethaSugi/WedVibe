@@ -7,6 +7,7 @@ import { InvitationEditor } from "@/components/InvitationEditor";
 import { UploadAuthProvider } from "@/components/UploadAuth";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { BUSINESS_NAME, whatsappLink } from "@/lib/site-config";
+import { fieldLabels } from "@/lib/template-fields";
 
 interface Loaded {
   data: InvitationData;
@@ -28,6 +29,7 @@ export default function CustomerDetailsPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const labels = fieldLabels(loaded?.template.componentKey ?? "");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -76,7 +78,7 @@ export default function CustomerDetailsPage() {
   async function submit() {
     if (!data) return;
     if (!data.groomName?.trim() || !data.brideName?.trim() || !data.weddingDate || !data.venueName?.trim()) {
-      setError("Please fill in the groom and bride names, wedding date and venue before submitting.");
+      setError(`Please fill in the ${labels.groomName.toLowerCase()}, ${labels.brideName.toLowerCase()}, ${labels.date.toLowerCase()} and venue before submitting.`);
       return;
     }
     if (timer.current) clearTimeout(timer.current);
@@ -104,7 +106,7 @@ export default function CustomerDetailsPage() {
   }
   if (!loaded || !data) return <div className="flex-1 flex items-center justify-center text-neutral-400 py-24">Loading your invitation…</div>;
 
-  const doneLink = whatsappLink(`Hello ${BUSINESS_NAME}! I've filled in my wedding details for the ${loaded.template.name} invitation. Please take a look.`);
+  const doneLink = whatsappLink(`Hello ${BUSINESS_NAME}! I've filled in my details for the ${loaded.template.name} invitation. Please take a look.`);
 
   return (
     <div className="flex flex-col flex-1">

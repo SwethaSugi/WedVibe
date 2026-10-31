@@ -32,6 +32,7 @@ import { LuxeGiftBox } from "./components/LuxeGiftBox";
 import { RoyalNikahVault } from "./components/RoyalNikahVault";
 import { VelvetEnvelope } from "./components/VelvetEnvelope";
 import { SilkScroll } from "./components/SilkScroll";
+import { BabyBundleOfJoy } from "./components/BabyBundleOfJoy";
 
 // Template rendering engine: given a componentKey + standardized invitation data,
 // pick the right registered template component. Adding a new template means
@@ -69,6 +70,7 @@ const TEMPLATE_COMPONENTS: Record<string, ComponentType<{ data: InvitationData }
   "royal-nikah-vault": RoyalNikahVault,
   "velvet-envelope": VelvetEnvelope,
   "silk-scroll": SilkScroll,
+  "baby-bundle-of-joy": BabyBundleOfJoy,
 };
 
 export function TemplateRenderer({ componentKey, data }: { componentKey: string; data: InvitationData }) {

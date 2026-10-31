@@ -25,7 +25,7 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
   }
 
   const data: InvitationData = JSON.parse(invitation.invitationData);
-  const validationError = validate(data);
+  const validationError = validate(data, invitation.template.componentKey);
   if (validationError) {
     return NextResponse.json({ error: validationError }, { status: 400 });
   }

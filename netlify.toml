@@ -3,6 +3,9 @@
 [build]
   command = "npm run build"
   publish = ".next"
+  # Only main is built and deployed. Other branches (e.g. templates-dev, which is previewed on the
+  # Cloudflare showcase) are skipped, so they never use Netlify credits. Exit 0 = skip the build.
+  ignore = "test \"$BRANCH\" != \"main\""
 
 [build.environment]
   NODE_VERSION = "22"

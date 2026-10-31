@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+<defs>
+    <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE5DA"/><stop offset=".55" stop-color="#FFEAF2"/><stop offset="1" stop-color="#EDE3FF"/></linearGradient>
+    <radialGradient id="rat2" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#fff"/><stop offset=".25" stop-color="#BFE3FF"/><stop offset="1" stop-color="#8CCBF5"/></radialGradient>
+    <radialGradient id="ft3" cx="40%" cy="30%" r="80%"><stop offset="0" stop-color="#FFE4D6"/><stop offset="1" stop-color="#F7B9A2"/></radialGradient></defs>
+
+  <rect width="600" height="600" fill="url(#bg1)"/>
+  <g transform="translate(200 330) rotate(-14) scale(1 1)">
+      <path d="M0 -70 C40 -70 46 -10 34 30 C26 60 -26 64 -32 30 C-40 -10 -40 -70 0 -70Z" fill="url(#ft3)"/>
+      <circle cx="-26" cy="-96" r="13" fill="url(#ft3)"/><circle cx="-4" cy="-104" r="11" fill="url(#ft3)"/><circle cx="15" cy="-100" r="10" fill="url(#ft3)"/><circle cx="30" cy="-90" r="8.5" fill="url(#ft3)"/><circle cx="40" cy="-76" r="7" fill="url(#ft3)"/>
+    </g><g transform="translate(330 290) rotate(12) scale(-1 1)">
+      <path d="M0 -70 C40 -70 46 -10 34 30 C26 60 -26 64 -32 30 C-40 -10 -40 -70 0 -70Z" fill="url(#ft3)"/>
+      <circle cx="-26" cy="-96" r="13" fill="url(#ft3)"/><circle cx="-4" cy="-104" r="11" fill="url(#ft3)"/><circle cx="15" cy="-100" r="10" fill="url(#ft3)"/><circle cx="30" cy="-90" r="8.5" fill="url(#ft3)"/><circle cx="40" cy="-76" r="7" fill="url(#ft3)"/>
+    </g>
+  <g transform="rotate(-28 450 430)">
+    <rect x="438" y="440" width="24" height="120" rx="12" fill="#FF9FBB"/><rect x="430" y="548" width="40" height="22" rx="11" fill="#FF8FB0"/>
+    <circle cx="450" cy="410" r="62" fill="url(#rat2)"/>
+    <path d="M400 400 Q450 380 500 400" fill="none" stroke="#fff" stroke-width="8" opacity=".7" stroke-linecap="round"/>
+    <polygon points="450.0,402.0 454.2,412.2 465.2,413.1 456.8,420.2 459.4,430.9 450.0,425.2 440.6,430.9 443.2,420.2 434.8,413.1 445.8,412.2" fill="#fff" opacity="0.9" stroke="#fff" stroke-width="2.9" stroke-linejoin="round"/>
+  </g>
+  <path d="M110 143.4 C73.6 117.4 91.8 91.4 110 110.9 C128.2 91.4 146.4 117.4 110 143.4Z" fill="#FF9FBB" opacity="0.75"/><path d="M500 166.2 C474.8 148.2 487.4 130.2 500 143.7 C512.6 130.2 525.2 148.2 500 166.2Z" fill="#B9A2F2" opacity="0.7"/><path d="M90 494.4 C67.6 478.4 78.8 462.4 90 474.4 C101.2 462.4 112.4 478.4 90 494.4Z" fill="#FFB4C8" opacity="0.8"/><path d="M300 530.8 C283.2 518.8 291.6 506.8 300 515.8 C308.4 506.8 316.8 518.8 300 530.8Z" fill="#FF9FBB" opacity="0.6"/>
+  <polygon points="470.0,248.0 473.2,255.6 481.4,256.3 475.1,261.7 477.1,269.7 470.0,265.4 462.9,269.7 464.9,261.7 458.6,256.3 466.8,255.6" fill="#FFD36B" opacity="0.85" stroke="#FFD36B" stroke-width="2.2" stroke-linejoin="round"/><polygon points="250.0,101.0 252.4,106.7 258.6,107.2 253.9,111.3 255.3,117.3 250.0,114.0 244.7,117.3 246.1,111.3 241.4,107.2 247.6,106.7" fill="#FFD36B" opacity="0.8" stroke="#FFD36B" stroke-width="1.6" stroke-linejoin="round"/><path d="M160 211 Q161.62 218.38 169 220 Q161.62 221.62 160 229 Q158.38 221.62 151 220 Q158.38 218.38 160 211Z" fill="#fff" opacity="0.95"/><path d="M420 82 Q421.44 88.56 428 90 Q421.44 91.44 420 98 Q418.56 91.44 412 90 Q418.56 88.56 420 82Z" fill="#fff" opacity="0.95"/>
+</svg>

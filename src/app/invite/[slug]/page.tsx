@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { TemplateRenderer } from "@/templates/renderer";
 import { InvitationData, sanitizeMusic } from "@/lib/invitation-types";
 import { InvitationMusicPlayer } from "@/components/InvitationMusicPlayer";
+import { fieldLabels, WEDDING_LABELS } from "@/lib/template-fields";
 
 async function getInvitation(slug: string) {
   const invitation = await prisma.invitation.findUnique({ where: { slug }, include: { template: true } });
@@ -16,8 +17,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!invitation) return { title: "Invitation not found" };
 
   const data: InvitationData = JSON.parse(invitation.invitationData);
-  const title = `${data.groomName} & ${data.brideName} — Wedding Invitation`;
-  const description = `You are invited to celebrate the wedding of ${data.groomName} and ${data.brideName}.`;
+  const wedding = fieldLabels(invitation.template.componentKey) === WEDDING_LABELS;
+  const title = wedding ? `${data.groomName} & ${data.brideName} — Wedding Invitation` : `${data.groomName} — You're Invited!`;
+  const description = wedding
+    ? `You are invited to celebrate the wedding of ${data.groomName} and ${data.brideName}.`
+    : `You are invited to celebrate ${data.groomName}${data.brideName ? ` with ${data.brideName}` : ""}.`;
 
   return {
     title,

@@ -7,6 +7,7 @@ import { TemplateRenderer } from "@/templates/renderer";
 import { ImageUploadField } from "@/components/ImageUploadField";
 import { GalleryUploadField } from "@/components/GalleryUploadField";
 import { MusicField } from "@/components/MusicField";
+import { fieldLabels } from "@/lib/template-fields";
 
 /**
  * The invitation details form with a live template preview beside it. Shared by the couple's own
@@ -26,6 +27,7 @@ export function InvitationEditor({
 }) {
   const [device, setDevice] = useState<"desktop" | "mobile">("desktop");
   const update = onChange;
+  const labels = fieldLabels(componentKey);
 
   function updateEvent(id: string, patch: Partial<InvitationEvent>) {
     update({ events: data.events.map((e) => (e.id === id ? { ...e, ...patch } : e)) });
@@ -54,32 +56,36 @@ export function InvitationEditor({
             disabled={disabled}
             className="lg:w-[440px] min-w-0 shrink-0 overflow-y-auto bg-neutral-50 border-r border-neutral-200 p-5 space-y-5 disabled:opacity-60"
           >
-            <SectionCard icon="💑" title="Couple Details">
+            <SectionCard icon="💑" title={labels.namesTitle}>
               <Field
-                label="Groom Name"
+                label={labels.groomName}
                 required
                 value={data.groomName}
                 onChange={(v) => update({ groomName: v })}
-                placeholder="e.g. Arjun Kumar"
+                placeholder={labels.groomNamePlaceholder}
               />
               <Field
-                label="Bride Name"
+                label={labels.brideName}
                 required
                 value={data.brideName}
                 onChange={(v) => update({ brideName: v })}
-                placeholder="e.g. Divya Sharma"
+                placeholder={labels.brideNamePlaceholder}
               />
               <div className="grid grid-cols-3 gap-3 pt-1">
-                <ImageUploadField label="Groom Photo" value={data.groomImage} onChange={(url) => update({ groomImage: url })} />
-                <ImageUploadField label="Bride Photo" value={data.brideImage} onChange={(url) => update({ brideImage: url })} />
-                <ImageUploadField label="Couple Photo" value={data.coupleImage} onChange={(url) => update({ coupleImage: url })} />
+                {labels.photos.groomImage && (
+                  <ImageUploadField label={labels.photos.groomImage} value={data.groomImage} onChange={(url) => update({ groomImage: url })} />
+                )}
+                {labels.photos.brideImage && (
+                  <ImageUploadField label={labels.photos.brideImage} value={data.brideImage} onChange={(url) => update({ brideImage: url })} />
+                )}
+                <ImageUploadField label={labels.photos.coupleImage} value={data.coupleImage} onChange={(url) => update({ coupleImage: url })} />
               </div>
             </SectionCard>
 
-            <SectionCard icon="📅" title="Wedding Details">
+            <SectionCard icon="📅" title={labels.detailsTitle}>
               <div className="grid grid-cols-2 gap-3">
-                <Field label="Wedding Date" required type="date" value={data.weddingDate} onChange={(v) => update({ weddingDate: v })} />
-                <Field label="Wedding Time" value={data.weddingTime} onChange={(v) => update({ weddingTime: v })} placeholder="e.g. 09:00 AM" />
+                <Field label={labels.date} required type="date" value={data.weddingDate} onChange={(v) => update({ weddingDate: v })} />
+                <Field label={labels.time} value={data.weddingTime} onChange={(v) => update({ weddingTime: v })} placeholder="e.g. 09:00 AM" />
               </div>
               <Field
                 label="Venue Name"
@@ -113,12 +119,12 @@ export function InvitationEditor({
               />
             </SectionCard>
 
-            <SectionCard icon="📖" title="Our Story" optional>
+            <SectionCard icon="📖" title={labels.storyTitle} optional>
               <Field
-                label="How you met, the proposal, or anything you'd like to share"
+                label={labels.storyLabel}
                 value={data.loveStory ?? ""}
                 onChange={(v) => update({ loveStory: v })}
-                placeholder="We met at a coffee shop in 2021…"
+                placeholder={labels.storyPlaceholder}
                 textarea
               />
             </SectionCard>
@@ -200,10 +206,10 @@ export function InvitationEditor({
 
             <SectionCard icon="👪" title="Family Details" optional>
               <div className="grid grid-cols-2 gap-3">
-                <Field label="Groom's Father" value={data.groomFatherName ?? ""} onChange={(v) => update({ groomFatherName: v })} />
-                <Field label="Groom's Mother" value={data.groomMotherName ?? ""} onChange={(v) => update({ groomMotherName: v })} />
-                <Field label="Bride's Father" value={data.brideFatherName ?? ""} onChange={(v) => update({ brideFatherName: v })} />
-                <Field label="Bride's Mother" value={data.brideMotherName ?? ""} onChange={(v) => update({ brideMotherName: v })} />
+                <Field label={labels.family.groomFatherName} value={data.groomFatherName ?? ""} onChange={(v) => update({ groomFatherName: v })} />
+                <Field label={labels.family.groomMotherName} value={data.groomMotherName ?? ""} onChange={(v) => update({ groomMotherName: v })} />
+                <Field label={labels.family.brideFatherName} value={data.brideFatherName ?? ""} onChange={(v) => update({ brideFatherName: v })} />
+                <Field label={labels.family.brideMotherName} value={data.brideMotherName ?? ""} onChange={(v) => update({ brideMotherName: v })} />
               </div>
             </SectionCard>
 

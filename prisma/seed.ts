@@ -270,6 +270,17 @@ const NEW_TEMPLATES = [
     componentKey: "silk-scroll",
     previewImage: "/templates/silk-scroll.svg",
   },
+  {
+    name: "Balloon Pop Baby",
+    slug: "balloon-pop-baby",
+    description:
+      "Pastel clouds and balloons: pop a balloon to open the invitation, with a cartoon baby, a live countdown, family details, a celebration timeline and a photo gallery.",
+    category: "Baby Welcome",
+    occasion: "baby-family",
+    price: 399,
+    componentKey: "baby-bundle-of-joy",
+    previewImage: "/templates/baby-bundle-of-joy.svg",
+  },
 ];
 
 async function main() {

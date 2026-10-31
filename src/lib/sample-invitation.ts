@@ -1,4 +1,5 @@
 import { DEFAULT_INVITATION_DATA, type InvitationData } from "@/lib/invitation-types";
+import { BABY_TEMPLATE_KEYS } from "@/lib/template-fields";
 
 // Sample photos shown only on template previews/demos, so every section (hero, groom/bride
 // portraits, gallery) appears filled in. Never used on a real invitation unless uploaded.
@@ -39,8 +40,33 @@ const HERO_PHOTO: Record<string, string> = {
   "silk-scroll": "/defaults/royal-gold-couple.jpg",
 };
 
+// Baby & Family designs: sample baby, parents and programme. No gallery, so the template's own
+// illustrations show instead of wedding photos.
+function sampleBabyData(): InvitationData {
+  return {
+    ...DEFAULT_INVITATION_DATA,
+    groomName: "Baby Aarav",
+    brideName: "Arjun & Priya",
+    groomFatherName: "Raman",
+    groomMotherName: "Lakshmi",
+    brideFatherName: "Kumar",
+    brideMotherName: "Meena",
+    weddingDate: "2026-12-20",
+    weddingTime: "10:30 AM",
+    venueName: "Sri Mahal",
+    venueAddress: "T. Nagar, Chennai, Tamil Nadu",
+    welcomeMessage: "",
+    events: [
+      { id: "evt-1", eventName: "Naming Ceremony", eventTime: "10:30 AM", description: "Blessings for the little one." },
+      { id: "evt-2", eventName: "Family Celebration", eventTime: "11:30 AM", description: "Games, giggles and plenty of photos." },
+      { id: "evt-3", eventName: "Lunch", eventTime: "12:30 PM", description: "A traditional feast with the whole family." },
+    ],
+  };
+}
+
 /** Filled-in sample details for previewing a template (sample names, dates and photos). */
 export function sampleInvitationData(componentKey: string, couple: { groom: string; bride: string } = { groom: "Romeo", bride: "Juliet" }): InvitationData {
+  if (BABY_TEMPLATE_KEYS.has(componentKey)) return sampleBabyData();
   const hero = HERO_PHOTO[componentKey] ?? SAMPLE_PHOTOS[0];
   return {
     ...DEFAULT_INVITATION_DATA,

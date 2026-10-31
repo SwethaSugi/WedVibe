@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 70" width="80" height="70">
+<defs><radialGradient id="w1" cx="30%" cy="35%" r="80%"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#DDF0FF"/><stop offset="1" stop-color="#8CCBF5"/></radialGradient>
+    <radialGradient id="w2" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#fff"/><stop offset=".4" stop-color="#FFF2C9"/><stop offset="1" stop-color="#FFD36B"/></radialGradient></defs>
+<g transform="translate(40 34) scale(1 1)">
+      <path d="M0 -2 C-6 -26 -34 -32 -36 -12 C-38 4 -14 8 0 -2Z" fill="url(#w1)"/>
+      <path d="M0 2 C-12 6 -28 18 -22 30 C-16 38 -4 24 0 2Z" fill="url(#w2)"/>
+      <circle cx="-22" cy="-14" r="4" fill="#fff" opacity=".7"/></g><g transform="translate(40 34) scale(-1 1)">
+      <path d="M0 -2 C-6 -26 -34 -32 -36 -12 C-38 4 -14 8 0 -2Z" fill="url(#w1)"/>
+      <path d="M0 2 C-12 6 -28 18 -22 30 C-16 38 -4 24 0 2Z" fill="url(#w2)"/>
+      <circle cx="-22" cy="-14" r="4" fill="#fff" opacity=".7"/></g><rect x="37.5" y="18" width="5" height="34" rx="2.5" fill="#4A3B4F"/><path d="M39 19 Q34 8 30 6 M41 19 Q46 8 50 6" fill="none" stroke="#4A3B4F" stroke-width="1.8" stroke-linecap="round"/>
+</svg>

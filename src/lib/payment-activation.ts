@@ -4,17 +4,11 @@
 import { nanoid } from "nanoid";
 import { prisma } from "@/lib/prisma";
 import { InvitationData } from "@/lib/invitation-types";
+import { invitationSlugBase } from "@/lib/invitation-data";
 
 // Invitation statuses that mean "not yet published" — only these may be activated.
 const UNPUBLISHED = ["DRAFT", "PAYMENT_PENDING"];
 const PUBLISHED = ["ACTIVE", "PUBLISHED", "INACTIVE"];
-
-function slugify(text: string) {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-}
 
 export type ActivationResult =
   | { outcome: "activated" | "already-active"; invitation: { invitationCode: string; slug: string } }
@@ -29,7 +23,7 @@ export type ActivationResult =
  * so a "failed" order can still end up paid.
  */
 export async function activatePaidOrder(orderId: string, paymentId: string): Promise<ActivationResult> {
-  const payment = await prisma.payment.findUnique({ where: { orderId }, include: { invitation: true } });
+  const payment = await prisma.payment.findUnique({ where: { orderId }, include: { invitation: { include: { template: true } } } });
   if (!payment || !payment.invitationId || !payment.invitation) return { outcome: "missing-invitation" };
 
   const invitation = payment.invitation;
@@ -51,7 +45,7 @@ export async function activatePaidOrder(orderId: string, paymentId: string): Pro
 
   // Publish once: the status condition makes this atomic, so a racing call can't re-slug it.
   const data: InvitationData = JSON.parse(invitation.invitationData);
-  const slug = `${slugify(`${data.groomName}-${data.brideName}`) || "invitation"}-${nanoid(6).toUpperCase()}`;
+  const slug = `${invitationSlugBase(data, invitation.template.componentKey, "-")}-${nanoid(6).toUpperCase()}`;
   const { count } = await prisma.invitation.updateMany({
     where: { id: invitation.id, status: { in: UNPUBLISHED } },
     data: { status: "ACTIVE", slug, activatedAt: new Date() },
